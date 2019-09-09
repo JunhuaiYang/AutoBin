@@ -1,0 +1,20 @@
+syntax = "proto3";
+import "google/api/annotations.proto";
+package protos;
+
+message LoginRequest{
+    string user_id = 1;
+    string user_password = 2;
+}
+
+message Null{}
+
+service UserService {
+    rpc UserLogin (LoginRequest) returns (Null) {
+        option (google.api.http) = {
+            post:"/v1/userlogin"
+            body:"*"
+        };
+    }
+}
+
