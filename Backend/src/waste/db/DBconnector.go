@@ -1,7 +1,9 @@
 package db
 
 import (
+	"../conf"
 	"fmt"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"log"
 )
@@ -17,16 +19,11 @@ type DBconfig struct{
 var DB *gorm.DB
 
 func init(){
-	var config = DBconfig{
-		"root",
-		"123456",
-		"127.0.0.1",
-		"3306",
-		"user",
-	}
+	config := conf.Config
 	var err error
 	connArgs := fmt.Sprintf("%s:%s@(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
-		config.User,config.Password, config.Host, config.Port,config.DBname )
+		config.UserName,config.Password, config.Host, config.Port,config.DbName )
+	fmt.Println("connArgs:",connArgs)
 	DB, err = gorm.Open("mysql", connArgs)
 	if err != nil {
 		log.Fatal(err)

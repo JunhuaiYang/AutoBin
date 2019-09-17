@@ -2,40 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="52e9b623-c6ee-4e93-872a-9ed3c18f8074" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Backend/src/test/main.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Backend/src/user/conf/config.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Backend/src/user/conf/config.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Backend/src/user/conf/config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Backend/src/user/db/db.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Backend/src/user/handlers/handler_factory.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Backend/src/user/handlers/server.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Backend/src/user/main.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Backend/src/waste/aaa.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Backend/src/waste/apple.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Backend/src/waste/conf/config.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Backend/src/waste/conf/config.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Backend/src/waste/conf/config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Backend/src/waste/db/DBconnector.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Backend/src/waste/db/db.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Backend/src/waste/handlers/handler_factory.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Backend/src/waste/handlers/server.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Backend/src/waste/main.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Backend/src/waste/protos/cmd.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Backend/src/waste/protos/user.swagger.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Backend/src/waste/protos/waste.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Backend/src/waste/util/errorCode.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/AutoBin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/AutoBin.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/test/test.api.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Banckend/src/user/main.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Banckend/src/user/models/UserModel.go.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Banckend/src/user/orm/DBconnector.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/user/db/DBconnector.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Banckend/src/user/protos/cmd.md" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/user/protos/cmd.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Banckend/src/user/protos/user.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/user/protos/user.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Banckend/src/user/protos/user.pb.gw.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Banckend/src/user/protos/user.proto" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/user/protos/user.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Banckend/src/user/protos/user.swagger.json" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/user/protos/user.swagger.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Banckend/src/user/service/UserServer.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/pkg/windows_amd64/github.com/jinzhu/inflection.a" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/src/github.com/jinzhu/inflection" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/user/conf/config.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/user/conf/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/user/conf/config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/user/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/user/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/waste/conf/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/waste/conf/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/waste/conf/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/waste/conf/config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/waste/db/DBconnector.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/waste/db/DBconnector.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/waste/handlers/handler_factory.go" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/waste/handlers/handler_factory.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -45,89 +22,78 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Backend/src/test/main.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="25">
-              <caret line="53" selection-start-line="53" selection-end-line="53" />
-              <folding>
-                <element signature="e#14#191#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Backend/src/user/protos/user.swagger.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-200">
-              <caret line="2" column="7" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Backend/src/user/main.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="175">
-              <caret line="7" column="9" selection-start-line="7" selection-start-column="9" selection-end-line="7" selection-end-column="9" />
-              <folding>
-                <element signature="n#!!block;n#startHttpServer#0" />
-                <element signature="n#!!block;n#setFileServer#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Backend/src/waste/main.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="77">
-              <caret line="41" column="32" selection-start-line="41" selection-start-column="32" selection-end-line="41" selection-end-column="32" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://G:/Go/src/github.com/jinzhu/gorm/model_struct.go">
+        <entry file="file://$PROJECT_DIR$/Backend/src/waste/handlers/handler_factory.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="268">
-              <caret line="12" column="1" lean-forward="true" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
+            <state relative-caret-position="162">
+              <caret line="100" column="12" selection-start-line="100" selection-start-column="12" selection-end-line="100" selection-end-column="12" />
               <folding>
-                <element signature="e#14#131#0" expanded="true" />
+                <element signature="e#17#160#0" expanded="true" />
+                <element signature="e#733#765#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Backend/src/waste/db/DBconnector.go">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Backend/src/waste/db/db.go">
+        <entry file="file://$PROJECT_DIR$/Backend/src/waste/protos/waste.pb.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1975">
-              <caret line="83" column="36" selection-start-line="83" selection-start-column="36" selection-end-line="83" selection-end-column="36" />
+            <state relative-caret-position="129">
+              <caret line="305" selection-start-line="305" selection-end-line="305" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Backend/src/waste/conf/config.go">
+        <entry file="file://G:/Go/src/google.golang.org/grpc/server.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="22" column="46" selection-start-line="22" selection-start-column="46" selection-end-line="22" selection-end-column="46" />
+            <state relative-caret-position="121">
+              <caret line="1277" selection-start-line="1277" selection-end-line="1277" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Backend/src/waste/protos/waste.proto">
+        <entry file="file://D:/Go/src/net/url/url.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="175">
-              <caret line="7" column="25" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
+            <state relative-caret-position="243">
+              <caret line="914" column="17" lean-forward="true" selection-start-line="914" selection-start-column="17" selection-end-line="914" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://G:/Go/src/github.com/axgle/mahonia/charset.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="129">
+              <caret line="96" column="5" selection-start-line="96" selection-start-column="5" selection-end-line="96" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://G:/Go/src/github.com/axgle/mahonia/translate.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="129">
+              <caret line="10" selection-start-line="10" selection-end-line="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://D:/Go/src/encoding/json/decode.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="104">
+              <caret line="105" selection-start-line="105" selection-end-line="105" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://D:/Go/src/encoding/json/scanner.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="112">
+              <caret line="24" selection-start-line="24" selection-end-line="24" />
             </state>
           </provider>
         </entry>
@@ -135,8 +101,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Backend/src/waste/conf/config.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="18" column="14" selection-start-line="18" selection-start-column="3" selection-end-line="18" selection-end-column="14" />
+            <state relative-caret-position="165">
+              <caret line="18" column="61" selection-start-line="18" selection-start-column="61" selection-end-line="18" selection-end-column="61" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Backend/src/waste/main.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="175">
+              <caret line="7" column="9" selection-start-line="7" selection-start-column="9" selection-end-line="7" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -159,6 +134,9 @@
       <find>waste_type</find>
       <find>WasteId</find>
       <find>inflection</find>
+      <find>json</find>
+      <find>conf</find>
+      <find>type_id</find>
     </findStrings>
   </component>
   <component name="GOROOT" path="D:\Go" />
@@ -191,26 +169,28 @@
         <option value="$PROJECT_DIR$/Banckend/src/user/main.go" />
         <option value="$PROJECT_DIR$/Banckend/src/user/conf/config.go" />
         <option value="$PROJECT_DIR$/Backend/src/user/conf/config.go" />
-        <option value="$PROJECT_DIR$/Backend/src/user/conf/config.json" />
         <option value="$PROJECT_DIR$/Backend/src/user/protos/user.proto" />
         <option value="$PROJECT_DIR$/Backend/src/user/handlers/handler_factory.go" />
         <option value="$PROJECT_DIR$/Backend/src/user/conf/config.conf" />
         <option value="$PROJECT_DIR$/Backend/src/waste/protos/user.proto" />
         <option value="$PROJECT_DIR$/Backend/src/waste/protos/cmd.md" />
         <option value="$PROJECT_DIR$/Backend/src/waste/handlers/server.go" />
-        <option value="$PROJECT_DIR$/Backend/src/waste/conf/config.json" />
-        <option value="$PROJECT_DIR$/Backend/src/waste/conf/config.go" />
-        <option value="$PROJECT_DIR$/Backend/src/waste/protos/waste.proto" />
         <option value="$PROJECT_DIR$/Backend/src/waste/util/api.go" />
         <option value="$PROJECT_DIR$/Backend/src/waste/db/db.go" />
-        <option value="$PROJECT_DIR$/Backend/src/user/main.go" />
-        <option value="$PROJECT_DIR$/Backend/src/waste/main.go" />
-        <option value="$PROJECT_DIR$/Backend/src/waste/handlers/handler_factory.go" />
         <option value="$PROJECT_DIR$/Backend/src/test/main.go" />
+        <option value="$PROJECT_DIR$/Backend/src/waste/conf/config.go" />
+        <option value="$PROJECT_DIR$/Backend/src/waste/main.go" />
+        <option value="$PROJECT_DIR$/Backend/src/user/conf/config.json" />
+        <option value="$PROJECT_DIR$/Backend/src/waste/db/DBconnector.go" />
+        <option value="$PROJECT_DIR$/Backend/src/user/main.go" />
+        <option value="$PROJECT_DIR$/Backend/src/waste/protos/waste.proto" />
+        <option value="$PROJECT_DIR$/Backend/src/test/test.api.go" />
+        <option value="$PROJECT_DIR$/Backend/src/waste/conf/config.json" />
+        <option value="$PROJECT_DIR$/Backend/src/waste/handlers/handler_factory.go" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="79" />
     <option name="y" value="28" />
     <option name="width" value="1346" />
@@ -246,37 +226,39 @@
               <item name="AutoBin" type="462c0819:PsiDirectoryNode" />
               <item name="Backend" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="AutoBin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="AutoBin" type="462c0819:PsiDirectoryNode" />
+              <item name="Backend" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="waste" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="AutoBin" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-            </path>
-            <path>
-              <item name="AutoBin" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="GOPATH &lt;AutoBin&gt;" type="20ee2d1f:SyntheticLibraryElementNode" />
-            </path>
-            <path>
-              <item name="AutoBin" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="GOPATH &lt;AutoBin&gt;" type="20ee2d1f:SyntheticLibraryElementNode" />
+              <item name="AutoBin" type="462c0819:PsiDirectoryNode" />
+              <item name="Backend" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="waste" type="462c0819:PsiDirectoryNode" />
+              <item name="conf" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="AutoBin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="AutoBin" type="462c0819:PsiDirectoryNode" />
+              <item name="Backend" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="waste" type="462c0819:PsiDirectoryNode" />
+              <item name="protos" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="AutoBin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="AutoBin" type="462c0819:PsiDirectoryNode" />
+              <item name="Mysql" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="AutoBin" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="GOPATH &lt;AutoBin&gt;" type="20ee2d1f:SyntheticLibraryElementNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="github.com" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="AutoBin" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="GOPATH &lt;AutoBin&gt;" type="20ee2d1f:SyntheticLibraryElementNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="github.com" type="462c0819:PsiDirectoryNode" />
-              <item name="jinzhu" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -295,7 +277,7 @@
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Backend/src/waste/conf" />
+    <property name="last_opened_file_path" value="G:/Go/src/myGo/test_baiduAPI" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -363,12 +345,12 @@
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22844176" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22844176" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.53114754" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3147541" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -383,19 +365,45 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Database" order="3" />
     </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22844176" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.31967214" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="8" />
+      <window_info anchor="bottom" id="Version Control" order="9" weight="0.3295082" />
+      <window_info anchor="bottom" id="Terminal" order="10" weight="0.3295082" />
+      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/Backend/src/waste/handlers/handler_factory.go</url>
+          <line>76</line>
+          <properties />
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Banckend/src/user/server/UserServer.go" />
-    <entry file="file://G:/Go/src/google.golang.org/grpc/server.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="428" column="27" lean-forward="true" selection-start-line="428" selection-start-column="27" selection-end-line="428" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Backend/src/user/protos/user.pb.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6400">
@@ -417,13 +425,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Backend/src/user/db/DBconnector.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Backend/src/user/client/client.go" />
     <entry file="file://$PROJECT_DIR$/Backend/src/user/protos/cmd.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
@@ -432,13 +433,6 @@
             <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
           </first_editor>
           <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Backend/src/user/conf/config.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="11" column="33" selection-start-line="11" selection-start-column="33" selection-end-line="11" selection-end-column="33" />
         </state>
       </provider>
     </entry>
@@ -466,22 +460,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Backend/src/user/conf/config.conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="5" selection-start-line="5" selection-end-line="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Backend/src/waste/protos/user.swagger.json">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Backend/src/user/conf/config.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="157">
-          <caret line="51" column="24" selection-start-line="51" selection-start-column="24" selection-end-line="51" selection-end-column="24" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Backend/src/waste/protos/cmd.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
@@ -490,13 +470,6 @@
             <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
           </first_editor>
           <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Backend/src/waste/conf/config.conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50">
-          <caret line="2" column="111" selection-start-line="2" selection-end-line="3" />
         </state>
       </provider>
     </entry>
@@ -521,6 +494,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Backend/src/user/protos/user.swagger.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="50">
+          <caret line="2" column="7" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://G:/Go/src/github.com/jinzhu/gorm/model_struct.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="11" column="22" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Backend/src/user/db/DBconnector.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="4" column="28" lean-forward="true" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Backend/src/user/db/db.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -528,85 +522,184 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Backend/src/waste/handlers/handler_factory.go">
+    <entry file="file://$PROJECT_DIR$/Backend/src/user/conf/config.conf">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1550">
-          <caret line="74" column="44" selection-start-line="74" selection-start-column="44" selection-end-line="74" selection-end-column="44" />
+        <state relative-caret-position="125">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Backend/src/user/conf/config.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="157">
+          <caret line="51" column="24" selection-start-line="51" selection-start-column="24" selection-end-line="51" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Backend/src/user/conf/config.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="5" column="20" selection-start-line="5" selection-start-column="20" selection-end-line="5" selection-end-column="20" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Backend/src/waste/db/DBconnector.go">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Backend/src/waste/db/db.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1975">
-          <caret line="83" column="36" selection-start-line="83" selection-start-column="36" selection-end-line="83" selection-end-column="36" />
+        <state relative-caret-position="-225">
+          <caret line="8" selection-start-line="8" selection-end-line="8" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Backend/src/waste/conf/config.go">
+    <entry file="file://$PROJECT_DIR$/Backend/src/waste/apple.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Mysql/autobin.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="22" column="46" selection-start-line="22" selection-start-column="46" selection-end-line="22" selection-end-column="46" />
+        <state relative-caret-position="67">
+          <caret line="13" column="76" selection-start-line="13" selection-start-column="76" selection-end-line="13" selection-end-column="76" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Backend/src/waste/protos/waste.proto">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="175">
-          <caret line="7" column="25" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Backend/src/waste/conf/config.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="18" column="14" selection-start-line="18" selection-start-column="3" selection-end-line="18" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Backend/src/test/main.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="25">
-          <caret line="53" selection-start-line="53" selection-end-line="53" />
-          <folding>
-            <element signature="e#14#191#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Backend/src/user/protos/user.swagger.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-200">
-          <caret line="2" column="7" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="7" />
+          <caret line="7" column="9" selection-start-line="7" selection-start-column="9" selection-end-line="7" selection-end-column="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Backend/src/user/main.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="7" column="9" selection-start-line="7" selection-start-column="9" selection-end-line="7" selection-end-column="9" />
+        <state relative-caret-position="407">
+          <caret line="104" selection-start-line="104" selection-end-line="104" />
           <folding>
+            <element signature="e#14#271#0" expanded="true" />
             <element signature="n#!!block;n#startHttpServer#0" />
             <element signature="n#!!block;n#setFileServer#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Backend/src/waste/main.go">
+    <entry file="file://$PROJECT_DIR$/Backend/src/test/main.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="77">
-          <caret line="41" column="32" selection-start-line="41" selection-start-column="32" selection-end-line="41" selection-end-column="32" />
+        <state relative-caret-position="2350">
+          <caret line="144" selection-start-line="144" selection-end-line="144" />
+          <folding>
+            <element signature="e#14#191#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://G:/Go/src/github.com/jinzhu/gorm/model_struct.go">
+    <entry file="file://$PROJECT_DIR$/Backend/src/waste/db/db.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="268">
-          <caret line="12" column="1" lean-forward="true" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
+        <state relative-caret-position="225">
+          <caret line="9" column="78" lean-forward="true" selection-start-line="9" selection-start-column="28" selection-end-line="9" selection-end-column="78" />
           <folding>
-            <element signature="e#14#131#0" expanded="true" />
+            <element signature="e#12#48#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Backend/src/test/test.api.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-93">
+          <caret line="35" column="14" selection-start-line="35" selection-start-column="8" selection-end-line="35" selection-end-column="14" />
+          <folding>
+            <element signature="e#14#95#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Backend/src/waste/conf/config.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1050">
+          <caret line="49" column="29" selection-start-line="49" selection-start-column="29" selection-end-line="49" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/Go/src/encoding/json/scanner.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="24" selection-start-line="24" selection-end-line="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/Go/src/reflect/value.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-146">
+          <caret line="35" column="5" selection-start-line="35" selection-start-column="5" selection-end-line="35" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/Go/src/encoding/json/decode.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="104">
+          <caret line="105" selection-start-line="105" selection-end-line="105" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Backend/src/waste/conf/config.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="4" column="24" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Backend/src/waste/main.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="7" column="9" selection-start-line="7" selection-start-column="9" selection-end-line="7" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://G:/Go/src/github.com/axgle/mahonia/translate.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="129">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://G:/Go/src/github.com/axgle/mahonia/charset.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="129">
+          <caret line="96" column="5" selection-start-line="96" selection-start-column="5" selection-end-line="96" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/Go/src/net/url/url.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="914" column="17" lean-forward="true" selection-start-line="914" selection-start-column="17" selection-end-line="914" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Backend/src/waste/conf/config.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="18" column="61" selection-start-line="18" selection-start-column="61" selection-end-line="18" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Backend/src/waste/protos/waste.pb.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="129">
+          <caret line="305" selection-start-line="305" selection-end-line="305" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://G:/Go/src/google.golang.org/grpc/server.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="121">
+          <caret line="1277" selection-start-line="1277" selection-end-line="1277" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Backend/src/waste/handlers/handler_factory.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="100" column="12" selection-start-line="100" selection-start-column="12" selection-end-line="100" selection-end-column="12" />
+          <folding>
+            <element signature="e#17#160#0" expanded="true" />
+            <element signature="e#733#765#0" />
           </folding>
         </state>
       </provider>

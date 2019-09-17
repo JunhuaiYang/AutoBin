@@ -66,6 +66,6 @@ func getCurrentPath() string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	dir += "\\Backend\\src\\user\\conf"
+	dir += "\\Backend\\src\\waste\\conf"
 	return dir
 }
