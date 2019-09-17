@@ -2,7 +2,7 @@
 import RPi.GPIO as GPIO
 import sys
 import time
-LED = 4
+LED = 23
 def main():
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BCM)
