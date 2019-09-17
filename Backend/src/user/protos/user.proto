@@ -1,0 +1,40 @@
+syntax = "proto3";
+import "google/api/annotations.proto";
+package protos;
+
+message LoginRequest{
+    string user_id = 1;
+    string user_password = 2;
+}
+
+message Null{}
+
+message UserReply{
+    string user_id = 1;
+    string user_password = 2;
+}
+message UserRequest{
+    string user_id = 1;
+}
+
+service UserService {
+    rpc UserLogin (LoginRequest) returns (Null) {
+        option (google.api.http) = {
+            post:"/autobin/user"
+            body:"*"
+        };
+    }
+    rpc GetUserInfo (UserRequest) returns (UserReply) {
+        option (google.api.http) = {
+            get:"/autobin/user"
+        };
+    }
+
+    // 传输实时图片 返回识别结果
+
+    // antubin状态
+
+    // 手动模式
+
+}
+

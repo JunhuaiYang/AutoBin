@@ -1,0 +1,115 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "waste.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/autobin/binstatus": {
+      "post": {
+        "summary": "antubin状态",
+        "operationId": "BinStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protosNull"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protosBinStatusRequest"
+            }
+          }
+        ],
+        "tags": [
+          "WasteService"
+        ]
+      }
+    },
+    "/autobin/detect": {
+      "post": {
+        "summary": "传输实时图片 返回识别结果",
+        "operationId": "WasteDetect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protosWasteReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protosWasteRequest"
+            }
+          }
+        ],
+        "tags": [
+          "WasteService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protosBinStatusRequest": {
+      "type": "object",
+      "properties": {
+        "waste_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "protosNull": {
+      "type": "object"
+    },
+    "protosWasteReply": {
+      "type": "object",
+      "properties": {
+        "res_id": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "protosWasteRequest": {
+      "type": "object",
+      "properties": {
+        "bin_id": {
+          "type": "string"
+        },
+        "waste_id": {
+          "type": "string"
+        },
+        "waste_image": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    }
+  }
+}

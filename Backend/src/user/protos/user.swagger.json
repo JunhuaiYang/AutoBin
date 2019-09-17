@@ -15,14 +15,36 @@
     "application/json"
   ],
   "paths": {
-    "/v1/userlogin": {
+    "/autobin/user": {
+      "get": {
+        "operationId": "GetUserInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protosUserReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      },
       "post": {
         "operationId": "UserLogin",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/userNull"
+              "$ref": "#/definitions/protosNull"
             }
           }
         },
@@ -32,7 +54,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/userLoginRequest"
+              "$ref": "#/definitions/protosLoginRequest"
             }
           }
         ],
@@ -43,7 +65,7 @@
     }
   },
   "definitions": {
-    "userLoginRequest": {
+    "protosLoginRequest": {
       "type": "object",
       "properties": {
         "user_id": {
@@ -54,8 +76,19 @@
         }
       }
     },
-    "userNull": {
+    "protosNull": {
       "type": "object"
+    },
+    "protosUserReply": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "string"
+        },
+        "user_password": {
+          "type": "string"
+        }
+      }
     }
   }
 }
