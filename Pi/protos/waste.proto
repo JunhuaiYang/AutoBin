@@ -1,0 +1,42 @@
+syntax = "proto3";
+import "google/api/annotations.proto";
+package protos;
+
+message WasteRequest{
+    string bin_id = 1;
+    string waste_id = 2;
+    bytes waste_image = 3;
+}
+
+message WasteReply{
+    int64 res_id = 1;
+}
+
+message Null{}
+
+message BinStatusRequest{
+    int32 waste_id = 1;
+    int32 status = 2;
+}
+
+service WasteService {
+    // 传输实时图片 返回识别结果
+    rpc WasteDetect (WasteRequest) returns (WasteReply) {
+        option (google.api.http) = {
+            post:"/autobin/detect"
+            body:"*"
+        };
+    }
+    // antubin状态
+    rpc BinStatus (BinStatusRequest) returns (Null) {
+        option (google.api.http) = {
+            post:"/autobin/binstatus"
+            body:"*"
+        };
+    }
+
+    // 手动模式
+
+
+}
+
