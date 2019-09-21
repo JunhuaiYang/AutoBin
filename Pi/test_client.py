@@ -17,6 +17,7 @@ def run():
 
         response = stub.WasteDetect(waste_pb2.WasteRequest(bin_id='11', waste_id='22', waste_image=b'123'))
 
+
     print("Greeter client received: %d" % response.res_id)
 
 
