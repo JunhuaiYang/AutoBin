@@ -8,7 +8,7 @@ LOG_P_FORMAT = r"%(asctime)s %(levelname)s  %(message)s "#配置输出日志格�
 
 DATE_FORMAT = r'%Y-%m-%d %H:%M:%S ' #配置输出时间的格式，注意月份和天数不要搞乱了
 # FILE_NAME = './log/logs.txt'
-FILE_NAME = r'.\log\log_{}{:02d}{:02d}.log'.format(today.year, today.month, today.day)
+FILE_NAME = r'./log/log_{}{:02d}{:02d}.log'.format(today.year, today.month, today.day)
 
 # logging.basicConfig(level=logging.DEBUG,
 #                     format=LOG_FORMAT,

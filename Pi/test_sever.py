@@ -3,8 +3,8 @@ import logging
 
 import grpc
 
-import waste_pb2
-import waste_pb2_grpc
+import protos.waste_pb2 as waste_pb2
+import protos.waste_pb2_grpc as waste_pb2_grpc
 
 import time
 
