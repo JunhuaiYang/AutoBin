@@ -1,4 +1,5 @@
 import time
+import datetime
 import protos.waste_pb2 as waste_pb2
 import protos.waste_pb2_grpc as waste_pb2_grpc
 from gpiozero import RGBLED
@@ -6,6 +7,7 @@ import grpc
 import logging
 import cv2
 from loggingconfig import log
+from picamera import PiCamera
 
 SERVER_ADDR = '192.168.1.102:50051'
 IMAGE_READ_TIME = 1
@@ -27,11 +29,13 @@ def Init():
     if CAMERA is None:
         raise SystemExit('摄像头连接失败')
     # 设置摄像头改变读取大小
-    # CAMERA.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-    # CAMERA.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+    CAMERA.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+    CAMERA.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+    CAMERA.set(cv2.CAP_PROP_FPS, 200)
+
     # CAMERA.set(cv2.CAP_PROP_FRAME_WIDTH, 160)
     # CAMERA.set(cv2.CAP_PROP_FRAME_HEIGHT, 120)
-    CAMERA.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'))
+    # CAMERA.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'))
 
     pre_frame = None
     # 获得稳定的背景
@@ -78,6 +82,9 @@ def main():
 def isChange(): 
     global BKG_FRAME
     res, cur_frame = CAMERA.read()
+
+    # cv2.imwrite('{}.jpg'.format(time.strftime("%H-%M-%S", time.localtime()) ),cur_frame, [int( cv2.IMWRITE_JPEG_QUALITY), 80])
+
     gray_img = cv2.cvtColor(cur_frame, cv2.COLOR_BGR2GRAY)
     gray_img = cv2.resize(gray_img, (320, 240))
     gray_img = cv2.GaussianBlur(gray_img, (21, 21), 0) # 高斯滤波
@@ -104,5 +111,6 @@ if __name__ == '__main__':
         log.exception(ex)
     finally:
         CHANNEL.close()
+        CAMERA.release()
     
     
