@@ -78,9 +78,10 @@ def main():
     Init()
     #初始化 成功  进入运行状态
     while True:
-        # response = STUB.WasteDetect(waste_pb2.WasteRequest(bin_id='11', waste_id='22', waste_image=b'123'))
-        # print("Greeter client received: %d" % response.res_id)
-        print('ischanged', isChange())
+        flag, image = isChange()
+        if flag:
+            response = STUB.WasteDetect(waste_pb2.WasteRequest(bin_id='11', waste_id='22', waste_image=image))
+            print("Greeter client received: %d" % response.res_id)
 
         time.sleep(IMAGE_READ_TIME)
 
@@ -92,7 +93,7 @@ def isChange():
     image_data = my_stream.getvalue()
     nparr = np.frombuffer(image_data, np.uint8)
     cur_frame = cv2.imdecode(nparr, 1)
-
+    
     gray_img = cv2.cvtColor(cur_frame, cv2.COLOR_BGR2GRAY)
     gray_img = cv2.resize(gray_img, (320, 240))
     gray_img = cv2.GaussianBlur(gray_img, (21, 21), 0) # 高斯滤波 高斯模糊
@@ -104,8 +105,8 @@ def isChange():
         if cv2.contourArea(c) < 1000: # 设置敏感度
             continue
         else:
-            return True
-    return False
+            return True, image_data
+    return False, None
 
 if __name__ == '__main__':
     log.info('server start')
