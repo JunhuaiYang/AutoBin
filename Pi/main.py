@@ -8,6 +8,9 @@ import logging
 import cv2
 from loggingconfig import log
 from picamera import PiCamera
+from io import BytesIO
+import numpy as np
+
 
 SERVER_ADDR = '192.168.1.102:50051'
 IMAGE_READ_TIME = 1
@@ -25,22 +28,24 @@ def Init():
     STATUS_LED = RGBLED(red=16, green=20, blue=21)
     STATUS_LED.blink(0.1, 0.1, on_color=(1, 0.6, 0)) # 闪灯
     # 首先连接相机
-    CAMERA = cv2.VideoCapture(0)
+    CAMERA = PiCamera()
+    CAMERA.resolution = (640, 480)
     if CAMERA is None:
         raise SystemExit('摄像头连接失败')
-    # 设置摄像头改变读取大小
-    CAMERA.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-    CAMERA.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-    CAMERA.set(cv2.CAP_PROP_FPS, 200)
 
-    # CAMERA.set(cv2.CAP_PROP_FRAME_WIDTH, 160)
-    # CAMERA.set(cv2.CAP_PROP_FRAME_HEIGHT, 120)
-    # CAMERA.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'))
+    # 摄像头预热
+    time.sleep(5)
 
+    my_stream = BytesIO()
     pre_frame = None
     # 获得稳定的背景
     while True:
-        res, cur_frame = CAMERA.read()
+        time.sleep(1)
+        CAMERA.capture(my_stream, 'jpeg')
+        image_data = my_stream.getvalue()
+        nparr = np.frombuffer(image_data, np.uint8)
+        cur_frame = cv2.imdecode(nparr, 1)
+
         gray_img = cv2.cvtColor(cur_frame, cv2.COLOR_BGR2GRAY)
         gray_img = cv2.resize(gray_img, (320 , 240))
         gray_img = cv2.GaussianBlur(gray_img, (21, 21), 0) # 高斯滤波
@@ -81,13 +86,16 @@ def main():
 
 def isChange(): 
     global BKG_FRAME
-    res, cur_frame = CAMERA.read()
 
-    # cv2.imwrite('{}.jpg'.format(time.strftime("%H-%M-%S", time.localtime()) ),cur_frame, [int( cv2.IMWRITE_JPEG_QUALITY), 80])
+    my_stream = BytesIO()
+    CAMERA.capture(my_stream, 'jpeg')
+    image_data = my_stream.getvalue()
+    nparr = np.frombuffer(image_data, np.uint8)
+    cur_frame = cv2.imdecode(nparr, 1)
 
     gray_img = cv2.cvtColor(cur_frame, cv2.COLOR_BGR2GRAY)
     gray_img = cv2.resize(gray_img, (320, 240))
-    gray_img = cv2.GaussianBlur(gray_img, (21, 21), 0) # 高斯滤波
+    gray_img = cv2.GaussianBlur(gray_img, (21, 21), 0) # 高斯滤波 高斯模糊
     img_delta = cv2.absdiff(BKG_FRAME, gray_img)  # 取delta
     thresh = cv2.threshold(img_delta, 25, 255, cv2.THRESH_BINARY)[1]  # 图像阈值处理 转化为 0 1
     thresh = cv2.dilate(thresh, None, iterations=2)  # 膨胀操作
@@ -111,6 +119,6 @@ if __name__ == '__main__':
         log.exception(ex)
     finally:
         CHANNEL.close()
-        CAMERA.release()
+        CAMERA.close()
     
     
