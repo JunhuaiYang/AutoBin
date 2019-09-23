@@ -4,8 +4,7 @@ package protos;
 
 message WasteRequest{
     string bin_id = 1;
-    string waste_id = 2;
-    bytes waste_image = 3;
+    string waste_image = 2;
 }
 
 message WasteReply{
@@ -15,8 +14,16 @@ message WasteReply{
 message Null{}
 
 message BinStatusRequest{
-    int32 waste_id = 1;
+    int32 bin_id = 1;
     int32 status = 2;
+}
+
+message BinRegisterRequest {
+    int32 user_id = 1;
+}
+
+message BinRegisterReply {
+    int32 bin_id = 1;
 }
 
 service WasteService {
@@ -27,15 +34,22 @@ service WasteService {
             body:"*"
         };
     }
-    // antubin状态
+    // 状态上报
     rpc BinStatus (BinStatusRequest) returns (Null) {
         option (google.api.http) = {
             post:"/autobin/binstatus"
             body:"*"
         };
     }
-
+    // 垃圾桶注册
+    rpc BinRegister (BinRegisterRequest) returns (BinRegisterReply) {
+        option (google.api.http) = {
+            post:"/autobin/binstatus"
+            body:"*"
+        };
+    }
     // 手动模式
+
 
 
 }

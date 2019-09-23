@@ -19,7 +19,7 @@ import (
 
 func startGrpcServer() (error) {
 	var config = conf.Config
-	lis, err := net.Listen("tcp", fmt.Sprintf("%s", config.Host + ":" + config.GrpcPort))
+	lis, err := net.Listen("tcp", fmt.Sprintf("%s", config.HttpHost + ":" + config.GrpcPort))
 	if err != nil {
 		return err
 	}
@@ -62,7 +62,7 @@ func startHttpServer() error {
 		AllowCredentials:false,
 	})
 	handler := c.Handler(mux)
-	return http.ListenAndServe(fmt.Sprintf("%s",config.Host+":"+config.HttpPort),setFileServer(fileServer, wsproxy.WebsocketProxy(handler)))
+	return http.ListenAndServe(fmt.Sprintf("%s",config.HttpHost+":"+config.HttpPort),setFileServer(fileServer, wsproxy.WebsocketProxy(handler)))
 }
 
 func setFileServer(fileServer, other http.Handler) http.Handler {

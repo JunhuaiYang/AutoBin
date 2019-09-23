@@ -27,6 +27,7 @@ func startGrpcServer() (error) {
 
 	grpcServer := grpc.NewServer()	// 获取grpcServer
 	pb.RegisterUserServiceServer(grpcServer, handlers.NewService())	//
+	log.Println("Grpc Listen : "+config.Host + ":" + config.GrpcPort)
 	return grpcServer.Serve(lis)
 }
 
@@ -40,7 +41,7 @@ func startHttpServer() error {
 	ctx, cancel :=context.WithCancel(ctx)
 	defer  cancel()
 
-	mux := runtime.NewServeMux()
+	mux := runtime.NewServeMux()	// 路由处理
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 	err := pb.RegisterUserServiceHandlerFromEndpoint(ctx, mux, config.GrpcEndpoint, opts)
 	if err != nil {

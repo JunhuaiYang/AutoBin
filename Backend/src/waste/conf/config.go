@@ -21,6 +21,8 @@ type ConfigInfo struct {
 	Verify			string `json:verify`
 	Prefix			string `json:prefix`
 	GrpcEndpoint	string `json:grpcEndpoint`
+	HttpHost		string `json:httpHost`
+
 	AppKey			string `json:appKey`		// 百度云应用键值
 	Secret			string `json:secret`		// 百度云应用秘钥
 	AccessToken		string `json:accessToken`	// 调api使用的token

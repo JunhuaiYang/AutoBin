@@ -17,13 +17,13 @@
   "paths": {
     "/autobin/binstatus": {
       "post": {
-        "summary": "antubin状态",
-        "operationId": "BinStatus",
+        "summary": "垃圾桶注册",
+        "operationId": "BinRegister",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protosNull"
+              "$ref": "#/definitions/protosBinRegisterReply"
             }
           }
         },
@@ -33,7 +33,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/protosBinStatusRequest"
+              "$ref": "#/definitions/protosBinRegisterRequest"
             }
           }
         ],
@@ -71,10 +71,28 @@
     }
   },
   "definitions": {
+    "protosBinRegisterReply": {
+      "type": "object",
+      "properties": {
+        "bin_id": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "protosBinRegisterRequest": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
     "protosBinStatusRequest": {
       "type": "object",
       "properties": {
-        "waste_id": {
+        "bin_id": {
           "type": "integer",
           "format": "int32"
         },
@@ -102,12 +120,8 @@
         "bin_id": {
           "type": "string"
         },
-        "waste_id": {
-          "type": "string"
-        },
         "waste_image": {
-          "type": "string",
-          "format": "byte"
+          "type": "string"
         }
       }
     }

@@ -2,15 +2,16 @@ package handlers
 
 import (
 	"../conf"
+	"../db"
 	pb "../protos"
 	"context"
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
+	"strings"
 )
 // 获取物品名请求返回的数据:
 // {"log_id": 1207738314010879151, "result_num": 5, "result":
@@ -29,7 +30,10 @@ type DetectResult struct {
 
 // 垃圾检测
 func (*WasteServer) WasteDetect(ctx context.Context, in *pb.WasteRequest) (*pb.WasteReply,error){
-	fmt.Println("BinId", in.BinId, "WasteImage:",in.WasteImage)
+	fmt.Println("BinId", in.BinId, "WasteImage len:",len(in.WasteImage))
+	var ret pb.WasteReply
+	ret.ResId = -1
+
 	//image := in.WasteImage	// 图片数据
 	//buf := new(bytes.Buffer)	// 图片数据
 	//writer := multipart.NewWriter(buf)
@@ -50,27 +54,40 @@ func (*WasteServer) WasteDetect(ctx context.Context, in *pb.WasteRequest) (*pb.W
 	//writer.Close() // 发送之前必须调用Close()以写入结尾行
 	//image := buf.Bytes()
 	//fmt.Println("56",len(image))
-	image ,_:= ioutil.ReadFile("G:\\git\\AutoBin\\Backend\\src\\waste\\apple.jpg")
-	image_of_base64, err := url.Parse(base64.StdEncoding.EncodeToString(image))	// base64编码
+
+	/// 读取本地文件转base64
+	//image,_ := ioutil.ReadFile("G:\\git\\AutoBin\\Backend\\src\\waste\\apple.jpg")
+	//fmt.Println("image length:",len(image))
+	//image_of_base64, err := url.Parse(base64.StdEncoding.EncodeToString(image))	// base64编码
+	//if err != nil {
+	//	log.Fatal(err)
+	//	return &pb.WasteReply{}, err
+	//}
+
+	/// 直接接收base64图片
+	image := []byte(in.WasteImage)
+	image_of_base64, err := url.Parse(in.WasteImage)	// base64编码
 	if err != nil {
 		log.Fatal(err)
-		return &pb.WasteReply{}, err
+		return &ret, nil
 	}
+
+	/// 调用百度api识别图片
 	config := conf.Config
 	api_url := config.ApiUrl+"?access_token="+config.AccessToken
 	values := url.Values{}	// map[string][]string, key:string, value:[]string
 	values.Add("image", image_of_base64.EscapedPath())
 	values.Add("multi_detect", "false")
 	res, err := http.PostForm(api_url, values)	// 发送请求获取应答数据
-	defer res.Body.Close()
 	if err != nil {
 		log.Fatal(err)
-		return &pb.WasteReply{}, err
+		return &ret, nil
 	}
+	defer res.Body.Close()
 	data, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		log.Fatal(err)
-		return &pb.WasteReply{}, err
+		return &ret, nil
 	}
 	log.Println("请求返回的数据:",string(data))
 	var resData DetectResult
@@ -78,33 +95,50 @@ func (*WasteServer) WasteDetect(ctx context.Context, in *pb.WasteRequest) (*pb.W
 	fmt.Println("resData:",resData)
 	if err != nil {
 		log.Fatal(err)
-		return  &pb.WasteReply{}, err
+		return &ret, nil
 	}
-
-	var temp = make(map[string]interface{})
-	err = json.Unmarshal(data, &temp)
-	fmt.Println("temp:",temp)
-
+	/// 调用分类api获取分类信息
 	waste_name, type_id, err:= getRes(resData.Result)
 	fmt.Println("waste_name:",waste_name, "type_id:",type_id)
 	if err != nil {
-		log.Fatal("92:",err)
-		return  &pb.WasteReply{}, err
+		log.Fatal("get classInfo error:",err)
+		return &ret, nil
 	}
 
 	/// 存储信息到数据库 图片，结果
-	//go func() {
-	//	db.AddWaste(waste_name, in.BinId,type_id,in.WasteImage)
-	//}()
-	var ret pb.WasteReply
+	go func() {
+		err := db.AddWaste(waste_name, in.BinId,type_id,image)
+		if err != nil {
+			fmt.Println("error when store image")
+		}
+	}()
+
 	ret.ResId = int64(type_id)
 	return &ret,nil
 }
-// 检测垃圾桶状态
-func (*WasteServer) BinStatus(ctx context.Context, in *pb.BinStatusRequest) (ret *pb.Null, err error){
-	fmt.Println("WasteId:", in.WasteId, "Status:",in.Status)
 
+// 状态上报
+func (*WasteServer) BinStatus(ctx context.Context, in *pb.BinStatusRequest) (ret *pb.Null, err error){
+	fmt.Println("BinId:", in.BinId, "Status:",in.Status)
+	err = db.UpdateBinStatus(int(in.BinId), int(in.Status))
+	if err != nil {
+		log.Print("BinStatus:", err.Error())
+		return ret,err
+	}
 	return ret,nil
+}
+
+// 垃圾桶注册
+func (*WasteServer) BinRegister(ctx context.Context, in *pb.BinRegisterRequest) ( *pb.BinRegisterReply, error){
+	fmt.Println("UserId:",in.UserId)
+	var ret pb.BinRegisterReply
+	bin_id, err := db.AddBin(int(in.UserId))
+	if err != nil {
+		log.Print("BinStatus:", err.Error())
+		return &ret,err
+	}
+	ret.BinId = int32(bin_id)
+	return &ret,nil
 }
 
 // 获取分类返回的信息
@@ -121,6 +155,12 @@ type ClassItem struct {
 }
 type ClassResults struct {
 	Data	[]ClassItem
+	Msg 	string
+	Code 	int
+}
+
+type ErrorClassResults struct {
+	Data	string
 	Msg 	string
 	Code 	int
 }
@@ -197,7 +237,7 @@ func maxValue(types_count map[string]int)  (string){
 	return ret
 }
 
-
+// 请求api获取分类信息
 func getClassInfo(wastename string )(*ClassResults, error){
 	v := url.Values{}
 	v.Add("garbageName", wastename)
@@ -208,23 +248,26 @@ func getClassInfo(wastename string )(*ClassResults, error){
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("Content-Type", "application/json;charset=UTF-8")
 	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
 	data, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		log.Fatal(err)
 		return nil, err
 	}
+	defer res.Body.Close()
 	log.Println("分类请求返回的数据:",string(data))
 	resData := ClassResults{}
 	datajson := []byte(data)
+	index := strings.Index(string(data), "code:")
+	code := string(data)[index+5:3]
+	if code != "200" {
+		log.Println("error code :", code )
+		return  nil, err
+	}
+
 	err = json.Unmarshal(datajson, &resData)
 	if err != nil {
-		log.Println(err)
+		log.Println("error classInfo:",err)
 		return nil, err
-	} else if resData.Code != 200 {
-		log.Println("error code :", resData.Code )
-		return  nil, err
 	}
 	return &resData, nil
 }
