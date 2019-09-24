@@ -10,9 +10,11 @@ from loggingconfig import log
 from picamera import PiCamera
 from io import BytesIO
 import numpy as np
+import base64
 
 
-SERVER_ADDR = '192.168.1.102:50051'
+# SERVER_ADDR = '192.168.1.102:50051'
+SERVER_ADDR = '192.168.1.199:8181'
 IMAGE_READ_TIME = 1
 
 STATUS_LED:RGBLED = None
@@ -78,10 +80,17 @@ def main():
     Init()
     #初始化 成功  进入运行状态
     while True:
+
         flag, image = isChange()
         if flag:
-            response = STUB.WasteDetect(waste_pb2.WasteRequest(bin_id='11', waste_id='22', waste_image=image))
+            log.info('有垃圾进入')
+            STATUS_LED.blink(0.1, 0.1, on_color=(0.7, 0.1, 0.6)) # 闪灯
+            image64 = base64.b64encode(image)
+            # print(str(image64))
+            response = STUB.WasteDetect(waste_pb2.WasteRequest(bin_id='11', waste_image=image64))
             print("Greeter client received: %d" % response.res_id)
+            STATUS_LED.color = (0, 1, 0)
+
 
         time.sleep(IMAGE_READ_TIME)
 

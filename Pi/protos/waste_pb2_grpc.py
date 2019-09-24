@@ -24,6 +24,11 @@ class WasteServiceStub(object):
         request_serializer=waste__pb2.BinStatusRequest.SerializeToString,
         response_deserializer=waste__pb2.Null.FromString,
         )
+    self.BinRegister = channel.unary_unary(
+        '/protos.WasteService/BinRegister',
+        request_serializer=waste__pb2.BinRegisterRequest.SerializeToString,
+        response_deserializer=waste__pb2.BinRegisterReply.FromString,
+        )
 
 
 class WasteServiceServicer(object):
@@ -38,7 +43,14 @@ class WasteServiceServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def BinStatus(self, request, context):
-    """antubin状态
+    """状态上报
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def BinRegister(self, request, context):
+    """垃圾桶注册
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -56,6 +68,11 @@ def add_WasteServiceServicer_to_server(servicer, server):
           servicer.BinStatus,
           request_deserializer=waste__pb2.BinStatusRequest.FromString,
           response_serializer=waste__pb2.Null.SerializeToString,
+      ),
+      'BinRegister': grpc.unary_unary_rpc_method_handler(
+          servicer.BinRegister,
+          request_deserializer=waste__pb2.BinRegisterRequest.FromString,
+          response_serializer=waste__pb2.BinRegisterReply.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(

@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='protos',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x0bwaste.proto\x12\x06protos\x1a\x1cgoogle/api/annotations.proto\"E\n\x0cWasteRequest\x12\x0e\n\x06\x62in_id\x18\x01 \x01(\t\x12\x10\n\x08waste_id\x18\x02 \x01(\t\x12\x13\n\x0bwaste_image\x18\x03 \x01(\x0c\"\x1c\n\nWasteReply\x12\x0e\n\x06res_id\x18\x01 \x01(\x03\"\x06\n\x04Null\"4\n\x10\x42inStatusRequest\x12\x10\n\x08waste_id\x18\x01 \x01(\x05\x12\x0e\n\x06status\x18\x02 \x01(\x05\x32\xb7\x01\n\x0cWasteService\x12S\n\x0bWasteDetect\x12\x14.protos.WasteRequest\x1a\x12.protos.WasteReply\"\x1a\x82\xd3\xe4\x93\x02\x14\"\x0f/autobin/detect:\x01*\x12R\n\tBinStatus\x12\x18.protos.BinStatusRequest\x1a\x0c.protos.Null\"\x1d\x82\xd3\xe4\x93\x02\x17\"\x12/autobin/binstatus:\x01*b\x06proto3')
+  serialized_pb=_b('\n\x0bwaste.proto\x12\x06protos\x1a\x1cgoogle/api/annotations.proto\"3\n\x0cWasteRequest\x12\x0e\n\x06\x62in_id\x18\x01 \x01(\t\x12\x13\n\x0bwaste_image\x18\x02 \x01(\x0c\"\x1c\n\nWasteReply\x12\x0e\n\x06res_id\x18\x01 \x01(\x03\"\x06\n\x04Null\"2\n\x10\x42inStatusRequest\x12\x0e\n\x06\x62in_id\x18\x01 \x01(\x05\x12\x0e\n\x06status\x18\x02 \x01(\x05\"%\n\x12\x42inRegisterRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x05\"\"\n\x10\x42inRegisterReply\x12\x0e\n\x06\x62in_id\x18\x01 \x01(\x05\x32\x9b\x02\n\x0cWasteService\x12S\n\x0bWasteDetect\x12\x14.protos.WasteRequest\x1a\x12.protos.WasteReply\"\x1a\x82\xd3\xe4\x93\x02\x14\"\x0f/autobin/detect:\x01*\x12R\n\tBinStatus\x12\x18.protos.BinStatusRequest\x1a\x0c.protos.Null\"\x1d\x82\xd3\xe4\x93\x02\x17\"\x12/autobin/binstatus:\x01*\x12\x62\n\x0b\x42inRegister\x12\x1a.protos.BinRegisterRequest\x1a\x18.protos.BinRegisterReply\"\x1d\x82\xd3\xe4\x93\x02\x17\"\x12/autobin/binstatus:\x01*b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
 
@@ -43,15 +43,8 @@ _WASTEREQUEST = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='waste_id', full_name='protos.WasteRequest.waste_id', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='waste_image', full_name='protos.WasteRequest.waste_image', index=2,
-      number=3, type=12, cpp_type=9, label=1,
+      name='waste_image', full_name='protos.WasteRequest.waste_image', index=1,
+      number=2, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -69,7 +62,7 @@ _WASTEREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=53,
-  serialized_end=122,
+  serialized_end=104,
 )
 
 
@@ -99,8 +92,8 @@ _WASTEREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=124,
-  serialized_end=152,
+  serialized_start=106,
+  serialized_end=134,
 )
 
 
@@ -123,8 +116,8 @@ _NULL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=154,
-  serialized_end=160,
+  serialized_start=136,
+  serialized_end=142,
 )
 
 
@@ -136,7 +129,7 @@ _BINSTATUSREQUEST = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='waste_id', full_name='protos.BinStatusRequest.waste_id', index=0,
+      name='bin_id', full_name='protos.BinStatusRequest.bin_id', index=0,
       number=1, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -161,14 +154,78 @@ _BINSTATUSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=162,
-  serialized_end=214,
+  serialized_start=144,
+  serialized_end=194,
+)
+
+
+_BINREGISTERREQUEST = _descriptor.Descriptor(
+  name='BinRegisterRequest',
+  full_name='protos.BinRegisterRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='user_id', full_name='protos.BinRegisterRequest.user_id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=196,
+  serialized_end=233,
+)
+
+
+_BINREGISTERREPLY = _descriptor.Descriptor(
+  name='BinRegisterReply',
+  full_name='protos.BinRegisterReply',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='bin_id', full_name='protos.BinRegisterReply.bin_id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=235,
+  serialized_end=269,
 )
 
 DESCRIPTOR.message_types_by_name['WasteRequest'] = _WASTEREQUEST
 DESCRIPTOR.message_types_by_name['WasteReply'] = _WASTEREPLY
 DESCRIPTOR.message_types_by_name['Null'] = _NULL
 DESCRIPTOR.message_types_by_name['BinStatusRequest'] = _BINSTATUSREQUEST
+DESCRIPTOR.message_types_by_name['BinRegisterRequest'] = _BINREGISTERREQUEST
+DESCRIPTOR.message_types_by_name['BinRegisterReply'] = _BINREGISTERREPLY
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 WasteRequest = _reflection.GeneratedProtocolMessageType('WasteRequest', (_message.Message,), {
@@ -199,6 +256,20 @@ BinStatusRequest = _reflection.GeneratedProtocolMessageType('BinStatusRequest', 
   })
 _sym_db.RegisterMessage(BinStatusRequest)
 
+BinRegisterRequest = _reflection.GeneratedProtocolMessageType('BinRegisterRequest', (_message.Message,), {
+  'DESCRIPTOR' : _BINREGISTERREQUEST,
+  '__module__' : 'waste_pb2'
+  # @@protoc_insertion_point(class_scope:protos.BinRegisterRequest)
+  })
+_sym_db.RegisterMessage(BinRegisterRequest)
+
+BinRegisterReply = _reflection.GeneratedProtocolMessageType('BinRegisterReply', (_message.Message,), {
+  'DESCRIPTOR' : _BINREGISTERREPLY,
+  '__module__' : 'waste_pb2'
+  # @@protoc_insertion_point(class_scope:protos.BinRegisterReply)
+  })
+_sym_db.RegisterMessage(BinRegisterReply)
+
 
 
 _WASTESERVICE = _descriptor.ServiceDescriptor(
@@ -207,8 +278,8 @@ _WASTESERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=217,
-  serialized_end=400,
+  serialized_start=272,
+  serialized_end=555,
   methods=[
   _descriptor.MethodDescriptor(
     name='WasteDetect',
@@ -226,6 +297,15 @@ _WASTESERVICE = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_BINSTATUSREQUEST,
     output_type=_NULL,
+    serialized_options=_b('\202\323\344\223\002\027\"\022/autobin/binstatus:\001*'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='BinRegister',
+    full_name='protos.WasteService.BinRegister',
+    index=2,
+    containing_service=None,
+    input_type=_BINREGISTERREQUEST,
+    output_type=_BINREGISTERREPLY,
     serialized_options=_b('\202\323\344\223\002\027\"\022/autobin/binstatus:\001*'),
   ),
 ])

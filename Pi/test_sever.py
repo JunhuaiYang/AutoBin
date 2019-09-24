@@ -14,7 +14,7 @@ class Greeter(waste_pb2_grpc.WasteServiceServicer):
     def WasteDetect(self, request, context):
         """传输实时图片 返回识别结果
         """
-        print('{} {} '.format(request.bin_id, request.waste_id))
+        print('{} {} '.format(request.bin_id))
         with open('img\{}.jpg'.format(time.strftime("%H_%M_%S", time.localtime())),'wb') as f:
             f.write(request.waste_image)
         return waste_pb2.WasteReply(res_id = 111)
