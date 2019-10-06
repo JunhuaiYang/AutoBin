@@ -7,8 +7,8 @@
 
   "grpcPort": "8181",
   "httpPort": "8080",
-  "grpcEndpoint": "192.168.1.199:8181",
-  "httpHost": "192.168.1.199",
+  "grpcEndpoint": "127.0.0.1:8181",
+  "httpHost": "127.0.0.1",
   "verify": "./user/",
   "prefix": "",
 

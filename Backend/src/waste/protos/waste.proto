@@ -44,7 +44,7 @@ service WasteService {
     // 垃圾桶注册
     rpc BinRegister (BinRegisterRequest) returns (BinRegisterReply) {
         option (google.api.http) = {
-            post:"/autobin/binstatus"
+            post:"/autobin/register"
             body:"*"
         };
     }

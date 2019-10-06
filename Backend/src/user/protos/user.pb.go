@@ -25,6 +25,78 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
+type Null struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Null) Reset()         { *m = Null{} }
+func (m *Null) String() string { return proto.CompactTextString(m) }
+func (*Null) ProtoMessage()    {}
+func (*Null) Descriptor() ([]byte, []int) {
+	return fileDescriptor_116e343673f7ffaf, []int{0}
+}
+
+func (m *Null) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Null.Unmarshal(m, b)
+}
+func (m *Null) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Null.Marshal(b, m, deterministic)
+}
+func (m *Null) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Null.Merge(m, src)
+}
+func (m *Null) XXX_Size() int {
+	return xxx_messageInfo_Null.Size(m)
+}
+func (m *Null) XXX_DiscardUnknown() {
+	xxx_messageInfo_Null.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Null proto.InternalMessageInfo
+
+// 用户Id (查询）
+type UserId struct {
+	UserId               string   `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *UserId) Reset()         { *m = UserId{} }
+func (m *UserId) String() string { return proto.CompactTextString(m) }
+func (*UserId) ProtoMessage()    {}
+func (*UserId) Descriptor() ([]byte, []int) {
+	return fileDescriptor_116e343673f7ffaf, []int{1}
+}
+
+func (m *UserId) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UserId.Unmarshal(m, b)
+}
+func (m *UserId) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UserId.Marshal(b, m, deterministic)
+}
+func (m *UserId) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UserId.Merge(m, src)
+}
+func (m *UserId) XXX_Size() int {
+	return xxx_messageInfo_UserId.Size(m)
+}
+func (m *UserId) XXX_DiscardUnknown() {
+	xxx_messageInfo_UserId.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UserId proto.InternalMessageInfo
+
+func (m *UserId) GetUserId() string {
+	if m != nil {
+		return m.UserId
+	}
+	return ""
+}
+
+// 登录请求
 type LoginRequest struct {
 	UserId               string   `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	UserPassword         string   `protobuf:"bytes,2,opt,name=user_password,json=userPassword,proto3" json:"user_password,omitempty"`
@@ -37,7 +109,7 @@ func (m *LoginRequest) Reset()         { *m = LoginRequest{} }
 func (m *LoginRequest) String() string { return proto.CompactTextString(m) }
 func (*LoginRequest) ProtoMessage()    {}
 func (*LoginRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_116e343673f7ffaf, []int{0}
+	return fileDescriptor_116e343673f7ffaf, []int{2}
 }
 
 func (m *LoginRequest) XXX_Unmarshal(b []byte) error {
@@ -72,150 +144,363 @@ func (m *LoginRequest) GetUserPassword() string {
 	return ""
 }
 
-type Null struct {
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *Null) Reset()         { *m = Null{} }
-func (m *Null) String() string { return proto.CompactTextString(m) }
-func (*Null) ProtoMessage()    {}
-func (*Null) Descriptor() ([]byte, []int) {
-	return fileDescriptor_116e343673f7ffaf, []int{1}
-}
-
-func (m *Null) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Null.Unmarshal(m, b)
-}
-func (m *Null) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Null.Marshal(b, m, deterministic)
-}
-func (m *Null) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Null.Merge(m, src)
-}
-func (m *Null) XXX_Size() int {
-	return xxx_messageInfo_Null.Size(m)
-}
-func (m *Null) XXX_DiscardUnknown() {
-	xxx_messageInfo_Null.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_Null proto.InternalMessageInfo
-
-type UserReply struct {
-	UserId               string   `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+// 注册请求
+type RegisterRequest struct {
+	UserName             string   `protobuf:"bytes,1,opt,name=user_name,json=userName,proto3" json:"user_name,omitempty"`
 	UserPassword         string   `protobuf:"bytes,2,opt,name=user_password,json=userPassword,proto3" json:"user_password,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *UserReply) Reset()         { *m = UserReply{} }
-func (m *UserReply) String() string { return proto.CompactTextString(m) }
-func (*UserReply) ProtoMessage()    {}
-func (*UserReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_116e343673f7ffaf, []int{2}
+func (m *RegisterRequest) Reset()         { *m = RegisterRequest{} }
+func (m *RegisterRequest) String() string { return proto.CompactTextString(m) }
+func (*RegisterRequest) ProtoMessage()    {}
+func (*RegisterRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_116e343673f7ffaf, []int{3}
 }
 
-func (m *UserReply) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_UserReply.Unmarshal(m, b)
+func (m *RegisterRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_RegisterRequest.Unmarshal(m, b)
 }
-func (m *UserReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_UserReply.Marshal(b, m, deterministic)
+func (m *RegisterRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_RegisterRequest.Marshal(b, m, deterministic)
 }
-func (m *UserReply) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_UserReply.Merge(m, src)
+func (m *RegisterRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RegisterRequest.Merge(m, src)
 }
-func (m *UserReply) XXX_Size() int {
-	return xxx_messageInfo_UserReply.Size(m)
+func (m *RegisterRequest) XXX_Size() int {
+	return xxx_messageInfo_RegisterRequest.Size(m)
 }
-func (m *UserReply) XXX_DiscardUnknown() {
-	xxx_messageInfo_UserReply.DiscardUnknown(m)
+func (m *RegisterRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_RegisterRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_UserReply proto.InternalMessageInfo
+var xxx_messageInfo_RegisterRequest proto.InternalMessageInfo
 
-func (m *UserReply) GetUserId() string {
+func (m *RegisterRequest) GetUserName() string {
 	if m != nil {
-		return m.UserId
+		return m.UserName
 	}
 	return ""
 }
 
-func (m *UserReply) GetUserPassword() string {
+func (m *RegisterRequest) GetUserPassword() string {
 	if m != nil {
 		return m.UserPassword
 	}
 	return ""
 }
 
-type UserRequest struct {
-	UserId               string   `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+// 修改用户名或者密码
+type UserUpdateRequest struct {
+	UserName             string   `protobuf:"bytes,1,opt,name=user_name,json=userName,proto3" json:"user_name,omitempty"`
+	UserId               string   `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	UserPassword         string   `protobuf:"bytes,3,opt,name=user_password,json=userPassword,proto3" json:"user_password,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *UserRequest) Reset()         { *m = UserRequest{} }
-func (m *UserRequest) String() string { return proto.CompactTextString(m) }
-func (*UserRequest) ProtoMessage()    {}
-func (*UserRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_116e343673f7ffaf, []int{3}
+func (m *UserUpdateRequest) Reset()         { *m = UserUpdateRequest{} }
+func (m *UserUpdateRequest) String() string { return proto.CompactTextString(m) }
+func (*UserUpdateRequest) ProtoMessage()    {}
+func (*UserUpdateRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_116e343673f7ffaf, []int{4}
 }
 
-func (m *UserRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_UserRequest.Unmarshal(m, b)
+func (m *UserUpdateRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UserUpdateRequest.Unmarshal(m, b)
 }
-func (m *UserRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_UserRequest.Marshal(b, m, deterministic)
+func (m *UserUpdateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UserUpdateRequest.Marshal(b, m, deterministic)
 }
-func (m *UserRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_UserRequest.Merge(m, src)
+func (m *UserUpdateRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UserUpdateRequest.Merge(m, src)
 }
-func (m *UserRequest) XXX_Size() int {
-	return xxx_messageInfo_UserRequest.Size(m)
+func (m *UserUpdateRequest) XXX_Size() int {
+	return xxx_messageInfo_UserUpdateRequest.Size(m)
 }
-func (m *UserRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_UserRequest.DiscardUnknown(m)
+func (m *UserUpdateRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_UserUpdateRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_UserRequest proto.InternalMessageInfo
+var xxx_messageInfo_UserUpdateRequest proto.InternalMessageInfo
 
-func (m *UserRequest) GetUserId() string {
+func (m *UserUpdateRequest) GetUserName() string {
+	if m != nil {
+		return m.UserName
+	}
+	return ""
+}
+
+func (m *UserUpdateRequest) GetUserId() string {
 	if m != nil {
 		return m.UserId
 	}
 	return ""
 }
 
+func (m *UserUpdateRequest) GetUserPassword() string {
+	if m != nil {
+		return m.UserPassword
+	}
+	return ""
+}
+
+// 当前用户垃圾的统计信息响应
+type WasteCountReply struct {
+	Sum                  int32    `protobuf:"varint,1,opt,name=sum,proto3" json:"sum,omitempty"`
+	Type                 []int32  `protobuf:"varint,2,rep,packed,name=type,proto3" json:"type,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *WasteCountReply) Reset()         { *m = WasteCountReply{} }
+func (m *WasteCountReply) String() string { return proto.CompactTextString(m) }
+func (*WasteCountReply) ProtoMessage()    {}
+func (*WasteCountReply) Descriptor() ([]byte, []int) {
+	return fileDescriptor_116e343673f7ffaf, []int{5}
+}
+
+func (m *WasteCountReply) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_WasteCountReply.Unmarshal(m, b)
+}
+func (m *WasteCountReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_WasteCountReply.Marshal(b, m, deterministic)
+}
+func (m *WasteCountReply) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_WasteCountReply.Merge(m, src)
+}
+func (m *WasteCountReply) XXX_Size() int {
+	return xxx_messageInfo_WasteCountReply.Size(m)
+}
+func (m *WasteCountReply) XXX_DiscardUnknown() {
+	xxx_messageInfo_WasteCountReply.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_WasteCountReply proto.InternalMessageInfo
+
+func (m *WasteCountReply) GetSum() int32 {
+	if m != nil {
+		return m.Sum
+	}
+	return 0
+}
+
+func (m *WasteCountReply) GetType() []int32 {
+	if m != nil {
+		return m.Type
+	}
+	return nil
+}
+
+// 过去一周当前用户垃圾的统计信息响应
+type WeekWasteCountReply struct {
+	Sum                  int32    `protobuf:"varint,1,opt,name=sum,proto3" json:"sum,omitempty"`
+	Type                 []int32  `protobuf:"varint,2,rep,packed,name=type,proto3" json:"type,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *WeekWasteCountReply) Reset()         { *m = WeekWasteCountReply{} }
+func (m *WeekWasteCountReply) String() string { return proto.CompactTextString(m) }
+func (*WeekWasteCountReply) ProtoMessage()    {}
+func (*WeekWasteCountReply) Descriptor() ([]byte, []int) {
+	return fileDescriptor_116e343673f7ffaf, []int{6}
+}
+
+func (m *WeekWasteCountReply) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_WeekWasteCountReply.Unmarshal(m, b)
+}
+func (m *WeekWasteCountReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_WeekWasteCountReply.Marshal(b, m, deterministic)
+}
+func (m *WeekWasteCountReply) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_WeekWasteCountReply.Merge(m, src)
+}
+func (m *WeekWasteCountReply) XXX_Size() int {
+	return xxx_messageInfo_WeekWasteCountReply.Size(m)
+}
+func (m *WeekWasteCountReply) XXX_DiscardUnknown() {
+	xxx_messageInfo_WeekWasteCountReply.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_WeekWasteCountReply proto.InternalMessageInfo
+
+func (m *WeekWasteCountReply) GetSum() int32 {
+	if m != nil {
+		return m.Sum
+	}
+	return 0
+}
+
+func (m *WeekWasteCountReply) GetType() []int32 {
+	if m != nil {
+		return m.Type
+	}
+	return nil
+}
+
+// 查询用户信息响应
+type UserInfoReply struct {
+	UserId               string   `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	UserName             string   `protobuf:"bytes,2,opt,name=user_name,json=userName,proto3" json:"user_name,omitempty"`
+	UserPassword         string   `protobuf:"bytes,3,opt,name=user_password,json=userPassword,proto3" json:"user_password,omitempty"`
+	UserScore            int32    `protobuf:"varint,4,opt,name=user_score,json=userScore,proto3" json:"user_score,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *UserInfoReply) Reset()         { *m = UserInfoReply{} }
+func (m *UserInfoReply) String() string { return proto.CompactTextString(m) }
+func (*UserInfoReply) ProtoMessage()    {}
+func (*UserInfoReply) Descriptor() ([]byte, []int) {
+	return fileDescriptor_116e343673f7ffaf, []int{7}
+}
+
+func (m *UserInfoReply) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UserInfoReply.Unmarshal(m, b)
+}
+func (m *UserInfoReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UserInfoReply.Marshal(b, m, deterministic)
+}
+func (m *UserInfoReply) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UserInfoReply.Merge(m, src)
+}
+func (m *UserInfoReply) XXX_Size() int {
+	return xxx_messageInfo_UserInfoReply.Size(m)
+}
+func (m *UserInfoReply) XXX_DiscardUnknown() {
+	xxx_messageInfo_UserInfoReply.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UserInfoReply proto.InternalMessageInfo
+
+func (m *UserInfoReply) GetUserId() string {
+	if m != nil {
+		return m.UserId
+	}
+	return ""
+}
+
+func (m *UserInfoReply) GetUserName() string {
+	if m != nil {
+		return m.UserName
+	}
+	return ""
+}
+
+func (m *UserInfoReply) GetUserPassword() string {
+	if m != nil {
+		return m.UserPassword
+	}
+	return ""
+}
+
+func (m *UserInfoReply) GetUserScore() int32 {
+	if m != nil {
+		return m.UserScore
+	}
+	return 0
+}
+
+// 获取垃圾桶实时状态
+type BinStatusReply struct {
+	BinStatus            map[string]int32 `protobuf:"bytes,1,rep,name=bin_status,json=binStatus,proto3" json:"bin_status,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"varint,2,opt,name=value,proto3"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
+}
+
+func (m *BinStatusReply) Reset()         { *m = BinStatusReply{} }
+func (m *BinStatusReply) String() string { return proto.CompactTextString(m) }
+func (*BinStatusReply) ProtoMessage()    {}
+func (*BinStatusReply) Descriptor() ([]byte, []int) {
+	return fileDescriptor_116e343673f7ffaf, []int{8}
+}
+
+func (m *BinStatusReply) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_BinStatusReply.Unmarshal(m, b)
+}
+func (m *BinStatusReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_BinStatusReply.Marshal(b, m, deterministic)
+}
+func (m *BinStatusReply) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_BinStatusReply.Merge(m, src)
+}
+func (m *BinStatusReply) XXX_Size() int {
+	return xxx_messageInfo_BinStatusReply.Size(m)
+}
+func (m *BinStatusReply) XXX_DiscardUnknown() {
+	xxx_messageInfo_BinStatusReply.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_BinStatusReply proto.InternalMessageInfo
+
+func (m *BinStatusReply) GetBinStatus() map[string]int32 {
+	if m != nil {
+		return m.BinStatus
+	}
+	return nil
+}
+
 func init() {
-	proto.RegisterType((*LoginRequest)(nil), "protos.LoginRequest")
 	proto.RegisterType((*Null)(nil), "protos.Null")
-	proto.RegisterType((*UserReply)(nil), "protos.UserReply")
-	proto.RegisterType((*UserRequest)(nil), "protos.UserRequest")
+	proto.RegisterType((*UserId)(nil), "protos.UserId")
+	proto.RegisterType((*LoginRequest)(nil), "protos.LoginRequest")
+	proto.RegisterType((*RegisterRequest)(nil), "protos.RegisterRequest")
+	proto.RegisterType((*UserUpdateRequest)(nil), "protos.UserUpdateRequest")
+	proto.RegisterType((*WasteCountReply)(nil), "protos.WasteCountReply")
+	proto.RegisterType((*WeekWasteCountReply)(nil), "protos.WeekWasteCountReply")
+	proto.RegisterType((*UserInfoReply)(nil), "protos.UserInfoReply")
+	proto.RegisterType((*BinStatusReply)(nil), "protos.BinStatusReply")
+	proto.RegisterMapType((map[string]int32)(nil), "protos.BinStatusReply.BinStatusEntry")
 }
 
 func init() { proto.RegisterFile("user.proto", fileDescriptor_116e343673f7ffaf) }
 
 var fileDescriptor_116e343673f7ffaf = []byte{
-	// 253 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x2a, 0x2d, 0x4e, 0x2d,
-	0xd2, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x03, 0x53, 0xc5, 0x52, 0x32, 0xe9, 0xf9, 0xf9,
-	0xe9, 0x39, 0xa9, 0xfa, 0x89, 0x05, 0x99, 0xfa, 0x89, 0x79, 0x79, 0xf9, 0x25, 0x89, 0x25, 0x99,
-	0xf9, 0x79, 0xc5, 0x10, 0x55, 0x4a, 0x3e, 0x5c, 0x3c, 0x3e, 0xf9, 0xe9, 0x99, 0x79, 0x41, 0xa9,
-	0x85, 0xa5, 0xa9, 0xc5, 0x25, 0x42, 0xe2, 0x5c, 0xec, 0x20, 0x33, 0xe2, 0x33, 0x53, 0x24, 0x18,
-	0x15, 0x18, 0x35, 0x38, 0x83, 0xd8, 0x40, 0x5c, 0xcf, 0x14, 0x21, 0x65, 0x2e, 0x5e, 0xb0, 0x44,
-	0x41, 0x62, 0x71, 0x71, 0x79, 0x7e, 0x51, 0x8a, 0x04, 0x13, 0x58, 0x9a, 0x07, 0x24, 0x18, 0x00,
-	0x15, 0x53, 0x62, 0xe3, 0x62, 0xf1, 0x2b, 0xcd, 0xc9, 0x51, 0xf2, 0xe4, 0xe2, 0x0c, 0x2d, 0x4e,
-	0x2d, 0x0a, 0x4a, 0x2d, 0xc8, 0xa9, 0xa4, 0xd0, 0x48, 0x35, 0x2e, 0x6e, 0x88, 0x51, 0xf8, 0xdd,
-	0x67, 0xb4, 0x8c, 0x11, 0xa2, 0x30, 0x38, 0xb5, 0xa8, 0x2c, 0x33, 0x39, 0x55, 0x08, 0xea, 0x04,
-	0xb0, 0xe7, 0x84, 0x44, 0x20, 0xbe, 0x2d, 0xd6, 0x43, 0xf6, 0xab, 0x14, 0x0f, 0x4c, 0x14, 0xec,
-	0x66, 0x89, 0xa6, 0xcb, 0x4f, 0x26, 0x33, 0x09, 0x29, 0xf1, 0xea, 0x27, 0x96, 0x96, 0xe4, 0x27,
-	0x65, 0xe6, 0xe9, 0x83, 0x4c, 0xb6, 0x62, 0xd4, 0x12, 0xf2, 0xe1, 0xe2, 0x76, 0x4f, 0x2d, 0x01,
-	0x99, 0xe6, 0x99, 0x97, 0x96, 0x2f, 0x24, 0x0c, 0xd3, 0x86, 0xe4, 0x2e, 0x29, 0x41, 0x54, 0xc1,
-	0x82, 0x9c, 0x4a, 0x25, 0x51, 0xb0, 0x81, 0xfc, 0x42, 0xa8, 0x06, 0x26, 0x41, 0xe2, 0xc5, 0x18,
-	0x10, 0x00, 0x00, 0xff, 0xff, 0xd6, 0xef, 0x81, 0x58, 0xac, 0x01, 0x00, 0x00,
+	// 571 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x94, 0x4b, 0x6f, 0xd3, 0x40,
+	0x10, 0xc7, 0x65, 0xe7, 0x01, 0x99, 0xbc, 0x60, 0xdb, 0x50, 0xe3, 0x00, 0x0a, 0x8b, 0x90, 0x22,
+	0x0e, 0x8d, 0x54, 0x0e, 0xa0, 0xc2, 0x89, 0x87, 0x2a, 0x44, 0xd5, 0x82, 0xa3, 0xaa, 0xdc, 0xa2,
+	0x4d, 0x33, 0x44, 0x56, 0x9c, 0x5d, 0xe3, 0x5d, 0xb7, 0xca, 0x95, 0x1b, 0x67, 0xf8, 0x66, 0xdc,
+	0x39, 0xf1, 0x41, 0xd0, 0xae, 0xe3, 0x24, 0x76, 0x12, 0xa8, 0x38, 0x65, 0x67, 0x66, 0xe7, 0xb7,
+	0xf3, 0x5f, 0xff, 0x37, 0x00, 0xb1, 0xc4, 0x68, 0x3f, 0x8c, 0x84, 0x12, 0xa4, 0x6c, 0x7e, 0xa4,
+	0x7b, 0x6f, 0x2c, 0xc4, 0x38, 0xc0, 0x1e, 0x0b, 0xfd, 0x1e, 0xe3, 0x5c, 0x28, 0xa6, 0x7c, 0xc1,
+	0x65, 0xb2, 0x8b, 0x96, 0xa1, 0x78, 0x12, 0x07, 0x01, 0x7d, 0x08, 0xe5, 0x33, 0x89, 0xd1, 0xbb,
+	0x11, 0xd9, 0x83, 0x1b, 0x9a, 0x32, 0xf0, 0x47, 0x8e, 0xd5, 0xb1, 0xba, 0x15, 0xaf, 0x1c, 0x9b,
+	0x02, 0x3d, 0x86, 0xda, 0xb1, 0x18, 0xfb, 0xdc, 0xc3, 0x2f, 0x31, 0x4a, 0xb5, 0x75, 0x23, 0x79,
+	0x04, 0x75, 0x53, 0x08, 0x99, 0x94, 0x57, 0x22, 0x1a, 0x39, 0xb6, 0x29, 0xd7, 0x74, 0xf2, 0xc3,
+	0x3c, 0x47, 0xfb, 0xd0, 0xf4, 0x70, 0xec, 0x4b, 0x85, 0x51, 0x0a, 0x6c, 0x43, 0xc5, 0xf4, 0x71,
+	0x36, 0xc5, 0x39, 0xf2, 0xa6, 0x4e, 0x9c, 0xb0, 0x29, 0x5e, 0x0f, 0xca, 0xe1, 0xb6, 0x56, 0x71,
+	0x16, 0x8e, 0x98, 0xc2, 0x6b, 0x61, 0x57, 0x44, 0xd8, 0x7f, 0x17, 0x51, 0xd8, 0x70, 0xde, 0x33,
+	0x68, 0x9e, 0x33, 0xa9, 0xf0, 0xb5, 0x88, 0xb9, 0xf2, 0x30, 0x0c, 0x66, 0xe4, 0x16, 0x14, 0x64,
+	0x3c, 0x35, 0xe7, 0x94, 0x3c, 0xbd, 0x24, 0x04, 0x8a, 0x6a, 0x16, 0xa2, 0x63, 0x77, 0x0a, 0xdd,
+	0x92, 0x67, 0xd6, 0xf4, 0x05, 0xec, 0x9c, 0x23, 0x4e, 0xfe, 0xaf, 0xf9, 0x9b, 0x05, 0x75, 0xf3,
+	0xb1, 0xf8, 0x67, 0x91, 0xf4, 0x6d, 0xfd, 0x14, 0x19, 0xed, 0xf6, 0xbf, 0xae, 0x74, 0x83, 0x44,
+	0x72, 0x3f, 0x31, 0xd5, 0x40, 0x5e, 0x88, 0x08, 0x9d, 0xa2, 0x99, 0xcc, 0x30, 0xfb, 0x3a, 0x41,
+	0x7f, 0x58, 0xd0, 0x78, 0xe5, 0xf3, 0xbe, 0x62, 0x2a, 0x96, 0xc9, 0x30, 0x6f, 0x00, 0x86, 0x3e,
+	0x1f, 0x48, 0x93, 0x72, 0xac, 0x4e, 0xa1, 0x5b, 0x3d, 0x78, 0x9c, 0xd8, 0x4d, 0xee, 0x67, 0xf7,
+	0x2e, 0xc3, 0xb7, 0x5c, 0x45, 0x33, 0xaf, 0x32, 0x4c, 0x63, 0xf7, 0xe5, 0x0a, 0xd7, 0x14, 0xf5,
+	0xe5, 0x4c, 0x70, 0x36, 0x17, 0xa8, 0x97, 0x64, 0x17, 0x4a, 0x97, 0x2c, 0x88, 0x13, 0x65, 0x25,
+	0x2f, 0x09, 0x0e, 0xed, 0xe7, 0xd6, 0xc1, 0xaf, 0x22, 0x54, 0xf5, 0x15, 0xf5, 0x31, 0xba, 0xf4,
+	0x2f, 0x90, 0x9c, 0x42, 0x45, 0x87, 0xc6, 0xbf, 0x64, 0x37, 0x1d, 0x66, 0xd5, 0xce, 0x6e, 0x2d,
+	0xcd, 0x9a, 0xf7, 0xf0, 0xe0, 0xeb, 0xcf, 0xdf, 0xdf, 0x6d, 0x87, 0xee, 0xf4, 0x58, 0xac, 0xc4,
+	0xd0, 0xe7, 0x3d, 0xad, 0xb9, 0x17, 0xe8, 0x8e, 0x43, 0xeb, 0x09, 0xf9, 0x08, 0x35, 0x0d, 0x4c,
+	0x2d, 0x4c, 0xf6, 0xd2, 0xee, 0x9c, 0xa9, 0xdd, 0x46, 0x5a, 0x48, 0x9e, 0x17, 0x75, 0x0c, 0x98,
+	0xd0, 0x7a, 0x06, 0xac, 0x91, 0xa7, 0x00, 0x4b, 0xf3, 0x92, 0xbb, 0xab, 0x7d, 0x19, 0x43, 0xe7,
+	0x26, 0x9d, 0x03, 0xdd, 0x75, 0xe0, 0x7b, 0xa8, 0x1e, 0xa1, 0x4a, 0x9d, 0x42, 0x72, 0x93, 0xb8,
+	0xad, 0x4c, 0x9c, 0x7a, 0x89, 0xb6, 0x0c, 0xaf, 0x49, 0xb2, 0x3c, 0xe2, 0x01, 0x2c, 0xdd, 0xba,
+	0xc6, 0x5a, 0xc8, 0xcf, 0x39, 0x9a, 0xb6, 0x0d, 0xad, 0x45, 0x72, 0xf7, 0x78, 0xa5, 0xb7, 0x91,
+	0x01, 0x34, 0xb2, 0xaf, 0x60, 0x8d, 0xdb, 0x5e, 0x70, 0xd7, 0x5f, 0x0b, 0xed, 0x18, 0xb6, 0x4b,
+	0x9c, 0x1c, 0x1b, 0x71, 0x32, 0x48, 0x0e, 0xf8, 0x04, 0xb5, 0x23, 0x54, 0x0b, 0x1f, 0xad, 0xe1,
+	0xef, 0x6c, 0xb6, 0xe5, 0x36, 0xf2, 0xd2, 0xd6, 0xc3, 0xe4, 0xdf, 0xf5, 0xe9, 0x9f, 0x00, 0x00,
+	0x00, 0xff, 0xff, 0x22, 0x39, 0xeb, 0x98, 0x72, 0x05, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -230,8 +515,20 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type UserServiceClient interface {
+	// 用户登录
 	UserLogin(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*Null, error)
-	GetUserInfo(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserReply, error)
+	// 用户注册
+	UserRegister(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*UserId, error)
+	// 用户信息修改
+	UserUpdate(ctx context.Context, in *UserUpdateRequest, opts ...grpc.CallOption) (*Null, error)
+	// 用户信息查询(积分)
+	GetUserInfo(ctx context.Context, in *UserId, opts ...grpc.CallOption) (*UserInfoReply, error)
+	//  用户垃圾信息统计查询
+	WasteCount(ctx context.Context, in *UserId, opts ...grpc.CallOption) (*WasteCountReply, error)
+	//  最近一周用户垃圾信息统计查询
+	WeekWasteCount(ctx context.Context, in *UserId, opts ...grpc.CallOption) (*WeekWasteCountReply, error)
+	// 获取实时垃圾桶状态
+	GetBinStatus(ctx context.Context, in *UserId, opts ...grpc.CallOption) (*BinStatusReply, error)
 }
 
 type userServiceClient struct {
@@ -251,9 +548,54 @@ func (c *userServiceClient) UserLogin(ctx context.Context, in *LoginRequest, opt
 	return out, nil
 }
 
-func (c *userServiceClient) GetUserInfo(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserReply, error) {
-	out := new(UserReply)
+func (c *userServiceClient) UserRegister(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*UserId, error) {
+	out := new(UserId)
+	err := c.cc.Invoke(ctx, "/protos.UserService/UserRegister", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) UserUpdate(ctx context.Context, in *UserUpdateRequest, opts ...grpc.CallOption) (*Null, error) {
+	out := new(Null)
+	err := c.cc.Invoke(ctx, "/protos.UserService/UserUpdate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) GetUserInfo(ctx context.Context, in *UserId, opts ...grpc.CallOption) (*UserInfoReply, error) {
+	out := new(UserInfoReply)
 	err := c.cc.Invoke(ctx, "/protos.UserService/GetUserInfo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) WasteCount(ctx context.Context, in *UserId, opts ...grpc.CallOption) (*WasteCountReply, error) {
+	out := new(WasteCountReply)
+	err := c.cc.Invoke(ctx, "/protos.UserService/WasteCount", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) WeekWasteCount(ctx context.Context, in *UserId, opts ...grpc.CallOption) (*WeekWasteCountReply, error) {
+	out := new(WeekWasteCountReply)
+	err := c.cc.Invoke(ctx, "/protos.UserService/WeekWasteCount", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) GetBinStatus(ctx context.Context, in *UserId, opts ...grpc.CallOption) (*BinStatusReply, error) {
+	out := new(BinStatusReply)
+	err := c.cc.Invoke(ctx, "/protos.UserService/GetBinStatus", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -262,8 +604,20 @@ func (c *userServiceClient) GetUserInfo(ctx context.Context, in *UserRequest, op
 
 // UserServiceServer is the server API for UserService service.
 type UserServiceServer interface {
+	// 用户登录
 	UserLogin(context.Context, *LoginRequest) (*Null, error)
-	GetUserInfo(context.Context, *UserRequest) (*UserReply, error)
+	// 用户注册
+	UserRegister(context.Context, *RegisterRequest) (*UserId, error)
+	// 用户信息修改
+	UserUpdate(context.Context, *UserUpdateRequest) (*Null, error)
+	// 用户信息查询(积分)
+	GetUserInfo(context.Context, *UserId) (*UserInfoReply, error)
+	//  用户垃圾信息统计查询
+	WasteCount(context.Context, *UserId) (*WasteCountReply, error)
+	//  最近一周用户垃圾信息统计查询
+	WeekWasteCount(context.Context, *UserId) (*WeekWasteCountReply, error)
+	// 获取实时垃圾桶状态
+	GetBinStatus(context.Context, *UserId) (*BinStatusReply, error)
 }
 
 // UnimplementedUserServiceServer can be embedded to have forward compatible implementations.
@@ -273,8 +627,23 @@ type UnimplementedUserServiceServer struct {
 func (*UnimplementedUserServiceServer) UserLogin(ctx context.Context, req *LoginRequest) (*Null, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserLogin not implemented")
 }
-func (*UnimplementedUserServiceServer) GetUserInfo(ctx context.Context, req *UserRequest) (*UserReply, error) {
+func (*UnimplementedUserServiceServer) UserRegister(ctx context.Context, req *RegisterRequest) (*UserId, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserRegister not implemented")
+}
+func (*UnimplementedUserServiceServer) UserUpdate(ctx context.Context, req *UserUpdateRequest) (*Null, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserUpdate not implemented")
+}
+func (*UnimplementedUserServiceServer) GetUserInfo(ctx context.Context, req *UserId) (*UserInfoReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserInfo not implemented")
+}
+func (*UnimplementedUserServiceServer) WasteCount(ctx context.Context, req *UserId) (*WasteCountReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method WasteCount not implemented")
+}
+func (*UnimplementedUserServiceServer) WeekWasteCount(ctx context.Context, req *UserId) (*WeekWasteCountReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method WeekWasteCount not implemented")
+}
+func (*UnimplementedUserServiceServer) GetBinStatus(ctx context.Context, req *UserId) (*BinStatusReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBinStatus not implemented")
 }
 
 func RegisterUserServiceServer(s *grpc.Server, srv UserServiceServer) {
@@ -299,8 +668,44 @@ func _UserService_UserLogin_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_UserRegister_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RegisterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).UserRegister(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protos.UserService/UserRegister",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).UserRegister(ctx, req.(*RegisterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_UserUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserUpdateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).UserUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protos.UserService/UserUpdate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).UserUpdate(ctx, req.(*UserUpdateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _UserService_GetUserInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserRequest)
+	in := new(UserId)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -312,7 +717,61 @@ func _UserService_GetUserInfo_Handler(srv interface{}, ctx context.Context, dec 
 		FullMethod: "/protos.UserService/GetUserInfo",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).GetUserInfo(ctx, req.(*UserRequest))
+		return srv.(UserServiceServer).GetUserInfo(ctx, req.(*UserId))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_WasteCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserId)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).WasteCount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protos.UserService/WasteCount",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).WasteCount(ctx, req.(*UserId))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_WeekWasteCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserId)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).WeekWasteCount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protos.UserService/WeekWasteCount",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).WeekWasteCount(ctx, req.(*UserId))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_GetBinStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserId)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).GetBinStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protos.UserService/GetBinStatus",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).GetBinStatus(ctx, req.(*UserId))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -326,8 +785,28 @@ var _UserService_serviceDesc = grpc.ServiceDesc{
 			Handler:    _UserService_UserLogin_Handler,
 		},
 		{
+			MethodName: "UserRegister",
+			Handler:    _UserService_UserRegister_Handler,
+		},
+		{
+			MethodName: "UserUpdate",
+			Handler:    _UserService_UserUpdate_Handler,
+		},
+		{
 			MethodName: "GetUserInfo",
 			Handler:    _UserService_GetUserInfo_Handler,
+		},
+		{
+			MethodName: "WasteCount",
+			Handler:    _UserService_WasteCount_Handler,
+		},
+		{
+			MethodName: "WeekWasteCount",
+			Handler:    _UserService_WeekWasteCount_Handler,
+		},
+		{
+			MethodName: "GetBinStatus",
+			Handler:    _UserService_GetBinStatus_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

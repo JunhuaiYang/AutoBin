@@ -17,12 +17,13 @@
   "paths": {
     "/autobin/user": {
       "get": {
+        "summary": "用户信息查询(积分)",
         "operationId": "GetUserInfo",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protosUserReply"
+              "$ref": "#/definitions/protosUserInfoReply"
             }
           }
         },
@@ -39,6 +40,84 @@
         ]
       },
       "post": {
+        "summary": "用户注册",
+        "operationId": "UserRegister",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protosUserId"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protosRegisterRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      },
+      "put": {
+        "summary": "用户信息修改",
+        "operationId": "UserUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protosNull"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protosUserUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/autobin/user/bin_status": {
+      "get": {
+        "summary": "获取实时垃圾桶状态",
+        "operationId": "GetBinStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protosBinStatusReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/autobin/user/login": {
+      "post": {
+        "summary": "用户登录",
         "operationId": "UserLogin",
         "responses": {
           "200": {
@@ -62,9 +141,72 @@
           "UserService"
         ]
       }
+    },
+    "/autobin/user/waste": {
+      "get": {
+        "summary": "用户垃圾信息统计查询",
+        "operationId": "WasteCount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protosWasteCountReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/autobin/user/week_waste": {
+      "get": {
+        "summary": "最近一周用户垃圾信息统计查询",
+        "operationId": "WeekWasteCount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protosWeekWasteCountReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
     }
   },
   "definitions": {
+    "protosBinStatusReply": {
+      "type": "object",
+      "properties": {
+        "bin_status": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "title": "获取垃圾桶实时状态"
+    },
     "protosLoginRequest": {
       "type": "object",
       "properties": {
@@ -74,21 +216,100 @@
         "user_password": {
           "type": "string"
         }
-      }
+      },
+      "title": "登录请求"
     },
     "protosNull": {
       "type": "object"
     },
-    "protosUserReply": {
+    "protosRegisterRequest": {
       "type": "object",
       "properties": {
+        "user_name": {
+          "type": "string"
+        },
+        "user_password": {
+          "type": "string"
+        }
+      },
+      "title": "注册请求"
+    },
+    "protosUserId": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "string"
+        }
+      },
+      "title": "用户Id (查询）"
+    },
+    "protosUserInfoReply": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "string"
+        },
+        "user_name": {
+          "type": "string"
+        },
+        "user_password": {
+          "type": "string"
+        },
+        "user_score": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "查询用户信息响应"
+    },
+    "protosUserUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "user_name": {
+          "type": "string"
+        },
         "user_id": {
           "type": "string"
         },
         "user_password": {
           "type": "string"
         }
-      }
+      },
+      "title": "修改用户名或者密码"
+    },
+    "protosWasteCountReply": {
+      "type": "object",
+      "properties": {
+        "sum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "title": "当前用户垃圾的统计信息响应"
+    },
+    "protosWeekWasteCountReply": {
+      "type": "object",
+      "properties": {
+        "sum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "title": "过去一周当前用户垃圾的统计信息响应"
     }
   }
 }

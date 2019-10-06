@@ -185,7 +185,7 @@ var (
 
 	pattern_WasteService_BinStatus_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"autobin", "binstatus"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_WasteService_BinRegister_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"autobin", "binstatus"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_WasteService_BinRegister_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"autobin", "register"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

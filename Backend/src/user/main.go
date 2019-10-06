@@ -20,14 +20,14 @@ import (
 func startGrpcServer() (error) {
 	var config = conf.Config
 	/// 开启Grpc端口监听
-	lis, err := net.Listen("tcp", fmt.Sprintf("%s", config.Host + ":" + config.GrpcPort))
+	lis, err := net.Listen("tcp", fmt.Sprintf("%s", config.GrpcEndpoint))
 	if err != nil {
 		return err
 	}
 
 	grpcServer := grpc.NewServer()	// 获取grpcServer
 	pb.RegisterUserServiceServer(grpcServer, handlers.NewService())	//
-	log.Println("Grpc Listen : "+config.Host + ":" + config.GrpcPort)
+	log.Println("Grpc Listen(config.GrpcEndpoint) : "+config.GrpcEndpoint)
 	return grpcServer.Serve(lis)
 }
 
@@ -64,7 +64,7 @@ func startHttpServer() error {
 		AllowCredentials:false,
 	})
 	handler := c.Handler(mux)
-	return http.ListenAndServe(fmt.Sprintf("%s",config.Host+":"+config.HttpPort),setFileServer(fileServer, wsproxy.WebsocketProxy(handler)))
+	return http.ListenAndServe(fmt.Sprintf("%s",config.HttpHost+":"+config.HttpPort),setFileServer(fileServer, wsproxy.WebsocketProxy(handler)))
 }
 
 func setFileServer(fileServer, other http.Handler) http.Handler {

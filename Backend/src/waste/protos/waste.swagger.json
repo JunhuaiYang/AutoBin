@@ -17,13 +17,13 @@
   "paths": {
     "/autobin/binstatus": {
       "post": {
-        "summary": "垃圾桶注册",
-        "operationId": "BinRegister",
+        "summary": "状态上报",
+        "operationId": "BinStatus",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protosBinRegisterReply"
+              "$ref": "#/definitions/protosNull"
             }
           }
         },
@@ -33,7 +33,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/protosBinRegisterRequest"
+              "$ref": "#/definitions/protosBinStatusRequest"
             }
           }
         ],
@@ -61,6 +61,33 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/protosWasteRequest"
+            }
+          }
+        ],
+        "tags": [
+          "WasteService"
+        ]
+      }
+    },
+    "/autobin/register": {
+      "post": {
+        "summary": "垃圾桶注册",
+        "operationId": "BinRegister",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protosBinRegisterReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protosBinRegisterRequest"
             }
           }
         ],

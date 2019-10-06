@@ -1,57 +1,113 @@
 package handlers
 
 import (
+	"../db"
 	pb "../protos"
 	"context"
+	"errors"
 	"fmt"
-	"io/ioutil"
-	"net/http"
-	"strings"
+	"log"
 )
 type UserLogin struct {
 	user_id 		string
 	user_password	string
 }
-func TestAPI() {
-
-	url := "http://api.choviwu.top/garbage/uploadFile"
-
-	payload := strings.NewReader("------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"file\"; filename=\"aaa.jpg\"\r\nContent-Type: image/jpeg\r\n\r\n\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("content-type", "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW")
-	req.Header.Add("Content-Type", "application/x-www-form-urlencoded,multipart/form-data; boundary=--------------------------063723804965382354942117")
-	req.Header.Add("User-Agent", "PostmanRuntime/7.16.3")
-	req.Header.Add("Accept", "*/*")
-	req.Header.Add("Cache-Control", "no-cache")
-	req.Header.Add("Postman-Token", "1ac1fc15-9d64-4505-9991-e7ac56a2eae6,cc31955b-deeb-4ee2-806e-ae6b841bd88d")
-	req.Header.Add("Host", "api.choviwu.top")
-	req.Header.Add("Accept-Encoding", "gzip, deflate")
-	req.Header.Add("Content-Length", "39293")
-	req.Header.Add("Connection", "keep-alive")
-	req.Header.Add("cache-control", "no-cache")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
 
 // 用户登录
-func (*UserServer) UserLogin(ctx context.Context, in *pb.LoginRequest) (*pb.Null, error){
-	fmt.Println("user_id", in.UserId, "user_password:",in.UserPassword)
-	TestAPI()
+func (*UserServer) UserLogin(ctx context.Context, req *pb.LoginRequest) (*pb.Null, error){
+	fmt.Println("user_id", req.UserId, "user_password:",req.UserPassword)
+	ok, err:= db.SearchUserForLogin(req.UserId, req.UserPassword)
+	if err != nil {
+		log.Println(err.Error())
+		return  &pb.Null{},err
+	}
+	if ok != true {
+		log.Println("账号或密码不正确！")
+		return &pb.Null{},errors.New("账号或密码不正确！")
+	}
 	return &pb.Null{},nil
 }
-// 获取用户信息
-func (*UserServer)GetUserInfo(ctx context.Context, in *pb.UserRequest) (ret *pb.UserReply, err error){
-	fmt.Println("user_id", in.UserId)
-	ret.UserPassword = "2345678"
-	ret.UserId = "111"
-	return ret,nil
+
+// 用户注册
+func (*UserServer) UserRegister(ctx context.Context, req *pb.RegisterRequest) (*pb.UserId, error){
+	log.Println("user_id", req.UserName, "user_password:",req.UserPassword)
+	user_id, err := db.AddUer(req.UserName, req.UserPassword)
+	if err != nil {
+		log.Println(err.Error())
+		return &pb.UserId{},err
+	}
+	var ret pb.UserId
+	ret.UserId = user_id
+	return &ret,nil
+}
+
+// 用户信息查询
+func (*UserServer) GetUserInfo(ctx context.Context, req *pb.UserId) (*pb.UserInfoReply, error) {
+	log.Println("user_id", req.UserId)
+	var ret pb.UserInfoReply
+	user, err := db.SearchUser(req.UserId)
+	if err != nil {
+		log.Println(err.Error())
+		return &ret,err
+	}
+	ret.UserId = user.User_id
+	ret.UserName = user.User_name
+	ret.UserPassword = user.Password
+	ret.UserScore = int32(user.Score)
+	return &ret,nil
+}
+
+// 用户信息修改
+func (*UserServer)  UserUpdate(ctx context.Context, req *pb.UserUpdateRequest) (*pb.Null, error) {
+	log.Println("user_id", req.UserId, "user_password:",req.UserPassword)
+	err := db.UpdateUser(req.UserId, req.UserName, req.UserPassword)
+	if err != nil {
+		log.Println(err.Error())
+		return &pb.Null{}, err
+	}
+	return &pb.Null{}, nil
+}
+
+// 用户垃圾数据统计
+func (*UserServer) WasteCount(ctx context.Context, req *pb.UserId) (*pb.WasteCountReply, error) {
+	log.Println("userId:",req.UserId)
+	var ret  pb.WasteCountReply
+	sum, types, err := db.GetWasteCount(req.UserId)
+	if err != nil {
+		log.Println(err.Error())
+		return &pb.WasteCountReply{}, err
+	}
+	ret.Sum = int32(sum)
+	for _, val := range types {
+		ret.Type = append(ret.Type, int32(val))
+	}
+	return &ret, nil
+}
+
+// 用户最近一周垃圾数据统计
+func (*UserServer) WeekWasteCount(ctx context.Context, req *pb.UserId) (*pb.WeekWasteCountReply, error) {
+	log.Println("userId:",req.UserId)
+	var ret  pb.WeekWasteCountReply
+	sum, types, err := db.GetWasteCount(req.UserId)
+	if err != nil {
+		log.Println(err.Error())
+		return &pb.WeekWasteCountReply{}, err
+	}
+	ret.Sum = int32(sum)
+	for _, val := range types {
+		ret.Type = append(ret.Type, int32(val))
+	}
+	return &ret, nil
+}
+
+// 实时获取用户垃圾桶状态
+func (*UserServer) GetBinStatus(ctx context.Context, req *pb.UserId) (*pb.BinStatusReply, error) {
+	log.Println("userId:",req.UserId)
+	var ret pb.BinStatusReply
+	binStatus, err := db.GetBinStatuses(req.UserId)
+	if err != nil {
+		return &ret, err
+	}
+	ret.BinStatus = binStatus
+	return &ret, nil
 }

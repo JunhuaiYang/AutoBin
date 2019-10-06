@@ -7,7 +7,16 @@
 
   "grpcPort": "8181",
   "httpPort": "8080",
+  "grpcEndpoint": "127.0.0.1:8181",
+  "httpHost": "127.0.0.1",
   "verify": "./user/",
   "prefix": "",
-  "grpcEndpoint": "127.0.0.1:8181"
+
+
+
+  "appKey" : "RuCeHgzmtsSAoYXeLXBOZYvB",
+  "secret" : "C5kctC22gfbkMRu9M4eYMoLrMeS2V6ZG",
+  "accessToken": "24.b5e00b7200a2f45b7bd03b3cb151e503.2592000.1571153736.282335-17250939",
+  "apiUrl" : "https://aip.baidubce.com/rest/2.0/image-classify/v2/advanced_general",
+  "classApiUrl" : "http://api.choviwu.top/garbage/getGarbage?"
 }

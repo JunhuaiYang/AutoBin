@@ -2,39 +2,107 @@ syntax = "proto3";
 import "google/api/annotations.proto";
 package protos;
 
+message Null{}
+
+// 用户Id (查询）
+message UserId{
+    string user_id = 1;
+}
+
+// 登录请求
 message LoginRequest{
     string user_id = 1;
     string user_password = 2;
 }
 
-message Null{}
-
-message UserReply{
-    string user_id = 1;
+// 注册请求
+message RegisterRequest {
+    string user_name = 1;
     string user_password = 2;
 }
-message UserRequest{
+
+// 修改用户名或者密码
+message UserUpdateRequest {
+    string user_name = 1;
+    string user_id = 2; // 用户id不可修改
+    string user_password = 3;
+}
+
+// 当前用户垃圾的统计信息响应
+message WasteCountReply {
+    int32 sum = 1;
+    repeated int32 type = 2;
+}
+
+// 过去一周当前用户垃圾的统计信息响应
+message WeekWasteCountReply {
+    int32 sum = 1;
+    repeated int32 type = 2;
+}
+
+// 查询用户信息响应
+message UserInfoReply{
     string user_id = 1;
+    string user_name = 2;
+    string user_password = 3;
+    int32 user_score = 4;
+}
+
+// 获取垃圾桶实时状态
+message BinStatusReply {
+    map<string,int32> bin_status = 1;
 }
 
 service UserService {
+    // 用户登录
     rpc UserLogin (LoginRequest) returns (Null) {
+        option (google.api.http) = {
+            post:"/autobin/user/login"
+            body:"*"
+        };
+    }
+    // 用户注册
+    rpc UserRegister (RegisterRequest) returns (UserId) {
         option (google.api.http) = {
             post:"/autobin/user"
             body:"*"
         };
     }
-    rpc GetUserInfo (UserRequest) returns (UserReply) {
+
+    // 用户信息修改
+    rpc UserUpdate (UserUpdateRequest) returns (Null) {
+        option (google.api.http) = {
+            put:"/autobin/user"
+            body:"*"
+        };
+    }
+
+    // 用户信息查询(积分)
+    rpc GetUserInfo (UserId) returns (UserInfoReply) {
         option (google.api.http) = {
             get:"/autobin/user"
         };
     }
 
-    // 传输实时图片 返回识别结果
+    //  用户垃圾信息统计查询
+    rpc WasteCount (UserId) returns (WasteCountReply) {
+        option (google.api.http) = {
+            get:"/autobin/user/waste"
+        };
+    }
 
-    // antubin状态
+    //  最近一周用户垃圾信息统计查询
+    rpc WeekWasteCount (UserId) returns (WeekWasteCountReply) {
+        option (google.api.http) = {
+            get:"/autobin/user/week_waste"
+        };
+    }
 
-    // 手动模式
-
+    // 获取实时垃圾桶状态
+    rpc GetBinStatus (UserId) returns (BinStatusReply) {
+        option (google.api.http) = {
+            get:"/autobin/user/bin_status"
+        };
+    }
 }
 
