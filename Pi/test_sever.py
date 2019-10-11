@@ -21,6 +21,10 @@ class Greeter(waste_pb2_grpc.WasteServiceServicer):
             f.write(image)
         return waste_pb2.WasteReply(res_id = 1)
 
+    def BinRegister(self, request, context):
+        print('{}  IP:{}'.format(request.user_id, request.ip_address))
+        return waste_pb2.BinRegisterReply(bin_id = 1)
+
     # def SayHello(self, request, context):
     #     return waste_pb2.HelloReply(message='Hello, %s!' % request.name)
 

@@ -16,7 +16,6 @@ import socket
 
 
 
-
 SERVER_ADDR = '192.168.1.107:50051'
 # SERVER_ADDR = '192.168.1.199:8181'
 IMAGE_READ_TIME = 1
@@ -47,6 +46,9 @@ def main():
             if response_id>-1:
                 log.info('垃圾识别结果：{}'.format(GARBAGE[response_id]))
                 motor.Garbge(response_id)
+                # 重新更新背景
+                BKG_FRAME = GetBackGround()
+
                 # 处理完成
                 STATUS_LED.color = (0, 1, 0)
             else:
@@ -68,10 +70,29 @@ def Init():
     CAMERA.resolution = (640, 480)
     if CAMERA is None:
         raise SystemExit('摄像头连接失败')
-
     # 摄像头预热
     time.sleep(5)
+    
+    # 获得一个稳定的背景
+    BKG_FRAME = GetBackGround()
 
+    # 连接远程服务器测试
+    STATUS_LED.blink(0.1, 0.1, on_color=(0, 0.6, 0.6)) # 闪灯
+    # 初始化连接状态
+    CHANNEL = grpc.insecure_channel(SERVER_ADDR)
+    STUB = waste_pb2_grpc.WasteServiceStub(CHANNEL)
+    MY_ADDR = get_host_ip()
+    log.info('当前IP地址为:{}'.format(MY_ADDR))
+    BIN_ID = STUB.BinRegister(waste_pb2.BinRegisterRequest(user_id = USER_ID, ip_address = MY_ADDR)).bin_id
+    log.info('向服务器注册成功！当前垃圾桶ID为{}'.format(BIN_ID))
+
+    time.sleep(1)
+
+    # 初始化完成
+    STATUS_LED.color = (0, 1, 0)
+    log.info('初始化完成')
+
+def GetBackGround():
     my_stream = BytesIO()
     pre_frame = None
     # 获得稳定的背景
@@ -93,26 +114,10 @@ def Init():
             thresh = cv2.dilate(thresh, None, iterations=2)  # 膨胀操作
             image, contours, hierarchy = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)  # 查找轮廓
             if len(contours) == 0:
-                BKG_FRAME = gray_img
+                bkg = gray_img
                 log.info('背景已保存')
                 break
-
-    # 连接远程服务器测试
-    STATUS_LED.blink(0.1, 0.1, on_color=(0, 0.6, 0.6)) # 闪灯
-    # 初始化连接状态
-    CHANNEL = grpc.insecure_channel(SERVER_ADDR)
-    STUB = waste_pb2_grpc.WasteServiceStub(CHANNEL)
-    MY_ADDR = getIPaddr()
-    log.info('当前IP地址为:{}'.format(MY_ADDR))
-    # BIN_ID = STUB.BinRegister(waste_pb2.BinRegisterRequest(user_id = USER_ID, ip_adress = MY_ADDR))
-    # log.info('向服务器注册成功！当前垃圾桶ID为{}'.format(BIN_ID))
-
-    time.sleep(1)
-
-    # 初始化完成
-    STATUS_LED.color = (0, 1, 0)
-    log.info('初始化完成')
-
+    return bkg
 
 
 def isChange(): 
@@ -138,12 +143,16 @@ def isChange():
             return True, image_data
     return False, None
 
-def getIPaddr():
-    #获取本机电脑名
-    myname = socket.getfqdn(socket.gethostname())
-    #获取本机ip
-    myaddr = socket.gethostbyname(myname)
-    return myaddr
+
+# 通过建立一个UDP连接来获得IP地址
+def get_host_ip():
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(('8.8.8.8', 80))
+        ip = s.getsockname()[0]
+    finally:
+        s.close()
+    return ip
 
 
 if __name__ == '__main__':
