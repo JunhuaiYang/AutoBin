@@ -15,11 +15,11 @@ class Greeter(waste_pb2_grpc.WasteServiceServicer):
     def WasteDetect(self, request, context):
         """传输实时图片 返回识别结果
         """
-        print('{} '.format(request.bin_id))
+        print('垃圾桶id：{} --- {}.jpg '.format(request.bin_id, time.strftime("%H.%M.%S", time.localtime())))
         image = base64.b64decode(request.waste_image)
-        with open('img\{}.jpg'.format(time.strftime("%H_%M_%S", time.localtime())),'wb') as f:
+        with open('img\{}.jpg'.format(time.strftime("%H.%M.%S", time.localtime())),'wb') as f:
             f.write(image)
-        return waste_pb2.WasteReply(res_id = 1)
+        return waste_pb2.WasteReply(res_id = 3)
 
     def BinRegister(self, request, context):
         print('{}  IP:{}'.format(request.user_id, request.ip_address))

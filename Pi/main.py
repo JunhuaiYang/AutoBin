@@ -32,10 +32,11 @@ USER_ID = 1
 MY_ADDR = None
 
 def main():
+    global STATUS_LED, CAMERA, BKG_FRAME, CHANNEL, STUB, MY_ADDR, USER_ID
+
     Init()
     #初始化 成功  进入运行状态
     while True:
-
         flag, image = isChange()
         if flag:
             log.info('有垃圾进入')
@@ -46,6 +47,7 @@ def main():
             if response_id>-1:
                 log.info('垃圾识别结果：{}'.format(GARBAGE[response_id]))
                 motor.Garbge(response_id)
+                time.sleep(2) # 等待稳定
                 # 重新更新背景
                 BKG_FRAME = GetBackGround()
 
@@ -82,11 +84,9 @@ def Init():
     CHANNEL = grpc.insecure_channel(SERVER_ADDR)
     STUB = waste_pb2_grpc.WasteServiceStub(CHANNEL)
     MY_ADDR = get_host_ip()
-    log.info('当前IP地址为:{}'.format(MY_ADDR))
+    log.info('当前IP地址为: {}'.format(MY_ADDR))
     BIN_ID = STUB.BinRegister(waste_pb2.BinRegisterRequest(user_id = USER_ID, ip_address = MY_ADDR)).bin_id
-    log.info('向服务器注册成功！当前垃圾桶ID为{}'.format(BIN_ID))
-
-    time.sleep(1)
+    log.info('向服务器注册成功！当前垃圾桶ID为：{}'.format(BIN_ID))
 
     # 初始化完成
     STATUS_LED.color = (0, 1, 0)
@@ -102,6 +102,9 @@ def GetBackGround():
         image_data = my_stream.getvalue()
         nparr = np.frombuffer(image_data, np.uint8)
         cur_frame = cv2.imdecode(nparr, 1)
+        # 图片剪裁
+        # 裁剪坐标为[y0:y1, x0:x1]
+        cur_frame = cur_frame[0:455, 10:500]
 
         gray_img = cv2.cvtColor(cur_frame, cv2.COLOR_BGR2GRAY)
         gray_img = cv2.resize(gray_img, (320 , 240))
@@ -115,8 +118,11 @@ def GetBackGround():
             image, contours, hierarchy = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)  # 查找轮廓
             if len(contours) == 0:
                 bkg = gray_img
-                log.info('背景已保存')
+                log.info('背景已更新')
                 break
+            else:
+                pre_frame = gray_img
+
     return bkg
 
 
@@ -128,6 +134,8 @@ def isChange():
     image_data = my_stream.getvalue()
     nparr = np.frombuffer(image_data, np.uint8)
     cur_frame = cv2.imdecode(nparr, 1)
+    # 图片剪裁
+    cur_frame = cur_frame[0:455, 10:500]
     
     gray_img = cv2.cvtColor(cur_frame, cv2.COLOR_BGR2GRAY)
     gray_img = cv2.resize(gray_img, (320, 240))
@@ -136,10 +144,15 @@ def isChange():
     thresh = cv2.threshold(img_delta, 25, 255, cv2.THRESH_BINARY)[1]  # 图像阈值处理 转化为 0 1
     thresh = cv2.dilate(thresh, None, iterations=2)  # 膨胀操作
     image, contours, hierarchy = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)  # 查找轮廓
+
+    # image_data = cv2.imencode('.jpg', cur_frame)[1]
+    # time.sleep(1)
+    # return True, image_data
     for c in contours:
         if cv2.contourArea(c) < 1000: # 设置敏感度
             continue
         else:
+            image_data = cv2.imencode('.jpg', cur_frame)[1]
             return True, image_data
     return False, None
 

@@ -97,14 +97,73 @@ class MotorCtrl:
         self.MovePan(types)
         sleep(1)
         self.MovePanFlat(types)
+        # 板子平衡问题  需要加一些补偿
+        if types == 0:
+            self.MoveMotor(1, 1, 0.02)
+            self.MoveMotor(2, 1, 0.05)
+            self.MoveMotor(3, 1, 0.06)
+            self.MoveMotor(4, 1, 0.03)
+        elif types == 1:
+            self.MoveMotor(1, 1, 0.02)
+            self.MoveMotor(2, 1, 0.05)
+            self.MoveMotor(3, 1, 0.07)
+            self.MoveMotor(4, 1, 0.04)
+        elif types == 2:
+            self.MoveMotor(1, 1, 0.02)
+            self.MoveMotor(2, 1, 0.03)
+            self.MoveMotor(3, 1, 0.05)
+            self.MoveMotor(4, 1, 0.05)
+        elif types == 3:
+            self.MoveMotor(1, 1, 0.02)
+            self.MoveMotor(2, 1, 0.02)
+            self.MoveMotor(3, 1, 0.04)
+            self.MoveMotor(4, 1, 0.05)
 
 
 
 motor = MotorCtrl()
 
 if __name__ == "__main__":
-    while True:
-        # n, d, t = map(int, input('编号 方向 时间: ').split())
-        # motor.MoveMotor(n, d, t)
-        d = int(input())
-        motor.allMove(d)
+    import curses
+    #初始化curses
+    screen=curses.initscr()
+    #设置不回显
+    curses.noecho()
+    #设置不需要按回车立即响应
+    curses.cbreak()
+    #开启键盘模式
+    screen.keypad(1)
+    #阻塞模式读取0 非阻塞 1
+    screen.nodelay(0)  
+
+    try:
+        while(True):
+            char=screen.getch()
+            if char == 49:  # 1
+                motor.MoveMotor(1, 1, 0.1)
+            elif char == 50: # 2
+                motor.MoveMotor(2, 1, 0.1)
+            elif char == 51: # 3
+                motor.MoveMotor(3, 1, 0.1)
+            elif char == 52: # 4
+                motor.MoveMotor(4, 1, 0.1)
+            elif char == 113:  # Q
+                motor.MoveMotor(1, 0, 0.1)
+            elif char == 119: # 2
+                motor.MoveMotor(2, 0, 0.1)
+            elif char == 101: # 3
+                motor.MoveMotor(3, 0, 0.1)
+            elif char == 114: # 4
+                motor.MoveMotor(4, 0, 0.1)
+            else:
+                pass
+    except:
+        curses.nocbreak()
+        screen.keypad(0)
+        curses.echo()
+
+    # while True:
+    #     # n, d, t = map(int, input('编号 方向 时间: ').split())
+    #     # motor.MoveMotor(n, d, t)
+    #     d = int(input())
+    #     motor.allMove(d)
