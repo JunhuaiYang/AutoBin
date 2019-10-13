@@ -16,54 +16,83 @@ import socket
 
 
 
-SERVER_ADDR = '192.168.1.107:50051'
-# SERVER_ADDR = '192.168.1.199:8181'
+# SERVER_ADDR = '192.168.1.107:50051'
+SERVER_ADDR = '192.168.1.199:8181'
 IMAGE_READ_TIME = 1
-GARBAGE = {-1:'未识别', 0:'干垃圾', 1:'湿垃圾', 2:'有害垃圾', 3:'可回收垃圾'}
+RECONN_TIME = 10
+# GARBAGE = {-1:'未识别', 0:'干垃圾', 1:'湿垃圾', 2:'有害垃圾', 3:'可回收垃圾'}
+GARBAGE = {-1:'未识别', 0:'可回收垃圾', 1:'有害垃圾', 2:'湿垃圾', 3:'干垃圾'}
 # 控制对象全局变量
 STATUS_LED:RGBLED = None
 CAMERA = None
 BKG_FRAME = None
 CHANNEL:grpc.Channel = None
 STUB:waste_pb2_grpc.WasteServiceStub = None
+CONNECTION_FLAG = False
 # 用户全局变量
-BIN_ID = -1
+BIN_ID = 1
 USER_ID = 1
 MY_ADDR = None
 
 def main():
-    global STATUS_LED, CAMERA, BKG_FRAME, CHANNEL, STUB, MY_ADDR, USER_ID
+    global STATUS_LED, CAMERA, BKG_FRAME, CHANNEL, STUB, MY_ADDR, USER_ID, CONNECTION_FLAG, RECONN_TIME
 
     Init()
+    wait_flag = False
+
     #初始化 成功  进入运行状态
     while True:
+        if not CONNECTION_FLAG:
+            log.info('正在尝试重连')
+            if not Register():
+                time.sleep(RECONN_TIME)
+                continue
+
         flag, image = isChange()
         if flag:
-            log.info('有垃圾进入')
+            if not wait_flag:
+                log.info('有垃圾进入') # 延时一段时间
+                time.sleep(1)
+                log.info('正在识别')
+                wait_flag = True
+                continue
+            else:
+                wait_flag = False
+
             STATUS_LED.blink(0.1, 0.1, on_color=(0.7, 0.1, 0.6)) # 闪灯 处理垃圾中
             image64 = base64.b64encode(image)
-            response = STUB.WasteDetect(waste_pb2.WasteRequest(bin_id=str(BIN_ID), waste_image=image64))
+            try:
+                response = STUB.WasteDetect(waste_pb2.WasteRequest(bin_id=str(BIN_ID), waste_image=image64))
+            except Exception as ex:
+                if 'connect' in ex.__str__(): # 连接失败
+                    CONNECTION_FLAG = False
+                    log.info('服务器连接失败')
+                    STATUS_LED.color = (1, 0.4, 0.0) # 连接失败
+                else:
+                    log.error('未知错误')
+                    log.error(ex)
+
             response_id = response.res_id
+            response_name = response.waste_name
             if response_id>-1:
-                log.info('垃圾识别结果：{}'.format(GARBAGE[response_id]))
+                log.info('垃圾识别结果：{}  属于：{}'.format(response_name, GARBAGE[response_id]))
                 motor.Garbge(response_id)
                 time.sleep(2) # 等待稳定
                 # 重新更新背景
                 BKG_FRAME = GetBackGround()
-
                 # 处理完成
                 STATUS_LED.color = (0, 1, 0)
             else:
-                log.info('垃圾识别失败！')
+                log.info('垃圾识别失败！ 识别结果：{}'.format(response_name))
                 STATUS_LED.color = (1, 0, 0)
-            time.sleep(1)
+                time.sleep(5)
 
         time.sleep(IMAGE_READ_TIME)
 
 
 # 初始化状态
 def Init():
-    global STATUS_LED, CAMERA, BKG_FRAME, CHANNEL, STUB, MY_ADDR, USER_ID
+    global STATUS_LED, CAMERA, BKG_FRAME, CHANNEL, STUB, MY_ADDR, USER_ID, BIN_ID, CONNECTION_FLAG
 
     STATUS_LED = RGBLED(red=16, green=20, blue=21)
     STATUS_LED.blink(0.1, 0.1, on_color=(1, 0.6, 0)) # 闪灯
@@ -78,19 +107,37 @@ def Init():
     # 获得一个稳定的背景
     BKG_FRAME = GetBackGround()
 
-    # 连接远程服务器测试
-    STATUS_LED.blink(0.1, 0.1, on_color=(0, 0.6, 0.6)) # 闪灯
     # 初始化连接状态
     CHANNEL = grpc.insecure_channel(SERVER_ADDR)
     STUB = waste_pb2_grpc.WasteServiceStub(CHANNEL)
     MY_ADDR = get_host_ip()
     log.info('当前IP地址为: {}'.format(MY_ADDR))
-    BIN_ID = STUB.BinRegister(waste_pb2.BinRegisterRequest(user_id = USER_ID, ip_address = MY_ADDR)).bin_id
-    log.info('向服务器注册成功！当前垃圾桶ID为：{}'.format(BIN_ID))
 
     # 初始化完成
-    STATUS_LED.color = (0, 1, 0)
     log.info('初始化完成')
+    # 最后注册垃圾桶
+    Register()
+
+def Register():
+    global BIN_ID, USER_ID, MY_ADDR, CONNECTION_FLAG, STATUS_LED
+    # 连接远程服务器测试
+    STATUS_LED.blink(0.1, 0.1, on_color=(0, 0.6, 0.6)) # 闪灯
+    try:
+        BIN_ID = STUB.BinRegister(waste_pb2.BinRegisterRequest(user_id = USER_ID, ip_address = MY_ADDR)).bin_id
+    except Exception as ex:
+        if 'connect' in ex.__str__():
+            CONNECTION_FLAG = False
+            log.info('服务器连接失败')
+            STATUS_LED.color = (1, 0.4, 0) # 连接失败
+            return CONNECTION_FLAG
+        else:
+            log.error('未知错误')
+            log.error(ex)
+            return False
+    log.info('向服务器注册成功！当前垃圾桶ID为：{}'.format(BIN_ID))
+    STATUS_LED.color = (0, 1, 0) # 正常状态
+    CONNECTION_FLAG = True
+    return CONNECTION_FLAG
 
 def GetBackGround():
     my_stream = BytesIO()

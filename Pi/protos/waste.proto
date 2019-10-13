@@ -9,6 +9,7 @@ message WasteRequest{
 
 message WasteReply{
     int64 res_id = 1;
+    string waste_name = 2;
 }
 
 message Null{}

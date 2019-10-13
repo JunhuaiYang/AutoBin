@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='protos',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x0bwaste.proto\x12\x06protos\x1a\x1cgoogle/api/annotations.proto\"3\n\x0cWasteRequest\x12\x0e\n\x06\x62in_id\x18\x01 \x01(\t\x12\x13\n\x0bwaste_image\x18\x02 \x01(\x0c\"\x1c\n\nWasteReply\x12\x0e\n\x06res_id\x18\x01 \x01(\x03\"\x06\n\x04Null\"2\n\x10\x42inStatusRequest\x12\x0e\n\x06\x62in_id\x18\x01 \x01(\x05\x12\x0e\n\x06status\x18\x02 \x01(\x05\"9\n\x12\x42inRegisterRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x05\x12\x12\n\nip_address\x18\x02 \x01(\t\"\"\n\x10\x42inRegisterReply\x12\x0e\n\x06\x62in_id\x18\x01 \x01(\x05\x32\x9b\x02\n\x0cWasteService\x12S\n\x0bWasteDetect\x12\x14.protos.WasteRequest\x1a\x12.protos.WasteReply\"\x1a\x82\xd3\xe4\x93\x02\x14\"\x0f/autobin/detect:\x01*\x12R\n\tBinStatus\x12\x18.protos.BinStatusRequest\x1a\x0c.protos.Null\"\x1d\x82\xd3\xe4\x93\x02\x17\"\x12/autobin/binstatus:\x01*\x12\x62\n\x0b\x42inRegister\x12\x1a.protos.BinRegisterRequest\x1a\x18.protos.BinRegisterReply\"\x1d\x82\xd3\xe4\x93\x02\x17\"\x12/autobin/binstatus:\x01*b\x06proto3')
+  serialized_pb=_b('\n\x0bwaste.proto\x12\x06protos\x1a\x1cgoogle/api/annotations.proto\"3\n\x0cWasteRequest\x12\x0e\n\x06\x62in_id\x18\x01 \x01(\t\x12\x13\n\x0bwaste_image\x18\x02 \x01(\x0c\"0\n\nWasteReply\x12\x0e\n\x06res_id\x18\x01 \x01(\x03\x12\x12\n\nwaste_name\x18\x02 \x01(\t\"\x06\n\x04Null\"2\n\x10\x42inStatusRequest\x12\x0e\n\x06\x62in_id\x18\x01 \x01(\x05\x12\x0e\n\x06status\x18\x02 \x01(\x05\"9\n\x12\x42inRegisterRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x05\x12\x12\n\nip_address\x18\x02 \x01(\t\"\"\n\x10\x42inRegisterReply\x12\x0e\n\x06\x62in_id\x18\x01 \x01(\x05\x32\x9b\x02\n\x0cWasteService\x12S\n\x0bWasteDetect\x12\x14.protos.WasteRequest\x1a\x12.protos.WasteReply\"\x1a\x82\xd3\xe4\x93\x02\x14\"\x0f/autobin/detect:\x01*\x12R\n\tBinStatus\x12\x18.protos.BinStatusRequest\x1a\x0c.protos.Null\"\x1d\x82\xd3\xe4\x93\x02\x17\"\x12/autobin/binstatus:\x01*\x12\x62\n\x0b\x42inRegister\x12\x1a.protos.BinRegisterRequest\x1a\x18.protos.BinRegisterReply\"\x1d\x82\xd3\xe4\x93\x02\x17\"\x12/autobin/binstatus:\x01*b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
 
@@ -80,6 +80,13 @@ _WASTEREPLY = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='waste_name', full_name='protos.WasteReply.waste_name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -93,7 +100,7 @@ _WASTEREPLY = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=106,
-  serialized_end=134,
+  serialized_end=154,
 )
 
 
@@ -116,8 +123,8 @@ _NULL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=136,
-  serialized_end=142,
+  serialized_start=156,
+  serialized_end=162,
 )
 
 
@@ -154,8 +161,8 @@ _BINSTATUSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=144,
-  serialized_end=194,
+  serialized_start=164,
+  serialized_end=214,
 )
 
 
@@ -192,8 +199,8 @@ _BINREGISTERREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=196,
-  serialized_end=253,
+  serialized_start=216,
+  serialized_end=273,
 )
 
 
@@ -223,8 +230,8 @@ _BINREGISTERREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=255,
-  serialized_end=289,
+  serialized_start=275,
+  serialized_end=309,
 )
 
 DESCRIPTOR.message_types_by_name['WasteRequest'] = _WASTEREQUEST
@@ -285,8 +292,8 @@ _WASTESERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=292,
-  serialized_end=575,
+  serialized_start=312,
+  serialized_end=595,
   methods=[
   _descriptor.MethodDescriptor(
     name='WasteDetect',

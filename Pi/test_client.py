@@ -17,11 +17,17 @@ def run():
         stub = waste_pb2_grpc.WasteServiceStub(channel)
 
         # response = stub.WasteDetect(waste_pb2.WasteRequest(bin_id='11', waste_image=b'123'))
-        response = stub.BinRegister(waste_pb2.BinRegisterRequest(user_id = 1, ip_address = '123'))
+        try:
+            response = stub.BinRegister(waste_pb2.BinRegisterRequest(user_id = 1, ip_address = '123'))
+        except Exception as ex:
+            print(ex)
+            if 'connect' in ex.__str__():
+                print('in')
+        
 
 
     # print("Greeter client received: %d" % response.res_id)
-    print("Greeter client received: %d" % response.bin_id)
+    # print("Greeter client received: %d" % response.bin_id)
 
 if __name__ == '__main__':
     logging.basicConfig()
