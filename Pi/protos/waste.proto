@@ -22,6 +22,7 @@ message BinStatusRequest{
 message BinRegisterRequest {
     int32 user_id = 1;
     string ip_address = 2;
+    int32 bin_id = 3;
 }
 
 message BinRegisterReply {

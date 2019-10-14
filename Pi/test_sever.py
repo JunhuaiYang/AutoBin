@@ -17,12 +17,12 @@ class Greeter(waste_pb2_grpc.WasteServiceServicer):
         """
         print('垃圾桶id：{} --- {}.jpg '.format(request.bin_id, time.strftime("%H.%M.%S", time.localtime())))
         image = base64.b64decode(request.waste_image)
-        with open('img\{}.jpg'.format(time.strftime("%H.%M.%S", time.localtime())),'wb') as f:
+        with open('img\{}.jpg'.format(time.strftime("1-%H.%M.%S", time.localtime())),'wb') as f:
             f.write(image)
         return waste_pb2.WasteReply(res_id = 3)
 
     def BinRegister(self, request, context):
-        print('{}  IP:{}'.format(request.user_id, request.ip_address))
+        print('{} bin_id:{}  IP:{}'.format(request.user_id, request.bin_id, request.ip_address))
         return waste_pb2.BinRegisterReply(bin_id = 1)
 
     # def SayHello(self, request, context):

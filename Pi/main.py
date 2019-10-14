@@ -13,8 +13,8 @@ import numpy as np
 import base64
 from MotorCtrl import motor
 import socket
-
-
+import json
+import os
 
 # SERVER_ADDR = '192.168.1.107:50051'
 SERVER_ADDR = '192.168.1.199:8181'
@@ -30,9 +30,12 @@ CHANNEL:grpc.Channel = None
 STUB:waste_pb2_grpc.WasteServiceStub = None
 CONNECTION_FLAG = False
 # 用户全局变量
-BIN_ID = 1
-USER_ID = 1
+BIN_ID = -1
+USER_ID = -1
 MY_ADDR = None
+ID_DIRC = {'BIN_ID':-1, 'USER_ID':1}
+REGIS_FLAG = False
+
 
 def main():
     global STATUS_LED, CAMERA, BKG_FRAME, CHANNEL, STUB, MY_ADDR, USER_ID, CONNECTION_FLAG, RECONN_TIME
@@ -51,6 +54,7 @@ def main():
         flag, image = isChange()
         if flag:
             if not wait_flag:
+                STATUS_LED.blink(0.1, 0.1, on_color=(0.7, 0.1, 0.6)) # 闪灯 处理垃圾中
                 log.info('有垃圾进入') # 延时一段时间
                 time.sleep(1)
                 log.info('正在识别')
@@ -59,7 +63,6 @@ def main():
             else:
                 wait_flag = False
 
-            STATUS_LED.blink(0.1, 0.1, on_color=(0.7, 0.1, 0.6)) # 闪灯 处理垃圾中
             image64 = base64.b64encode(image)
             try:
                 response = STUB.WasteDetect(waste_pb2.WasteRequest(bin_id=str(BIN_ID), waste_image=image64))
@@ -86,13 +89,23 @@ def main():
                 log.info('垃圾识别失败！ 识别结果：{}'.format(response_name))
                 STATUS_LED.color = (1, 0, 0)
                 time.sleep(5)
+        else:
+            STATUS_LED.color = (0, 1, 0)
 
         time.sleep(IMAGE_READ_TIME)
 
 
 # 初始化状态
 def Init():
-    global STATUS_LED, CAMERA, BKG_FRAME, CHANNEL, STUB, MY_ADDR, USER_ID, BIN_ID, CONNECTION_FLAG
+    global STATUS_LED, CAMERA, BKG_FRAME, CHANNEL, STUB, MY_ADDR, USER_ID, BIN_ID, CONNECTION_FLAG, ID_DIRC, REGIS_FLAG
+
+    if os.path.exists('ID.json'):
+        ID_DIRC = json.load(open('ID.json'))
+        USER_ID = ID_DIRC['USER_ID']
+        BIN_ID = ID_DIRC['BIN_ID']
+        REGIS_FLAG = True
+    else:
+        json.dump(ID_DIRC, open('ID.json', 'w'))
 
     STATUS_LED = RGBLED(red=16, green=20, blue=21)
     STATUS_LED.blink(0.1, 0.1, on_color=(1, 0.6, 0)) # 闪灯
@@ -119,11 +132,14 @@ def Init():
     Register()
 
 def Register():
-    global BIN_ID, USER_ID, MY_ADDR, CONNECTION_FLAG, STATUS_LED
+    global BIN_ID, USER_ID, MY_ADDR, CONNECTION_FLAG, STATUS_LED, REGIS_FLAG, ID_DIRC
     # 连接远程服务器测试
     STATUS_LED.blink(0.1, 0.1, on_color=(0, 0.6, 0.6)) # 闪灯
     try:
-        BIN_ID = STUB.BinRegister(waste_pb2.BinRegisterRequest(user_id = USER_ID, ip_address = MY_ADDR)).bin_id
+        BIN_ID = STUB.BinRegister(waste_pb2.BinRegisterRequest(user_id = USER_ID, ip_address = MY_ADDR, bin_id = BIN_ID)).bin_id
+        if not REGIS_FLAG:
+            ID_DIRC['BIN_ID'] = BIN_ID
+            json.dump(ID_DIRC, open('ID.json', 'w'))
     except Exception as ex:
         if 'connect' in ex.__str__():
             CONNECTION_FLAG = False
