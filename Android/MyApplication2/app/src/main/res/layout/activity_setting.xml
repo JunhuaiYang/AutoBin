@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.ui.SettingActivity"
+    android:orientation="vertical">
+    <Button
+        android:id="@+id/btn_rename"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:text="修改账号名或密码"
+        android:textSize="20sp"
+        />
+    <Button
+        android:id="@+id/btn_logoff"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:text="注销"
+        android:textSize="20sp"
+        />
+
+</LinearLayout>
