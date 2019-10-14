@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<network-security-config>
+<!--    <domain-config usesCleartextTraffic="false">-->
+
+<!--        <domain includeSubdomains="true"></domain>-->
+<!--    </domain-config>-->
+</network-security-config>

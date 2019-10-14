@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_ranking">
+
+    <fragment
+        android:id="@+id/nav_ranking"
+        android:name="com.example.myapplication.ui.ranking.RankingFragment"
+        android:label="排行榜"
+        tools:layout="@layout/fragment_ranking" />
+
+    <fragment
+        android:id="@+id/nav_statics"
+        android:name="com.example.myapplication.ui.statics.StaticsFragment"
+        android:label="属性"
+        tools:layout="@layout/fragment_statics" />
+
+    <fragment
+        android:id="@+id/nav_state"
+        android:name="com.example.myapplication.ui.state.StateFragment"
+        android:label="垃圾桶状态"
+        tools:layout="@layout/fragment_state" />
+
+    <fragment
+        android:id="@+id/nav_tools"
+        android:name="com.example.myapplication.ui.tools.ToolsFragment"
+        android:label="@string/menu_tools"
+        tools:layout="@layout/fragment_tools" />
+
+    <fragment
+        android:id="@+id/nav_share"
+        android:name="com.example.myapplication.ui.share.ShareFragment"
+        android:label="@string/menu_share"
+        tools:layout="@layout/fragment_share" />
+
+    <fragment
+        android:id="@+id/nav_send"
+        android:name="com.example.myapplication.ui.send.SendFragment"
+        android:label="@string/menu_send"
+        tools:layout="@layout/fragment_send" />
+</navigation>
