@@ -629,21 +629,30 @@ public class ServerPeer {
 
                     //将得到的更新回应转为数据
                     binStateResponse = gson.fromJson(readData, BinStateResponse.class);
-                    //更新数据和界面
-                    Set<Map.Entry<String, Integer>> set = binStateResponse.bin_status.entrySet();
-                    int setLen = set.size();
-                    MainActivity.Instance.binStates = new BinState[setLen];
-                    BinState[] binStates = MainActivity.Instance.binStates;
 
-
-                    Log.d("temp", "map len:" + setLen);
-                    int i = 0;
-                    for(Map.Entry entry : set)
+                    int setLen = 0;
+                    if(binStateResponse.bin_status != null)
                     {
-                        BinState binState = new BinState((String)entry.getKey(),(Integer) entry.getValue());
-                        binStates[i] = binState;
-                        i++;
-                        Log.d("temp", "key:"+ (String)entry.getKey() + "value:"+(Integer)entry.getValue());
+                        //更新数据和界面
+                        Set<Map.Entry<String, Integer>> set = binStateResponse.bin_status.entrySet();
+                        setLen = set.size();
+                        MainActivity.Instance.binStates = new BinState[setLen];
+                        BinState[] binStates = MainActivity.Instance.binStates;
+
+
+                        Log.d("temp", "map len:" + setLen);
+                        int i = 0;
+                        for(Map.Entry entry : set)
+                        {
+                            BinState binState = new BinState((String)entry.getKey(),(Integer) entry.getValue());
+                            binStates[i] = binState;
+                            i++;
+                            Log.d("temp", "key:"+ (String)entry.getKey() + "value:"+(Integer)entry.getValue());
+                        }
+                    }
+                    else
+                    {
+                        MainActivity.Instance.binStates = new BinState[0];
                     }
                 }
                 Log.d("BinStatesResponse code", String.valueOf(code));
