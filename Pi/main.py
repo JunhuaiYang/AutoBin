@@ -15,11 +15,14 @@ from MotorCtrl import motor
 import socket
 import json
 import os
+import mpu
 
-# SERVER_ADDR = '192.168.1.107:50051'
-SERVER_ADDR = '192.168.1.199:8181'
+
+SERVER_ADDR = '192.168.1.107:50051'
+# SERVER_ADDR = '192.168.1.199:8181'
 IMAGE_READ_TIME = 1
 RECONN_TIME = 10
+STATUS_TIME = 20
 # GARBAGE = {-1:'未识别', 0:'干垃圾', 1:'湿垃圾', 2:'有害垃圾', 3:'可回收垃圾'}
 GARBAGE = {-1:'未识别', 0:'可回收垃圾', 1:'有害垃圾', 2:'湿垃圾', 3:'干垃圾'}
 # 控制对象全局变量
@@ -29,16 +32,21 @@ BKG_FRAME = None
 CHANNEL:grpc.Channel = None
 STUB:waste_pb2_grpc.WasteServiceStub = None
 CONNECTION_FLAG = False
+MPU = None
+ACCEL_DATA = None  # 陀螺仪数据
 # 用户全局变量
 BIN_ID = -1
 USER_ID = -1
 MY_ADDR = None
 ID_DIRC = {'BIN_ID':-1, 'USER_ID':1}
 REGIS_FLAG = False
+STATUS = 0
+# 状态定义 -1：连接失败  0：正常  1：正在处理垃圾  2：平板角度有问题  3:垃圾识别失败，需要取出垃圾
 
 
 def main():
-    global STATUS_LED, CAMERA, BKG_FRAME, CHANNEL, STUB, MY_ADDR, USER_ID, CONNECTION_FLAG, RECONN_TIME
+    global STATUS_LED, CAMERA, BKG_FRAME, CHANNEL, STUB, MY_ADDR, USER_ID, CONNECTION_FLAG, RECONN_TIME, STATUS, STATUS_TIME
+    count = 0
 
     Init()
     wait_flag = False
@@ -46,6 +54,7 @@ def main():
     #初始化 成功  进入运行状态
     while True:
         if not CONNECTION_FLAG:
+            STATUS = -1
             log.info('正在尝试重连')
             if not Register():
                 time.sleep(RECONN_TIME)
@@ -54,6 +63,7 @@ def main():
         flag, image = isChange()
         if flag:
             if not wait_flag:
+                STATUS = 1
                 STATUS_LED.blink(0.1, 0.1, on_color=(0.7, 0.1, 0.6)) # 闪灯 处理垃圾中
                 log.info('有垃圾进入') # 延时一段时间
                 time.sleep(1)
@@ -85,19 +95,48 @@ def main():
                 BKG_FRAME = GetBackGround()
                 # 处理完成
                 STATUS_LED.color = (0, 1, 0)
+                STATUS = 0
             else:
                 log.info('垃圾识别失败！ 识别结果：{}'.format(response_name))
                 STATUS_LED.color = (1, 0, 0)
                 time.sleep(5)
+                STATUS = 3
+            count = STATUS_TIME+1
         else:
-            STATUS_LED.color = (0, 1, 0)
+            STATUS_LED.color = (0, 1, 0)  # 进入运行状态
+            wait_flag = False
+
+
+        # 判断MPU
+        mpu_angel = mpu.GetAngel()
+        mpu_temp = mpu.GetTemp()
+        if mpu_angel > 5:  # 当前偏转角度过大  需要处理一下
+            STATUS_LED.color = (0.8, 0, 0.4)
+            STATUS = 2
+
+        if count > STATUS_TIME:
+            count = 0
+            try:
+                STUB.BinStatus(waste_pb2.BinStatusRequest(bin_id=BIN_ID, status=STATUS, angel=mpu_angel, temp = mpu_temp))
+            except Exception as ex:
+                if 'connect' in ex.__str__(): # 连接失败
+                    CONNECTION_FLAG = False
+                    log.info('服务器连接失败')
+                    STATUS_LED.color = (1, 0.4, 0.0) # 连接失败
+                else:
+                    log.error('未知错误')
+                    log.error(ex)
+            log.info('向服务器上报状态： 当前状态：{}  当前平板角度：{:.2F}°  当前温度:{:.1F}°C'.format(STATUS, mpu_angel, mpu_temp))
+        else:
+            count+=1
+
 
         time.sleep(IMAGE_READ_TIME)
 
 
 # 初始化状态
 def Init():
-    global STATUS_LED, CAMERA, BKG_FRAME, CHANNEL, STUB, MY_ADDR, USER_ID, BIN_ID, CONNECTION_FLAG, ID_DIRC, REGIS_FLAG
+    global STATUS_LED, CAMERA, BKG_FRAME, CHANNEL, STUB, MY_ADDR, USER_ID, BIN_ID, CONNECTION_FLAG, ID_DIRC, REGIS_FLAG, MPU
 
     if os.path.exists('ID.json'):
         ID_DIRC = json.load(open('ID.json'))
@@ -106,9 +145,10 @@ def Init():
         REGIS_FLAG = True
     else:
         json.dump(ID_DIRC, open('ID.json', 'w'))
-
+    
     STATUS_LED = RGBLED(red=16, green=20, blue=21)
     STATUS_LED.blink(0.1, 0.1, on_color=(1, 0.6, 0)) # 闪灯
+
     # 首先连接相机
     CAMERA = PiCamera()
     CAMERA.resolution = (640, 480)

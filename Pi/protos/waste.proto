@@ -17,6 +17,8 @@ message Null{}
 message BinStatusRequest{
     int32 bin_id = 1;
     int32 status = 2;
+    float angel = 3;
+    float temp = 4;
 }
 
 message BinRegisterRequest {
