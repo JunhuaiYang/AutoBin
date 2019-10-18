@@ -9,13 +9,17 @@ with open('mpu_offset.txt', 'r') as ff:
     offsetX, offsetY = map(float, ff.read().split())
 
 def GetAngel():
-    mpu = mpu6050(0x68)
-    accel_data = mpu.get_accel_data()
-    xdata = accel_data['x'] + offsetX
-    ydata = accel_data['y'] + offsetY
-    zdata = accel_data['z']
-    angel = math.atan(math.sqrt(xdata**2 + ydata**2 ) / zdata )
-    return math.degrees(abs(angel))
+    try:
+        mpu = mpu6050(0x68)
+        accel_data = mpu.get_accel_data()
+        xdata = accel_data['x'] + offsetX
+        ydata = accel_data['y'] + offsetY
+        zdata = accel_data['z']
+        angel = math.atan(math.sqrt(xdata**2 + ydata**2 ) / zdata )
+        return math.degrees(abs(angel))
+    except ZeroDivisionError:
+        return 0
+
 
 def GetTemp():
     mpu = mpu6050(0x68)

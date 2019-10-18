@@ -30,7 +30,7 @@ class MotorCtrl:
         await asyncio.sleep(times[num])
         self.motors[num].stop()
     
-    # 垃圾类别id，-1：未识别； 0：干垃圾； 1： 湿垃圾； 2：有害； 3：可回收'
+    # 垃圾类别id，-1:'未识别', 0:'可回收垃圾', 1:'有害垃圾', 2:'湿垃圾', 3:'干垃圾'
     def MovePan(self, types):
         tasks = []
         if types == 0:
@@ -55,9 +55,9 @@ class MotorCtrl:
             tasks.append(self.asyncMoveMotor(4, 1))
         else:
             return
-
         self.loop.run_until_complete(asyncio.wait(tasks))
 
+    # 平板复原
     def MovePanFlat(self, types):
         tasks = []
         if types == 0:
@@ -82,9 +82,9 @@ class MotorCtrl:
             tasks.append(self.asyncMoveMotor(4, 0))
         else:
             return
-
         self.loop.run_until_complete(asyncio.wait(tasks))
 
+    # 所有同时移动
     def allMove(self, dirc):
         tasks = []
         tasks.append(self.asyncMoveMotor(1, dirc))
@@ -93,6 +93,7 @@ class MotorCtrl:
         tasks.append(self.asyncMoveMotor(4, dirc))
         self.loop.run_until_complete(asyncio.wait(tasks))
     
+    # 具体垃圾信息
     def Garbge(self, types):
         self.MovePan(types)
         sleep(1)

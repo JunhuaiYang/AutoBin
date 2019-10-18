@@ -67,7 +67,6 @@ def main():
                 STATUS_LED.blink(0.1, 0.1, on_color=(0.7, 0.1, 0.6)) # 闪灯 处理垃圾中
                 log.info('有垃圾进入') # 延时一段时间
                 time.sleep(1)
-                log.info('正在识别')
                 wait_flag = True
                 continue
             else:
@@ -75,6 +74,7 @@ def main():
 
             image64 = base64.b64encode(image)
             try:
+                log.info('正在识别')
                 response = STUB.WasteDetect(waste_pb2.WasteRequest(bin_id=str(BIN_ID), waste_image=image64))
             except Exception as ex:
                 if 'connect' in ex.__str__(): # 连接失败
