@@ -1,6 +1,7 @@
 from gpiozero import Motor
 from time import sleep
 import asyncio
+from threading import Lock
 
 class MotorCtrl:
     def __init__(self):
@@ -10,8 +11,11 @@ class MotorCtrl:
         self.motor4 = Motor(23, 24)
         self.motors = (None, self.motor1, self.motor2, self.motor3, self.motor4)
         self.loop = asyncio.get_event_loop()
+        # 创建一个多线程锁
+        self.lock = Lock()
 
     def MoveMotor(self, num, direc, time):
+        self.lock.acquire()
         self.motors[num].stop()
         if direc:
             self.motors[num].forward()
@@ -19,6 +23,7 @@ class MotorCtrl:
             self.motors[num].backward()
         sleep(time)
         self.motors[num].stop()
+        self.lock.release()
 
     async def asyncMoveMotor(self, num, direc):
         times = {1:1.5, 2:1.55, 3:1.58, 4:1.52}
@@ -95,6 +100,7 @@ class MotorCtrl:
     
     # 具体垃圾信息
     def Garbge(self, types):
+        self.lock.acquire()
         self.MovePan(types)
         sleep(1)
         self.MovePanFlat(types)
@@ -119,6 +125,7 @@ class MotorCtrl:
             self.MoveMotor(2, 1, 0.02)
             self.MoveMotor(3, 1, 0.04)
             self.MoveMotor(4, 1, 0.05)
+        self.lock.release()
 
 
 

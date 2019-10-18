@@ -1,0 +1,52 @@
+syntax = "proto3";
+import "google/api/annotations.proto";
+package protos;
+
+message MotorRequest{
+    int32 user_id = 1;
+    int32 motor = 2;
+    int32 dirc = 3;
+}
+
+message StatusRequest{
+    int32 user_id = 1;
+}
+
+message StatusReply{
+    int32 status = 1;
+    float angel = 2;
+    float temp = 3;
+}
+
+message ImageReply{
+    bytes image = 1;
+}
+
+message Null{}
+
+service BinService {
+    // 手动控制电机调用
+    rpc BinMotor (MotorRequest) returns (Null) {
+        option (google.api.http) = {
+            get:"/autobin/binmotor"
+        };
+    }
+
+    // 状态获取
+    rpc BinStatus (StatusRequest) returns (StatusReply) {
+        option (google.api.http) = {
+            post:"/autobin/status"
+            body:"*"
+        };
+    }
+
+    // 垃圾桶当前图像
+    rpc BinImage (StatusRequest) returns (ImageReply) {
+        option (google.api.http) = {
+            post:"/autobin/binimage"
+            body:"*"
+        };
+    }
+
+}
+

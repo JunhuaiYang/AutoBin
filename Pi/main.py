@@ -16,6 +16,9 @@ import socket
 import json
 import os
 import mpu
+import protos.BinServer_pb2 as BinServer_pb2
+import protos.BinServer_pb2_grpc as BinServer_pb2_grpc
+from concurrent import futures
 
 
 SERVER_ADDR = '192.168.1.107:50051'
@@ -165,6 +168,7 @@ def Init():
     STUB = waste_pb2_grpc.WasteServiceStub(CHANNEL)
     MY_ADDR = get_host_ip()
     log.info('当前IP地址为: {}'.format(MY_ADDR))
+    StartSever()
 
     # 初始化完成
     log.info('初始化完成')
@@ -269,6 +273,41 @@ def get_host_ip():
     finally:
         s.close()
     return ip
+
+
+# 远程调用服务器创建
+class BinServer(BinServer_pb2_grpc.BinServiceServicer):
+    # 调用电机
+    def BinMotor(self, request, context):
+        global STATUS_LED, CAMERA, USER_ID, STATUS
+        STATUS_LED.color = (0, 0.7, 0.4)
+        user = request.user_id
+        num = request.motor
+        dirc = request.dirc
+        motor.MoveMotor(num, dirc, 0.1)
+        log.info('来自用户{} 手动模式 电机{} 方向:{}  '.format(user, num, dirc))
+        return BinServer_pb2.Null()
+
+    def BinStatus(self, request, context):
+        global STATUS_LED, CAMERA, USER_ID, STATUS
+        mpu_angel = mpu.GetAngel()
+        mpu_temp = mpu.GetTemp()
+        log.info('来自用户{} 状态获取  当前状态：{}  当前平板角度：{:.2F}°  当前温度:{:.1F}°C'.format(request.user_id, STATUS,mpu_angel ,mpu_temp ))
+        return BinServer_pb2.StatusReply(status = STATUS, angel = mpu_angel, temp = mpu_temp)
+
+    def BinStatus(self, request, context):
+        global STATUS_LED, CAMERA, USER_ID, STATUS
+        my_stream = BytesIO()
+        CAMERA.capture(my_stream, 'jpeg')
+        log.info('来自用户{} 图片获取 '.format(request.user_id))
+        return BinServer_pb2.ImageReply(image = my_stream.getvalue())
+
+def StartSever():
+    servers = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    waste_pb2_grpc.add_WasteServiceServicer_to_server(BinServer(), servers)
+    servers.add_insecure_port('[::]:50051')
+    servers.start()
+    log.info('gRPC服务器启动成功')
 
 
 if __name__ == '__main__':

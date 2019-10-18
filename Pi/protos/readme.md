@@ -9,6 +9,8 @@ python -m pip install googleapis-common-protos
 # 编译方法
 ```
 python -m grpc_tools.protoc -I./ --python_out=. --grpc_python_out=. ./waste.proto
+python -m grpc_tools.protoc -I./ --python_out=. --grpc_python_out=. ./BinServer.proto
+
 ```
 
 ## 编译时需要获得Google Api
