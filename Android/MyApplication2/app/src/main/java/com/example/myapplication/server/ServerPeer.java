@@ -76,7 +76,8 @@ public class ServerPeer {
                 break;
             case Update:
                 MyUpdateTask myUpdateTask = new MyUpdateTask(route, data);
-                myUpdateTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+//                myUpdateTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                myUpdateTask.execute();
                 break;
             case Query:
                 MyQueryTask myQueryTask = new MyQueryTask(route, data);
@@ -371,20 +372,20 @@ public class ServerPeer {
         protected Void doInBackground(Void... voids) {
 
 
-            while (true)    //注销后退出
-            {
+//            while (true)    //注销后退出
+//            {
 
                 if (!MainActivity.Instance.isLogin) {
                     return null;
                 }
-                try {
-                    Thread.sleep(CommonParameter.duration_detect);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if (!MainActivity.Instance.isLogin) {
-                    return null;
-                }
+//                try {
+//                    Thread.sleep(CommonParameter.duration_detect);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                if (!MainActivity.Instance.isLogin) {
+//                    return null;
+//                }
                 updateWaste();
                 updateWeekWaste();
                 updateRanking();
@@ -393,9 +394,10 @@ public class ServerPeer {
                 //更新界面
 
                 Message message = new Message();
-                message.what = 3;
+                message.what = 6;
                 MainActivity.Instance.handler.sendMessage(message);
-            }
+//            }
+            return null;
         }
 
         private void updateWaste()
