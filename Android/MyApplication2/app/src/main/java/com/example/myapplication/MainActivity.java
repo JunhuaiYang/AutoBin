@@ -23,6 +23,7 @@ import com.google.android.material.snackbar.Snackbar;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean isLogin = false, isRename = false;
     public String username, pwd, userid;
-    public String username_rename, pwd_rename, username_register, pwd_register;
+    public String username_rename, pwd_rename, userid_login, pwd_login, username_register, pwd_register;
     public int[] recycleTH, badTH, wetTH, dryTH;    //过去七天的各种垃圾的数量
     public int[] recycleTTH, badTTH, wetTTH, dryTTH, totalTTH;    //今日的各种垃圾数量和历史总垃圾数量
 
@@ -128,6 +129,13 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        menu.getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                UpdateView();
+                return false;
+            }
+        });
         return true;
     }
 
@@ -218,8 +226,13 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 4:
                         RegisterSuccess(msg.getData().getString("user_id"));
+                        break;
                     case 5:
                         QuerySuccess(msg.getData().getString("user_name"));
+                        break;
+                    case 6:
+                        UpdateViewSuccess();
+                        break;
                 }
 
             }
@@ -234,17 +247,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         //记录登陆信息
-        userid = login_userid;
-        pwd = login_userpwd;
-        //存储
-        SharedPreferences.Editor editor = MainActivity.Instance.userInfoStorage.edit();
-        editor.putString("user_id", userid);
-        editor.putString("pwd", pwd);
-        editor.apply();
+        userid_login = login_userid;
+        pwd_login = login_userpwd;
+
 
         //转换为json数据传输
         Gson gson = new Gson();
-        LoginRequest loginRequest = new LoginRequest(userid,pwd);
+        LoginRequest loginRequest = new LoginRequest(userid_login,pwd_login);
         String json = gson.toJson(loginRequest);
 
         Log.d("json" , json);
@@ -253,6 +262,13 @@ public class MainActivity extends AppCompatActivity {
     }
     public void LoginSuccess()        //登陆成功
     {
+        userid = userid_login;
+        pwd = pwd_login;
+        //存储
+        SharedPreferences.Editor editor = MainActivity.Instance.userInfoStorage.edit();
+        editor.putString("user_id", userid);
+        editor.putString("pwd", pwd);
+        editor.apply();
         Toast.makeText(MainActivity.this,"登陆成功",Toast.LENGTH_SHORT).show();
         isLogin = true;     //登陆状态为true
 
@@ -260,11 +276,14 @@ public class MainActivity extends AppCompatActivity {
         tvUserid.setText(userid);
 
         //获取用户名
-        UsernameQuery(userid);
+        QueryUsername(userid);
 
 
         //开启更新心跳包
-        serverPeer.startDetectState();
+//        serverPeer.startDetectState();
+
+        //更新界面
+        UpdateView();
 
     }
 
@@ -288,7 +307,6 @@ public class MainActivity extends AppCompatActivity {
     }
     public void RegisterSuccess(String id)   //注册成功
     {
-        Toast.makeText(MainActivity.this,"注册成功",Toast.LENGTH_SHORT).show();
 
         username = username_register;
         pwd = pwd_register;
@@ -298,6 +316,8 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("pwd", pwd);
         editor.putString("user_name", username);
         editor.apply();
+
+        Toast.makeText(MainActivity.this,"注册成功",Toast.LENGTH_SHORT).show();
 
         //设置界面
         tvUsername.setText(username);
@@ -317,7 +337,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void UsernameQuery(String query_id)
+    public void QueryUsername(String query_id)
     {
         if(query_id.length()<1)
         {
@@ -385,6 +405,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = userInfoStorage.edit();
         editor.putString("user_name", username_rename);
         editor.putString("pwd", pwd_rename);
+        editor.apply();
         username = username_rename;
         pwd = pwd_rename;
 
@@ -399,6 +420,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void UpdateView()
     {
+        serverPeer.sendMessage(MessageType.Update,"", "?" + "user_id=" + userid);
+    }
+
+    public void UpdateViewSuccess()
+    {
         if(StaticsFragment._instance != null)
         {
             StaticsFragment._instance.updateView();
@@ -411,6 +437,7 @@ public class MainActivity extends AppCompatActivity {
         {
             StateFragment._instance.updateView();
         }
+        Toast.makeText(MainActivity.this, "更新成功",Toast.LENGTH_SHORT).show();
     }
 
 }
