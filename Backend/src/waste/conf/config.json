@@ -1,0 +1,24 @@
+{
+  "userName":"root",
+  "password":"123456",
+  "host":"127.0.0.1",
+  "port":"3306",
+  "dbName": "autobin",
+
+  "grpcPort": "8181",
+  "httpPort": "8080",
+  "grpcEndpoint": "127.0.0.1:8181",
+  "httpEndpoint": "127.0.0.1:8080",
+  "httpHost": "127.0.0.1",
+  "verify": "./waste/",
+  "prefix": "",
+
+  "appKey" : "gs7mDc7k2xgjKtDFbCrMlR0g",
+  "secret" : "ldbvSXaSdVjNPXkoa2A2Sls7sHwsIG81",
+  "accessToken": "24.7fcfe4e182fe4eda9278787e2d351abd.2592000.1573812149.282335-17250939",
+  "apiUrl" : "https://aip.baidubce.com/rest/2.0/image-classify/v2/advanced_general",
+  "classApiUrl1" : "http://api.choviwu.top/garbage/getGarbage?",
+
+  "classApiUrl2" : "http://api.tianapi.com/txapi/lajifenlei/?",
+  "classApiKey": "87b558ced9ae4154572757a773443ce6"
+}

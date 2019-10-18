@@ -1,0 +1,64 @@
+syntax = "proto3";
+import "google/api/annotations.proto";
+package protos;
+
+message WasteRequest{
+    string bin_id = 1;      // 垃圾桶id
+    string waste_image = 2; // 垃圾图片数据
+}
+
+
+message WasteReply{
+    int64 res_id = 1;       // 0为可回收、1为有害、2为厨余(湿)、3为其他(干)
+    string waste_name = 2;  // 垃圾名
+}
+
+message Null{}
+
+/*
+message BinStatusRequest{
+     int32 bin_id = 1;   // 垃圾桶id
+     int32 status = 2;   // 垃圾桶状态
+}*/
+
+message BinStatusRequest{
+    int32 bin_id = 1;   // 垃圾桶id
+    int32 status = 2;   // 垃圾桶状态
+    float angel = 3;
+    float temp = 4;
+}
+
+message BinRegisterRequest {
+    int32 user_id = 1;      // 用户账号
+    string ip_address = 2;  // 注册垃圾桶ip地址
+    int32 bin_id = 3;       // 垃圾桶id(大于0表示已登记垃圾桶启动)
+}
+
+message BinRegisterReply {
+    int32 bin_id = 1;   // 垃圾桶id
+}
+
+service WasteService {
+    // 传输实时图片 返回识别结果
+    rpc WasteDetect (WasteRequest) returns (WasteReply) {
+        option (google.api.http) = {
+            post:"/autobin/detect"
+            body:"*"
+        };
+    }
+    // 状态上报
+    rpc BinStatus (BinStatusRequest) returns (Null) {
+        option (google.api.http) = {
+            post:"/autobin/binstatus"
+            body:"*"
+        };
+    }
+    // 垃圾桶注册
+    rpc BinRegister (BinRegisterRequest) returns (BinRegisterReply) {
+        option (google.api.http) = {
+            post:"/autobin/register"
+            body:"*"
+        };
+    }
+}
+

@@ -1,0 +1,429 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "user.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/autobin/user": {
+      "get": {
+        "summary": "用户信息查询(积分)",
+        "operationId": "GetUserInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protosUserInfoReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      },
+      "post": {
+        "summary": "用户注册",
+        "operationId": "UserRegister",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protosUserId"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protosRegisterRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      },
+      "put": {
+        "summary": "用户信息修改",
+        "operationId": "UserUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protosNull"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protosUserUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/autobin/user/bin_info": {
+      "get": {
+        "summary": "获取实时垃圾桶信息",
+        "operationId": "GetBinInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protosBinInfoReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/autobin/user/bin_status": {
+      "get": {
+        "summary": "获取实时垃圾桶状态",
+        "operationId": "GetBinStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protosBinStatusReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/autobin/user/login": {
+      "post": {
+        "summary": "用户登录",
+        "operationId": "UserLogin",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protosNull"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protosLoginRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/autobin/user/scores": {
+      "get": {
+        "summary": "所有用户积分查询",
+        "operationId": "GetUserScores",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protosUserScoresReply"
+            }
+          }
+        },
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/autobin/user/waste": {
+      "get": {
+        "summary": "用户个人垃圾信息统计查询",
+        "operationId": "WasteCount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protosWasteCountReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/autobin/user/week_waste": {
+      "get": {
+        "summary": "最近一周用户个人垃圾信息统计查询",
+        "operationId": "WeekWasteCount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protosWeekWasteCountReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protosBinInfoItem": {
+      "type": "object",
+      "properties": {
+        "bin_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "angel": {
+          "type": "number",
+          "format": "float"
+        },
+        "temp": {
+          "type": "number",
+          "format": "float"
+        },
+        "ip_address": {
+          "type": "string"
+        }
+      },
+      "title": "用户获取个人垃圾桶信息"
+    },
+    "protosBinInfoReply": {
+      "type": "object",
+      "properties": {
+        "sum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "bin_info": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protosBinInfoItem"
+          }
+        }
+      }
+    },
+    "protosBinStatusReply": {
+      "type": "object",
+      "properties": {
+        "bin_status": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "title": "获取垃圾桶实时状态"
+    },
+    "protosLoginRequest": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "string"
+        },
+        "user_password": {
+          "type": "string"
+        }
+      },
+      "title": "登录请求"
+    },
+    "protosNull": {
+      "type": "object"
+    },
+    "protosRegisterRequest": {
+      "type": "object",
+      "properties": {
+        "user_name": {
+          "type": "string"
+        },
+        "user_password": {
+          "type": "string"
+        }
+      },
+      "title": "注册请求"
+    },
+    "protosUserId": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "string"
+        }
+      },
+      "title": "用户Id"
+    },
+    "protosUserInfoReply": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "string"
+        },
+        "user_name": {
+          "type": "string"
+        },
+        "user_password": {
+          "type": "string"
+        },
+        "user_score": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "查询用户信息响应"
+    },
+    "protosUserScore": {
+      "type": "object",
+      "properties": {
+        "ranking": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "user_name": {
+          "type": "string"
+        },
+        "score": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "当前用户垃圾的统计信息响应"
+    },
+    "protosUserScoresReply": {
+      "type": "object",
+      "properties": {
+        "user_sum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "user_scores": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protosUserScore"
+          }
+        }
+      }
+    },
+    "protosUserUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "user_name": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "string"
+        },
+        "user_password": {
+          "type": "string"
+        }
+      },
+      "title": "修改用户名或者密码"
+    },
+    "protosWasteCountReply": {
+      "type": "object",
+      "properties": {
+        "sum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "title": "当前用户垃圾的统计信息响应"
+    },
+    "protosWeekWasteCountReply": {
+      "type": "object",
+      "properties": {
+        "sum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "title": "过去一周当前用户垃圾的统计信息响应"
+    }
+  }
+}

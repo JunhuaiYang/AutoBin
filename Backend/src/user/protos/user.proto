@@ -1,0 +1,147 @@
+syntax = "proto3";
+import "google/api/annotations.proto";
+package protos;
+
+message Null{}
+
+// 用户Id
+message UserId{
+    string user_id = 1;
+}
+
+// 登录请求
+message LoginRequest{
+    string user_id = 1;         // 用户Id
+    string user_password = 2;   // 用户密码
+}
+
+// 注册请求
+message RegisterRequest {
+    string user_name = 1;       // 用户名
+    string user_password = 2;   // 用户密码
+}
+
+// 修改用户名或者密码
+message UserUpdateRequest {
+    string user_name = 1;
+    string user_id = 2; // 用户id不可修改
+    string user_password = 3;
+}
+
+// 当前用户垃圾的统计信息响应
+message WasteCountReply {
+    int32 sum = 1;           // 垃圾总数
+    repeated int32 type = 2;// 垃圾所属类型
+}
+
+// 过去一周当前用户垃圾的统计信息响应
+message WeekWasteCountReply {
+    int32 sum = 1;          // 垃圾总数
+    repeated int32 type = 2;// 垃圾所属类型
+}
+
+// 查询用户信息响应
+message UserInfoReply{
+    string user_id = 1;         // 用户id
+    string user_name = 2;       // 用户名
+    string user_password = 3;   // 用户密码
+    int32 user_score = 4;       // 用户积分
+}
+
+// 当前用户垃圾的统计信息响应
+message UserScore {
+    int32 ranking = 1;      // 名次
+    string user_name = 2;   // 用户名
+    int32 score = 3;        // 用户积分
+}
+message UserScoresReply {
+    int32 user_sum = 1;                 // 总用户数量
+    repeated UserScore user_scores = 2; // 用户积分信息
+}
+
+// 用户获取个人垃圾桶信息
+message BinInfoItem {
+    int32 bin_id = 1;       // 垃圾桶id
+    int32 status = 2;       // 垃圾桶状态
+    float angel = 3;        // 垃圾桶角度
+    float temp = 4;         // 垃圾桶温度
+    string ip_address = 5;  // 垃圾桶ip地址
+}
+message BinInfoReply {
+    int32 sum = 1;                      // 垃圾桶数量
+    repeated BinInfoItem bin_info = 2;  // 垃圾桶信息
+}
+
+
+// 获取垃圾桶实时状态
+message BinStatusReply {
+    map<string,int32> bin_status = 1;   // key为垃圾桶编号，value为状态编号
+}
+
+service UserService {
+    // 用户登录
+    rpc UserLogin (LoginRequest) returns (Null) {
+        option (google.api.http) = {
+            post:"/autobin/user/login"
+            body:"*"
+        };
+    }
+    // 用户注册
+    rpc UserRegister (RegisterRequest) returns (UserId) {
+        option (google.api.http) = {
+            post:"/autobin/user"
+            body:"*"
+        };
+    }
+
+    // 用户信息修改
+    rpc UserUpdate (UserUpdateRequest) returns (Null) {
+        option (google.api.http) = {
+            put:"/autobin/user"
+            body:"*"
+        };
+    }
+
+    // 用户信息查询(积分)
+    rpc GetUserInfo (UserId) returns (UserInfoReply) {
+        option (google.api.http) = {
+            get:"/autobin/user"
+        };
+    }
+
+    // 所有用户积分查询
+    rpc GetUserScores (Null) returns (UserScoresReply) {
+        option (google.api.http) = {
+            get:"/autobin/user/scores"
+        };
+    }
+
+    //  用户个人垃圾信息统计查询
+    rpc WasteCount (UserId) returns (WasteCountReply) {
+        option (google.api.http) = {
+            get:"/autobin/user/waste"
+        };
+    }
+
+    //  最近一周用户个人垃圾信息统计查询
+    rpc WeekWasteCount (UserId) returns (WeekWasteCountReply) {
+        option (google.api.http) = {
+            get:"/autobin/user/week_waste"
+        };
+    }
+
+    // 获取实时垃圾桶状态
+    rpc GetBinStatus (UserId) returns (BinStatusReply) {
+        option (google.api.http) = {
+            get:"/autobin/user/bin_status"
+        };
+    }
+
+    // 获取实时垃圾桶信息
+    rpc GetBinInfo (UserId) returns (BinInfoReply) {
+        option (google.api.http) = {
+            get:"/autobin/user/bin_info"
+        };
+    }
+}
+

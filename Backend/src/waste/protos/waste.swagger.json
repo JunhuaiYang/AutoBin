@@ -1,0 +1,174 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "waste.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/autobin/binstatus": {
+      "post": {
+        "summary": "状态上报",
+        "operationId": "BinStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protosNull"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protosBinStatusRequest"
+            }
+          }
+        ],
+        "tags": [
+          "WasteService"
+        ]
+      }
+    },
+    "/autobin/detect": {
+      "post": {
+        "summary": "传输实时图片 返回识别结果",
+        "operationId": "WasteDetect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protosWasteReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protosWasteRequest"
+            }
+          }
+        ],
+        "tags": [
+          "WasteService"
+        ]
+      }
+    },
+    "/autobin/register": {
+      "post": {
+        "summary": "垃圾桶注册",
+        "operationId": "BinRegister",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protosBinRegisterReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protosBinRegisterRequest"
+            }
+          }
+        ],
+        "tags": [
+          "WasteService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protosBinRegisterReply": {
+      "type": "object",
+      "properties": {
+        "bin_id": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "protosBinRegisterRequest": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "ip_address": {
+          "type": "string"
+        },
+        "bin_id": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "protosBinStatusRequest": {
+      "type": "object",
+      "properties": {
+        "bin_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "angel": {
+          "type": "number",
+          "format": "float"
+        },
+        "temp": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
+    "protosNull": {
+      "type": "object"
+    },
+    "protosWasteReply": {
+      "type": "object",
+      "properties": {
+        "res_id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "waste_name": {
+          "type": "string"
+        }
+      }
+    },
+    "protosWasteRequest": {
+      "type": "object",
+      "properties": {
+        "bin_id": {
+          "type": "string"
+        },
+        "waste_image": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
