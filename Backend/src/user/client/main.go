@@ -75,6 +75,18 @@ func test_GetUserInfo (c pb.UserServiceClient) {
 	log.Printf("Get UserInfo success! UserInfo:",r)
 }
 
+// 查询用户信息
+func test_GetUserScores (c pb.UserServiceClient) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)	//5秒超时
+	defer cancel()
+	r, err := c.GetUserScores(ctx,&pb.Null{})
+	if err != nil {
+		log.Fatalf("could not send request: %v", err)
+	}
+	log.Printf("GetUserScores success! UserScores:",r)
+}
+
+
 // 查询垃圾桶状态
 func test_GetBinStatus (c pb.UserServiceClient) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)	//5秒超时
@@ -158,6 +170,7 @@ func main() {
 	// 然后NewGreeterClient函数基于已经建立的链接构造GreeterClient对象
 	// 返回的client其实是一个NewWasteServiceClient接口对象，通过接口定义的方法就可以调用服务端对应的GRPC服务提供的方法。
 	c := pb.NewUserServiceClient(conn)
-	testAll(c)
+	//testAll(c)
+	test_GetUserScores(c);
 }
 

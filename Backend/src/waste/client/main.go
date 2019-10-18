@@ -74,11 +74,11 @@ func main() {
 		wg.Done()
 	}()
 	go func() {
-		test_BinStatus(c)
+		//test_BinStatus(c)
 		wg.Done()
 	}()
 	go func() {
-		test_BinRegister(c)
+		//test_BinRegister(c)
 		wg.Done()
 	}()
 	wg.Wait()

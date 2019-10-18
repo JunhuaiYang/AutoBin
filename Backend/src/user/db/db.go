@@ -2,7 +2,10 @@ package db
 
 import (
 	"fmt"
+	"log"
+	"runtime"
 	"time"
+	pb "../protos"
 )
 
 type User struct {
@@ -24,8 +27,11 @@ type Waste struct {
 type Bin struct {
 	Bin_id		int		`gorm:"column:bin_id;primary_key;AUTO_INCREMENT"`
 	Status 		int		`gorm:"column:status;"`
-	Comments	string 	`gorm:"column:comments;"`
-	Start_time string	`gorm:"column:start_time;"`
+	Start_time 	int		`gorm:"column:start_time;"`
+	Ip_address	string	`gorm:"column:ip_address;"`
+	Angel 		float32	`gorm:"column:angel;"`
+	Temp		float32 `gorm:"column:temp;"`
+	Comments	string 	`gorm:"column:comment;"`
 }
 
 type UserBinRelation struct {
@@ -43,15 +49,23 @@ type BinWasteRelation struct {
 // 添加用户
 func AddUer(user_name string, user_password string) (user_id string, err error) {
 	db := DB
+	tx := DB.Begin()
 	var newUser User
 	newUser.User_name = user_name
 	newUser.Password = user_password
 	newUser.Score = 0
-	dbret := db.Create(&newUser)
+	dbret := tx.Create(&newUser)
+	if dbret.Error != nil {
+		tx.Rollback()
+		return "", dbret.Error
+	}
+	tx.Commit()
+	var lastUser  User
+	dbret = db.Table("users").Last(&lastUser)
 	if dbret.Error != nil {
 		return "", dbret.Error
 	}
-	return newUser.User_id, nil
+	return lastUser.User_id, nil
 }
 
 // 修改用户 （密码、用户名）
@@ -163,6 +177,31 @@ func GetBinStatuses (user_id string) (map[string]int32 , error) {
 	return res, nil
 }
 
+// 用户查询垃圾桶实时信息
+func GetBinsInfo (user_id string) ([]pb.BinInfoItem , int, error) {
+	db := DB
+	var bin_ids []string
+	dbret := db.Table("user_bin_relations").Where("user_id = ? ", user_id).Pluck("bin_id", &bin_ids)
+	if dbret.Error != nil {
+		fmt.Println(dbret.Error)
+		return nil, 0, dbret.Error
+	}
+	var res = make([]pb.BinInfoItem, len(bin_ids))
+	for i, bin_id := range bin_ids {
+		var bin Bin
+		dbret := db.Table("bins").Where(" bin_id = ? ", bin_id).First(&bin)
+		if dbret.Error != nil {
+			return res, i, dbret.Error
+		}
+		res[i].Temp = bin.Temp
+		res[i].Angel = bin.Angel
+		res[i].IpAddress = bin.Ip_address
+		res[i].BinId = int32(bin.Bin_id)
+		res[i].Status = int32(bin.Status)
+	}
+	return res,len(bin_ids), nil
+}
+
 // 修改用户积分
 func UpdateUserScore(user_id string, score int) (error) {
 	db := DB
@@ -171,4 +210,21 @@ func UpdateUserScore(user_id string, score int) (error) {
 		return dbret.Error
 	}
 	return nil
+}
+
+// 查询所有用户积分
+func GetUserScores() (map[string]int32,error) {
+	var users []User
+	db := DB
+	dbret := db.Find(&users)
+	if dbret.Error != nil {
+		funcName,file,line,_ := runtime.Caller(0)
+		log.Println(  runtime.FuncForPC(funcName).Name(),file,line,dbret.Error.Error())
+		return map[string]int32{}, dbret.Error
+	}
+	scores := make(map[string]int32, len(users))
+	for _, user:= range users {
+		scores[user.User_name] = int32(user.Score)
+	}
+	return scores, nil
 }

@@ -64,7 +64,8 @@ func startHttpServer() error {
 		AllowCredentials:false,
 	})
 	handler := c.Handler(mux)
-	return http.ListenAndServe(fmt.Sprintf("%s",config.HttpHost+":"+config.HttpPort),setFileServer(fileServer, wsproxy.WebsocketProxy(handler)))
+	return http.ListenAndServe(fmt.Sprintf("%s",config.HttpHost+":"+config.HttpPort),
+		setFileServer(fileServer, wsproxy.WebsocketProxy(handler)))
 }
 
 func setFileServer(fileServer, other http.Handler) http.Handler {

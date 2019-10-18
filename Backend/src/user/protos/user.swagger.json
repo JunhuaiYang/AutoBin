@@ -90,6 +90,31 @@
         ]
       }
     },
+    "/autobin/user/bin_info": {
+      "get": {
+        "summary": "获取实时垃圾桶信息",
+        "operationId": "GetBinInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protosBinInfoReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
     "/autobin/user/bin_status": {
       "get": {
         "summary": "获取实时垃圾桶状态",
@@ -142,9 +167,26 @@
         ]
       }
     },
+    "/autobin/user/scores": {
+      "get": {
+        "summary": "所有用户积分查询",
+        "operationId": "GetUserScores",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protosUserScoresReply"
+            }
+          }
+        },
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
     "/autobin/user/waste": {
       "get": {
-        "summary": "用户垃圾信息统计查询",
+        "summary": "用户个人垃圾信息统计查询",
         "operationId": "WasteCount",
         "responses": {
           "200": {
@@ -169,7 +211,7 @@
     },
     "/autobin/user/week_waste": {
       "get": {
-        "summary": "最近一周用户垃圾信息统计查询",
+        "summary": "最近一周用户个人垃圾信息统计查询",
         "operationId": "WeekWasteCount",
         "responses": {
           "200": {
@@ -194,6 +236,46 @@
     }
   },
   "definitions": {
+    "protosBinInfoItem": {
+      "type": "object",
+      "properties": {
+        "bin_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "angel": {
+          "type": "number",
+          "format": "float"
+        },
+        "temp": {
+          "type": "number",
+          "format": "float"
+        },
+        "ip_address": {
+          "type": "string"
+        }
+      },
+      "title": "用户获取个人垃圾桶信息"
+    },
+    "protosBinInfoReply": {
+      "type": "object",
+      "properties": {
+        "sum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "bin_info": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protosBinInfoItem"
+          }
+        }
+      }
+    },
     "protosBinStatusReply": {
       "type": "object",
       "properties": {
@@ -241,7 +323,7 @@
           "type": "string"
         }
       },
-      "title": "用户Id (查询）"
+      "title": "用户Id"
     },
     "protosUserInfoReply": {
       "type": "object",
@@ -261,6 +343,38 @@
         }
       },
       "title": "查询用户信息响应"
+    },
+    "protosUserScore": {
+      "type": "object",
+      "properties": {
+        "ranking": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "user_name": {
+          "type": "string"
+        },
+        "score": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "当前用户垃圾的统计信息响应"
+    },
+    "protosUserScoresReply": {
+      "type": "object",
+      "properties": {
+        "user_sum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "user_scores": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protosUserScore"
+          }
+        }
+      }
     },
     "protosUserUpdateRequest": {
       "type": "object",

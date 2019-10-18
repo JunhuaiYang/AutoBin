@@ -113,6 +113,13 @@
         "user_id": {
           "type": "integer",
           "format": "int32"
+        },
+        "ip_address": {
+          "type": "string"
+        },
+        "bin_id": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -126,6 +133,14 @@
         "status": {
           "type": "integer",
           "format": "int32"
+        },
+        "angel": {
+          "type": "number",
+          "format": "float"
+        },
+        "temp": {
+          "type": "number",
+          "format": "float"
         }
       }
     },
@@ -138,6 +153,9 @@
         "res_id": {
           "type": "string",
           "format": "int64"
+        },
+        "waste_name": {
+          "type": "string"
         }
       }
     },

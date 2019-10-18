@@ -3,6 +3,7 @@ package db
 import (
 	"fmt"
 	"log"
+	"runtime"
 	"strconv"
 	"time"
 )
@@ -18,7 +19,7 @@ type Waste struct {
 	Waste_id 		int		`gorm:"column:id;primary_key;AUTO_INCREMENT"`
 	Bin_id			int		`gorm:"column:bin_id;"`
 	Waste_name		string	`gorm:"column:waste_name;"`
-	Create_time		string 	`gorm:"column:create_time;"`
+	Create_time		int 	`gorm:"column:create_time;"`
 	Type_id			int		`gorm:"column:type_id;"`
 	Image			[]byte	`gorm:"column:image;"`
 }
@@ -27,6 +28,9 @@ type Bin struct {
 	Bin_id		int		`gorm:"column:bin_id;primary_key;AUTO_INCREMENT"`
 	Status 		int		`gorm:"column:status;"`
 	Start_time 	int		`gorm:"column:start_time;"`
+	Ip_address	string	`gorm:"column:ip_address;"`
+	Angel 		float32	`gorm:"column:angel;"`
+	Temp		float32 `gorm:"column:temp;"`
 	Comments	string 	`gorm:"column:comment;"`
 }
 
@@ -42,20 +46,21 @@ type BinWasteRelation struct {
 	Waste_id	int `gorm:"column:waste_id"`
 }
 
-// 添加垃圾信息 waste
+// 添加垃圾信息 wastes
 func AddWaste(waste_name string, bin_id string,type_id int, image []byte ) (error) {
-	fmt.Println("AddWaste(",waste_name, bin_id, type_id,")")
+	log.Println("AddWaste(",waste_name, bin_id, type_id,")")
 	db := DB
 	/// 创建新的垃圾记录
 	newWaste := Waste{}
 	newWaste.Bin_id, _ = strconv.Atoi(bin_id)
 	newWaste.Waste_name = waste_name
 	newWaste.Image = image
-	newWaste.Create_time = string(time.Now().Unix())
+	newWaste.Create_time = int(time.Now().Unix())
 	newWaste.Type_id = type_id
 	tx := db.Begin()
 	dbret := tx.Create(&newWaste)
 	if dbret.Error != nil {
+		log.Println(dbret.Error)
 		return dbret.Error
 	}
 
@@ -76,7 +81,8 @@ func AddWaste(waste_name string, bin_id string,type_id int, image []byte ) (erro
 	dbret = db.Table("user_bin_relations").Where("bin_id = ?",bin_id ).First(&userBinRelation)
 	if dbret.Error != nil {	// user_bin_relation 记录不存在
 		tx.Rollback()
-		log.Fatal(dbret.Error)
+		funcName,file,_,_ := runtime.Caller(0)
+		log.Println(  runtime.FuncForPC(funcName).Name(),file,dbret.Error)
 		return dbret.Error
 	}
 	var user User
@@ -99,7 +105,7 @@ func AddWaste(waste_name string, bin_id string,type_id int, image []byte ) (erro
 	return nil
 }
 
-// 修改用户积分 user
+// 修改用户积分 users
 func UpdateUserScore(user_id int, score int) (error) {
 	db := DB
 	var user User
@@ -115,7 +121,7 @@ func UpdateUserScore(user_id int, score int) (error) {
 	return nil
 }
 
-// 添加新垃圾桶信息	bin & bin_user_relation
+// 添加新垃圾桶信息	bin & bin_user_relations
 func AddBin(user_id int) (int , error) {
 	db := DB
 	var newBin Bin
@@ -143,19 +149,34 @@ func AddBin(user_id int) (int , error) {
 	return newBin.Bin_id, nil
 }
 
-// 修改垃圾桶状态  bin
-func UpdateBinStatus(bin_id int, status_id int) (error) {
+// 修改垃圾桶状态  bins
+func UpdateBinStatus(bin_id int, status_id int, angel float32, term float32) (error) {
 	db := DB
-	var bin Bin
-	db.Where("bin_id = ?", bin_id).Find(&bin)
-	if bin.Status != status_id {
-		tx := db.Begin()
-		dbret := tx.Model(&Bin{}).Where("bin_id = ?", bin_id).Update("status",status_id)
-		if dbret.Error != nil {
-			tx.Rollback()
-			return dbret.Error
-		}
-		tx.Commit()
+	//var bin Bin
+	//db.Where("bin_id = ?", bin_id).Find(&bin)
+	tx := db.Begin()
+	dbret := tx.Model(&Bin{}).Where("bin_id = ?", bin_id).Update(
+		map[string]interface{}{"status":status_id, "angel":angel, "term":term })
+	if dbret.Error != nil {
+		tx.Rollback()
+		return dbret.Error
 	}
+	tx.Commit()
 	return nil
+}
+
+// 查询waste的type_id
+func SearchWasteType(waste_name string) (int, error) {
+	log.Println("SearchWasteType(waste_name):",waste_name)
+	var waste Waste
+	count := 0
+	db := DB
+	db.Model(&Waste{}).Where(" waste_name = ? ", waste_name).Find(&waste).Count(&count)
+	if count == 0 {
+		return -2, nil
+	}
+	if db.Error != nil {
+		return -2, db.Error
+	}
+	return waste.Type_id, nil
 }

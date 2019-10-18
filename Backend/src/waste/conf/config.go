@@ -21,13 +21,17 @@ type ConfigInfo struct {
 	Verify			string `json:verify`
 	Prefix			string `json:prefix`
 	GrpcEndpoint	string `json:grpcEndpoint`
+	HttpEndpoint 	string `json:httpEndpoint`
 	HttpHost		string `json:httpHost`
 
 	AppKey			string `json:appKey`		// 百度云应用键值
 	Secret			string `json:secret`		// 百度云应用秘钥
 	AccessToken		string `json:accessToken`	// 调api使用的token
 	ApiUrl			string `json:apiUrl`		// api路径 获取物品名
-	ClassApiUrl		string `json:ClassApiUrl`	// api路径 获取分类
+	ClassApiUrl1	string `json:ClassApiUrl1`	// api路径1 获取分类
+
+	ClassApiUrl2	string `json:ClassApiUrl2`	// api路径2 获取分类
+	ClassApiKey		string `json:classApiKey`	// 用户自己的APIKEY
 }
 
 var Config ConfigInfo

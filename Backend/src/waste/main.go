@@ -25,6 +25,7 @@ func startGrpcServer() (error) {
 	}
 
 	grpcServer := grpc.NewServer()
+	// handlers.NewService()
 	pb.RegisterWasteServiceServer(grpcServer, handlers.NewService())
 	return grpcServer.Serve(lis)
 }
@@ -39,7 +40,7 @@ func startHttpServer() error {
 	ctx, cancel :=context.WithCancel(ctx)
 	defer  cancel()
 
-	mux := runtime.NewServeMux()
+	mux := runtime.NewServeMux()	// 路由管理器
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 	err := pb.RegisterWasteServiceHandlerFromEndpoint(ctx, mux, config.GrpcEndpoint, opts)
 	if err != nil {
@@ -62,7 +63,8 @@ func startHttpServer() error {
 		AllowCredentials:false,
 	})
 	handler := c.Handler(mux)
-	return http.ListenAndServe(fmt.Sprintf("%s",config.HttpHost+":"+config.HttpPort),setFileServer(fileServer, wsproxy.WebsocketProxy(handler)))
+	return http.ListenAndServe(fmt.Sprintf("%s",config.HttpHost+":"+config.HttpPort),
+		setFileServer(fileServer, wsproxy.WebsocketProxy(handler)))
 }
 
 func setFileServer(fileServer, other http.Handler) http.Handler {
