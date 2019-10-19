@@ -37,6 +37,7 @@ STUB:waste_pb2_grpc.WasteServiceStub = None
 CONNECTION_FLAG = False
 MPU = None
 ACCEL_DATA = None  # 陀螺仪数据
+SERVER = None   # 本地服务器
 # 用户全局变量
 BIN_ID = -1
 USER_ID = -1
@@ -44,7 +45,7 @@ MY_ADDR = None
 ID_DIRC = {'BIN_ID':-1, 'USER_ID':1}
 REGIS_FLAG = False
 STATUS = 0
-# 状态定义 -1：连接失败  0：正常  1：正在处理垃圾  2：平板角度有问题  3:垃圾识别失败，需要取出垃圾
+# 状态定义 -2:垃圾识别失败，需要取出垃圾 -1：连接失败  1：正常  2：正在处理垃圾  3：平板角度有问题, 需要处理  
 
 
 def main():
@@ -66,7 +67,7 @@ def main():
         flag, image = isChange()
         if flag:
             if not wait_flag:
-                STATUS = 1
+                STATUS = 2
                 STATUS_LED.blink(0.1, 0.1, on_color=(0.7, 0.1, 0.6)) # 闪灯 处理垃圾中
                 log.info('有垃圾进入') # 延时一段时间
                 time.sleep(1)
@@ -98,12 +99,12 @@ def main():
                 BKG_FRAME = GetBackGround()
                 # 处理完成
                 STATUS_LED.color = (0, 1, 0)
-                STATUS = 0
+                STATUS = 1
             else:
                 log.info('垃圾识别失败！ 识别结果：{}'.format(response_name))
                 STATUS_LED.color = (1, 0, 0)
                 time.sleep(5)
-                STATUS = 3
+                STATUS = -2
             count = STATUS_TIME+1
         else:
             STATUS_LED.color = (0, 1, 0)  # 进入运行状态
@@ -115,7 +116,7 @@ def main():
         mpu_temp = mpu.GetTemp()
         if mpu_angel > 5:  # 当前偏转角度过大  需要处理一下
             STATUS_LED.color = (0.8, 0, 0.4)
-            STATUS = 2
+            STATUS = 3
 
         if count > STATUS_TIME:
             count = 0
@@ -168,6 +169,7 @@ def Init():
     STUB = waste_pb2_grpc.WasteServiceStub(CHANNEL)
     MY_ADDR = get_host_ip()
     log.info('当前IP地址为: {}'.format(MY_ADDR))
+    # 启动反向服务
     StartSever()
 
     # 初始化完成
@@ -176,7 +178,7 @@ def Init():
     Register()
 
 def Register():
-    global BIN_ID, USER_ID, MY_ADDR, CONNECTION_FLAG, STATUS_LED, REGIS_FLAG, ID_DIRC
+    global BIN_ID, USER_ID, MY_ADDR, CONNECTION_FLAG, STATUS_LED, REGIS_FLAG, ID_DIRC, STATUS
     # 连接远程服务器测试
     STATUS_LED.blink(0.1, 0.1, on_color=(0, 0.6, 0.6)) # 闪灯
     try:
@@ -196,6 +198,7 @@ def Register():
             return False
     log.info('向服务器注册成功！当前垃圾桶ID为：{}'.format(BIN_ID))
     STATUS_LED.color = (0, 1, 0) # 正常状态
+    STATUS = 1
     CONNECTION_FLAG = True
     return CONNECTION_FLAG
 
@@ -280,13 +283,12 @@ class BinServer(BinServer_pb2_grpc.BinServiceServicer):
     # 调用电机
     def BinMotor(self, request, context):
         global STATUS_LED, CAMERA, USER_ID, STATUS
-        STATUS_LED.color = (0, 0.7, 0.4)
         user = request.user_id
         num = request.motor
         dirc = request.dirc
         motor.MoveMotor(num, dirc, 0.1)
         log.info('来自用户{} 手动模式 电机{} 方向:{}  '.format(user, num, dirc))
-        return BinServer_pb2.Null()
+        return BinServer_pb2.NULL()
 
     def BinStatus(self, request, context):
         global STATUS_LED, CAMERA, USER_ID, STATUS
@@ -295,7 +297,7 @@ class BinServer(BinServer_pb2_grpc.BinServiceServicer):
         log.info('来自用户{} 状态获取  当前状态：{}  当前平板角度：{:.2F}°  当前温度:{:.1F}°C'.format(request.user_id, STATUS,mpu_angel ,mpu_temp ))
         return BinServer_pb2.StatusReply(status = STATUS, angel = mpu_angel, temp = mpu_temp)
 
-    def BinStatus(self, request, context):
+    def BinImage(self, request, context):
         global STATUS_LED, CAMERA, USER_ID, STATUS
         my_stream = BytesIO()
         CAMERA.capture(my_stream, 'jpeg')
@@ -303,11 +305,12 @@ class BinServer(BinServer_pb2_grpc.BinServiceServicer):
         return BinServer_pb2.ImageReply(image = my_stream.getvalue())
 
 def StartSever():
-    servers = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    waste_pb2_grpc.add_WasteServiceServicer_to_server(BinServer(), servers)
-    servers.add_insecure_port('[::]:50051')
-    servers.start()
-    log.info('gRPC服务器启动成功')
+    global SERVER
+    SERVER = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    BinServer_pb2_grpc.add_BinServiceServicer_to_server(BinServer(), SERVER)
+    SERVER.add_insecure_port('[::]:8081')
+    SERVER.start()
+    log.info('gRPC服务器启动成功 地址为{}:8081'.format(MY_ADDR))
 
 
 if __name__ == '__main__':

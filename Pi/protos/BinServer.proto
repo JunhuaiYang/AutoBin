@@ -22,11 +22,11 @@ message ImageReply{
     bytes image = 1;
 }
 
-message Null{}
+message NULL{}
 
 service BinService {
     // 手动控制电机调用
-    rpc BinMotor (MotorRequest) returns (Null) {
+    rpc BinMotor (MotorRequest) returns (NULL) {
         option (google.api.http) = {
             get:"/autobin/binmotor"
         };

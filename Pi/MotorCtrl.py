@@ -1,7 +1,7 @@
 from gpiozero import Motor
 from time import sleep
 import asyncio
-from threading import Lock
+from threading import RLock
 
 class MotorCtrl:
     def __init__(self):
@@ -12,7 +12,7 @@ class MotorCtrl:
         self.motors = (None, self.motor1, self.motor2, self.motor3, self.motor4)
         self.loop = asyncio.get_event_loop()
         # 创建一个多线程锁
-        self.lock = Lock()
+        self.lock = RLock()
 
     def MoveMotor(self, num, direc, time):
         self.lock.acquire()
@@ -126,7 +126,6 @@ class MotorCtrl:
             self.MoveMotor(3, 1, 0.04)
             self.MoveMotor(4, 1, 0.05)
         self.lock.release()
-
 
 
 motor = MotorCtrl()

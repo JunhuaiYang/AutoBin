@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='protos',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x0f\x42inServer.proto\x12\x06protos\x1a\x1cgoogle/api/annotations.proto\"<\n\x0cMotorRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x05\x12\r\n\x05motor\x18\x02 \x01(\x05\x12\x0c\n\x04\x64irc\x18\x03 \x01(\x05\" \n\rStatusRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x05\":\n\x0bStatusReply\x12\x0e\n\x06status\x18\x01 \x01(\x05\x12\r\n\x05\x61ngel\x18\x02 \x01(\x02\x12\x0c\n\x04temp\x18\x03 \x01(\x02\"\x1b\n\nImageReply\x12\r\n\x05image\x18\x01 \x01(\x0c\"\x06\n\x04Null2\x81\x02\n\nBinService\x12I\n\x08\x42inMotor\x12\x14.protos.MotorRequest\x1a\x0c.protos.Null\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/autobin/binmotor\x12S\n\tBinStatus\x12\x15.protos.StatusRequest\x1a\x13.protos.StatusReply\"\x1a\x82\xd3\xe4\x93\x02\x14\"\x0f/autobin/status:\x01*\x12S\n\x08\x42inImage\x12\x15.protos.StatusRequest\x1a\x12.protos.ImageReply\"\x1c\x82\xd3\xe4\x93\x02\x16\"\x11/autobin/binimage:\x01*b\x06proto3')
+  serialized_pb=_b('\n\x0f\x42inServer.proto\x12\x06protos\x1a\x1cgoogle/api/annotations.proto\"<\n\x0cMotorRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x05\x12\r\n\x05motor\x18\x02 \x01(\x05\x12\x0c\n\x04\x64irc\x18\x03 \x01(\x05\" \n\rStatusRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x05\":\n\x0bStatusReply\x12\x0e\n\x06status\x18\x01 \x01(\x05\x12\r\n\x05\x61ngel\x18\x02 \x01(\x02\x12\x0c\n\x04temp\x18\x03 \x01(\x02\"\x1b\n\nImageReply\x12\r\n\x05image\x18\x01 \x01(\x0c\"\x06\n\x04NULL2\x81\x02\n\nBinService\x12I\n\x08\x42inMotor\x12\x14.protos.MotorRequest\x1a\x0c.protos.NULL\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/autobin/binmotor\x12S\n\tBinStatus\x12\x15.protos.StatusRequest\x1a\x13.protos.StatusReply\"\x1a\x82\xd3\xe4\x93\x02\x14\"\x0f/autobin/status:\x01*\x12S\n\x08\x42inImage\x12\x15.protos.StatusRequest\x1a\x12.protos.ImageReply\"\x1c\x82\xd3\xe4\x93\x02\x16\"\x11/autobin/binimage:\x01*b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
 
@@ -181,8 +181,8 @@ _IMAGEREPLY = _descriptor.Descriptor(
 
 
 _NULL = _descriptor.Descriptor(
-  name='Null',
-  full_name='protos.Null',
+  name='NULL',
+  full_name='protos.NULL',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
@@ -207,7 +207,7 @@ DESCRIPTOR.message_types_by_name['MotorRequest'] = _MOTORREQUEST
 DESCRIPTOR.message_types_by_name['StatusRequest'] = _STATUSREQUEST
 DESCRIPTOR.message_types_by_name['StatusReply'] = _STATUSREPLY
 DESCRIPTOR.message_types_by_name['ImageReply'] = _IMAGEREPLY
-DESCRIPTOR.message_types_by_name['Null'] = _NULL
+DESCRIPTOR.message_types_by_name['NULL'] = _NULL
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 MotorRequest = _reflection.GeneratedProtocolMessageType('MotorRequest', (_message.Message,), {
@@ -238,12 +238,12 @@ ImageReply = _reflection.GeneratedProtocolMessageType('ImageReply', (_message.Me
   })
 _sym_db.RegisterMessage(ImageReply)
 
-Null = _reflection.GeneratedProtocolMessageType('Null', (_message.Message,), {
+NULL = _reflection.GeneratedProtocolMessageType('NULL', (_message.Message,), {
   'DESCRIPTOR' : _NULL,
   '__module__' : 'BinServer_pb2'
-  # @@protoc_insertion_point(class_scope:protos.Null)
+  # @@protoc_insertion_point(class_scope:protos.NULL)
   })
-_sym_db.RegisterMessage(Null)
+_sym_db.RegisterMessage(NULL)
 
 
 

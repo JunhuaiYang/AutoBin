@@ -17,7 +17,7 @@ class BinServiceStub(object):
     self.BinMotor = channel.unary_unary(
         '/protos.BinService/BinMotor',
         request_serializer=BinServer__pb2.MotorRequest.SerializeToString,
-        response_deserializer=BinServer__pb2.Null.FromString,
+        response_deserializer=BinServer__pb2.NULL.FromString,
         )
     self.BinStatus = channel.unary_unary(
         '/protos.BinService/BinStatus',
@@ -62,7 +62,7 @@ def add_BinServiceServicer_to_server(servicer, server):
       'BinMotor': grpc.unary_unary_rpc_method_handler(
           servicer.BinMotor,
           request_deserializer=BinServer__pb2.MotorRequest.FromString,
-          response_serializer=BinServer__pb2.Null.SerializeToString,
+          response_serializer=BinServer__pb2.NULL.SerializeToString,
       ),
       'BinStatus': grpc.unary_unary_rpc_method_handler(
           servicer.BinStatus,
