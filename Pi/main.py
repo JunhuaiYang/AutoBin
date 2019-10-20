@@ -21,8 +21,8 @@ import protos.BinServer_pb2_grpc as BinServer_pb2_grpc
 from concurrent import futures
 
 
-SERVER_ADDR = '192.168.1.107:50051'
-# SERVER_ADDR = '192.168.1.199:8181'
+# SERVER_ADDR = '192.168.1.107:50051'
+SERVER_ADDR = '192.168.1.199:8181'
 IMAGE_READ_TIME = 1
 RECONN_TIME = 10
 STATUS_TIME = 20
@@ -50,7 +50,8 @@ STATUS = 0
 
 def main():
     global STATUS_LED, CAMERA, BKG_FRAME, CHANNEL, STUB, MY_ADDR, USER_ID, CONNECTION_FLAG, RECONN_TIME, STATUS, STATUS_TIME
-    count = 0
+    count = STATUS_TIME+1
+    fail_count = 0
 
     Init()
     wait_flag = False
@@ -66,6 +67,14 @@ def main():
 
         flag, image = isChange()
         if flag:
+            if STATUS == -2:
+                if fail_count > 10:
+                    fail_count = 0
+                    STATUS == 1
+                else:
+                    log.info('请取出识别失败的垃圾！')
+                    time.sleep(1)
+                continue
             if not wait_flag:
                 STATUS = 2
                 STATUS_LED.blink(0.1, 0.1, on_color=(0.7, 0.1, 0.6)) # 闪灯 处理垃圾中
@@ -88,13 +97,14 @@ def main():
                 else:
                     log.error('未知错误')
                     log.error(ex)
+                continue
 
             response_id = response.res_id
             response_name = response.waste_name
             if response_id>-1:
                 log.info('垃圾识别结果：{}  属于：{}'.format(response_name, GARBAGE[response_id]))
                 motor.Garbge(response_id)
-                time.sleep(2) # 等待稳定
+                time.sleep(1) # 等待稳定
                 # 重新更新背景
                 BKG_FRAME = GetBackGround()
                 # 处理完成
@@ -107,6 +117,7 @@ def main():
                 STATUS = -2
             count = STATUS_TIME+1
         else:
+            STATUS = 1
             STATUS_LED.color = (0, 1, 0)  # 进入运行状态
             wait_flag = False
 
@@ -117,6 +128,7 @@ def main():
         if mpu_angel > 5:  # 当前偏转角度过大  需要处理一下
             STATUS_LED.color = (0.8, 0, 0.4)
             STATUS = 3
+            log.warning('平板倾斜角度过大！')
 
         if count > STATUS_TIME:
             count = 0
