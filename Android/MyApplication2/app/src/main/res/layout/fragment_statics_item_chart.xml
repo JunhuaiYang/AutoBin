@@ -3,11 +3,16 @@
     android:id="@+id/fragment_statics_item_chart"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    android:orientation="horizontal">
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:text="最近七天的垃圾统计"
+        />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="180dp"
         />
 </LinearLayout>

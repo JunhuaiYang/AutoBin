@@ -100,37 +100,46 @@ public class StaticsFragmentAdapter extends RecyclerView.Adapter<StaticsFragment
                 holder.imageView.setImageResource(R.mipmap.gan);
                 viewHolders[3] = holder;
                 break;
-            case 4:
+            case 4: //未识别垃圾
+                holder.tv_trashtype.setText("未识别");
+                holder.tv_trashtype.setTextColor(mContext.getResources().getColor(R.color.colorUnId));
+                holder.tv_today.setText(String.valueOf(MainActivity.Instance.unidenTTH[0]));
+                holder.tv_week.setText(String.valueOf(MainActivity.Instance.unidenTTH[1]));
+                holder.tv_history.setText(String.valueOf(MainActivity.Instance.unidenTTH[2]));
+                holder.imageView.setImageResource(R.mipmap.weishibi);
+                viewHolders[3] = holder;
+                break;
+            case 5:
                 holder.tv_today.setText(String.valueOf(MainActivity.Instance.totalTTH[0]));
                 holder.tv_week.setText(String.valueOf(MainActivity.Instance.totalTTH[1]));
                 holder.tv_history.setText(String.valueOf(MainActivity.Instance.totalTTH[2]));
                 viewHolders[4] = holder;
 
-            case 5: //表格
+            case 6: //表格
 
                 viewHolders[5] = holder;
 
                 break;
-            case 6: //可回收垃圾
+            case 7: //可回收垃圾
                 holder.tv_title.setText("可回收垃圾");
                 holder.tv_title.setTextColor(mContext.getResources().getColor(R.color.colorRecycleTrash));
                 holder.tv_content.setText("可回收垃圾是指，适宜回收利用和资源化利用的生活废弃物，如废纸张、废塑料、废玻璃制品、废金属、废织物等");
                 break;
-            case 7: //有害垃圾
+            case 8: //有害垃圾
 
                 holder.tv_title.setText("有害垃圾");
                 holder.tv_title.setTextColor(mContext.getResources().getColor(R.color.colorBadTrash));
                 holder.tv_content.setText("有害垃圾是指，对人体健康或者自然环境造成直接或潜在危害的废弃物\n主要包括：\n" +
                         "废电池（充电电池、铅酸电池、镍镉电池、纽扣电池等）、废油漆、消毒剂、荧光灯管、含汞温度计、废药品及其包装物等");
                 break;
-            case 8: //湿垃圾
+            case 9: //湿垃圾
 
                 holder.tv_title.setText("湿垃圾");
                 holder.tv_title.setTextColor(mContext.getResources().getColor(R.color.colorWetTrash));
                 holder.tv_content.setText("湿垃圾是指，日常生活垃圾产生的容易腐烂的生物质废弃物;\n 主要包括：\n" +
                         "食材废料、剩饭剩菜、过期食品、蔬菜水果、瓜皮果核、花卉绿植、中药残渣等");
                 break;
-            case 9: //干垃圾
+            case 10: //干垃圾
 
                 holder.tv_title.setText("干垃圾");
                 holder.tv_title.setTextColor(mContext.getResources().getColor(R.color.colorDryTrash));
@@ -143,11 +152,11 @@ public class StaticsFragmentAdapter extends RecyclerView.Adapter<StaticsFragment
     @Override
     public int getItemViewType(int position) {
         super.getItemViewType(position);
-        if (position < 4) {
+        if (position < 5) { //4种垃圾加未识别垃圾
             return 0;
-        } else if (position == 4) {
+        } else if (position == 5) { //总共垃圾
             return 1;
-        } else if (position == 5) {
+        } else if (position == 6) { //图标
             return 2;
         } else {
             return 3;
@@ -157,8 +166,8 @@ public class StaticsFragmentAdapter extends RecyclerView.Adapter<StaticsFragment
 
     @Override
     public int getItemCount() {
-        return 5 + 1 + 4;
-    }
+        return 4 + 1 + 1 + 1 + 4;
+    }   //4：4中垃圾 1：未识别 1：总共的 1：图标 4：标签
 
     public void updateView() //更新视图
     {
@@ -235,6 +244,11 @@ public class StaticsFragmentAdapter extends RecyclerView.Adapter<StaticsFragment
                             tv_today.setText(String.valueOf(MainActivity.Instance.dryTTH[0]));
                             tv_week.setText(String.valueOf(MainActivity.Instance.dryTTH[1]));
                             tv_history.setText(String.valueOf(MainActivity.Instance.dryTTH[2]));
+                            break;
+                        case 4: //未识别垃圾
+                            tv_today.setText(String.valueOf(MainActivity.Instance.unidenTTH[0]));
+                            tv_week.setText(String.valueOf(MainActivity.Instance.unidenTTH[1]));
+                            tv_history.setText(String.valueOf(MainActivity.Instance.unidenTTH[2]));
                             break;
 
                     }
