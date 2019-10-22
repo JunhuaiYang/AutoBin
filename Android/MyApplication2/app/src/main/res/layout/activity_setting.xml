@@ -10,7 +10,7 @@
         android:id="@+id/btn_rename"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:text="修改账号名或密码"
+        android:text="修改用户名或密码(id无法修改)"
         android:textSize="20sp"
         />
     <Button

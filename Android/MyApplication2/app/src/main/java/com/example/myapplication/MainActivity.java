@@ -2,18 +2,27 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import com.example.myapplication.AutoBin.AutoBinPeer;
+import com.example.myapplication.AutoBin.Presenter;
 import com.example.myapplication.activity.ui.LoginActivity;
 import com.example.myapplication.activity.ui.SettingActivity;
+import com.example.myapplication.common.AutoBinOprationType;
+import com.example.myapplication.common.AutoBinStatusResponse;
+import com.example.myapplication.common.AutoBinUserID;
+import com.example.myapplication.common.BinInfoResponse;
 import com.example.myapplication.common.BinState;
 import com.example.myapplication.common.CommonParameter;
 import com.example.myapplication.common.LoginRequest;
-import com.example.myapplication.common.MessageType;
+import com.example.myapplication.common.MotorRequest;
+import com.example.myapplication.common.ServerOprationType;
 import com.example.myapplication.common.RegisterRequest;
 import com.example.myapplication.common.UpdateAccountRequest;
 import com.example.myapplication.common.UserRanking;
 import com.example.myapplication.server.ServerPeer;
+import com.example.myapplication.ui.other.MyDialog;
 import com.example.myapplication.ui.ranking.RankingFragment;
 import com.example.myapplication.ui.state.StateFragment;
 import com.example.myapplication.ui.statics.StaticsFragment;
@@ -46,16 +55,25 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Presenter {
 
-    public boolean isLogin = false, isRename = false;
+    public boolean isLogin = false, isRename = false, MotorViewIsOn = false , CameraViewIsOn = false;
     public String username, pwd, userid;
     public String username_rename, pwd_rename, userid_login, pwd_login, username_register, pwd_register;
     public int[] recycleTH, badTH, wetTH, dryTH;    //过去七天的各种垃圾的数量
-    public int[] recycleTTH, badTTH, wetTTH, dryTTH, totalTTH;    //今日的各种垃圾数量和历史总垃圾数量
+    public int[] recycleTTH, badTTH, wetTTH, dryTTH, unidenTTH, totalTTH;    //今日的各种垃圾数量和历史总垃圾数量
 
     public BinState[] binStates;    //各个垃圾桶的状态
     public UserRanking[] userRankings;  //所有用户的排行榜
+
+    public BinInfoResponse binInfoResponse; //所有垃圾桶的详细信息；
+
+    public AutoBinStatusResponse autoBinStatus = null;  //垃圾桶状态信息
+    public Bitmap  autoBinPhoto = null;     //垃圾桶拍照信息
+
+    public MyDialog handMotorDialog = null;
+    public MyDialog photoDialog = null;
+
 
 
     public static MainActivity Instance;
@@ -80,6 +98,9 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
 
     ServerPeer serverPeer;
+    AutoBinPeer autoBinPeer;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Instance = this;
@@ -109,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         serverPeer = new ServerPeer();
+        autoBinPeer = new AutoBinPeer();
 
         //数据初始化
         initData();
@@ -148,10 +170,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void initData()
     {
-        recycleTH = new int[]{1, 1, 1, 1, 1, 1, 1};
-        badTH = new int[]{2, 2, 2, 2, 2, 2, 2};
-        wetTH = new int[]{3, 3, 3, 3, 3, 3, 3};
-        dryTH = new int[]{4, 4, 4, 4, 4, 4, 4};
+        recycleTH = new int[]{1, 2, 3, 4, 5, 6, 7};
+        badTH = new int[]{2, 3, 4, 5, 6, 7, 8};
+        wetTH = new int[]{3, 4, 5, 6, 7, 8, 9};
+        dryTH = new int[]{4, 5, 6, 7, 8, 9, 10};
 
 //        recycleTH = new int[7];
 //        badTH = new int[7];
@@ -163,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
         wetTTH = new int[3];
         dryTTH = new int[3];
         totalTTH = new int[3];
+        unidenTTH = new int[3];
 
         binStates = new BinState[1];
         BinState binState = new BinState("未连接任意垃圾桶",1);
@@ -172,6 +195,8 @@ public class MainActivity extends AppCompatActivity {
         UserRanking userRanking = new UserRanking(1,"未登录", 0);
         userRankings[0] = userRanking;
 
+
+        binInfoResponse = new BinInfoResponse(1,1,1,1,1,"127.0.0.1");
     }
 
     //基本内部存储设计
@@ -233,6 +258,14 @@ public class MainActivity extends AppCompatActivity {
                     case 6:
                         UpdateViewSuccess();
                         break;
+                    case 7:
+                        UpdateMotorView();
+                        break;
+                    case 8:
+                        UpdateCameraView();
+                        break;
+                    case 9:
+                        break;
                 }
 
             }
@@ -258,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("json" , json);
 
-        serverPeer.sendMessage(MessageType.Login, CommonParameter.route_login, json);
+        serverPeer.sendMessage(ServerOprationType.Login, CommonParameter.route_login, json);
     }
     public void LoginSuccess()        //登陆成功
     {
@@ -303,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String json = gson.toJson(registerRequest);
 
-        serverPeer.sendMessage(MessageType.Register, CommonParameter.route_user, json);
+        serverPeer.sendMessage(ServerOprationType.Register, CommonParameter.route_user, json);
     }
     public void RegisterSuccess(String id)   //注册成功
     {
@@ -347,7 +380,7 @@ public class MainActivity extends AppCompatActivity {
 //        Gson gson = new Gson();
 //        String json = gson.toJson(userId, UserId.class);
         String data = "?user_id=" + query_id;
-        serverPeer.sendMessage(MessageType.Query, CommonParameter.route_user, data);
+        serverPeer.sendMessage(ServerOprationType.Query, CommonParameter.route_user, data);
 
     }
     public void QuerySuccess(String query_username)
@@ -397,7 +430,7 @@ public class MainActivity extends AppCompatActivity {
         String json = gson.toJson(updateAccountRequest);
 
 
-        serverPeer.sendMessage(MessageType.Rename, CommonParameter.route_user, json);    //发送更新请求
+        serverPeer.sendMessage(ServerOprationType.Rename, CommonParameter.route_user, json);    //发送更新请求
     }
     public void RenameSuccess()
     {
@@ -420,7 +453,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void UpdateView()
     {
-        serverPeer.sendMessage(MessageType.Update,"", "?" + "user_id=" + userid);
+        serverPeer.sendMessage(ServerOprationType.Update,"", "?" + "user_id=" + userid);
     }
 
     public void UpdateViewSuccess()
@@ -439,5 +472,51 @@ public class MainActivity extends AppCompatActivity {
         }
         Toast.makeText(MainActivity.this, "更新成功",Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void GetAutoBinInfo(String autoBinIp) {
+
+        AutoBinUserID userID = new AutoBinUserID(Integer.parseInt(userid));
+        Gson gson = new Gson();
+        String json = gson.toJson(userID, AutoBinUserID.class);
+
+        autoBinPeer.startDetectState(AutoBinOprationType.Status, autoBinIp, json);
+
+    }
+
+    @Override
+    public void UpdateMotorView() {
+        if (handMotorDialog != null) {
+            handMotorDialog.Update();
+        }
+
+    }
+
+    @Override
+    public void GetCamera(String autoBinIp) {
+        if(userid == null) return;
+        AutoBinUserID userID = new AutoBinUserID(Integer.valueOf(userid));
+        Gson gson = new Gson();
+        String json = gson.toJson(userID, AutoBinUserID.class);
+
+        autoBinPeer.startDetectState(AutoBinOprationType.Image, autoBinIp, json);
+
+    }
+
+    @Override
+    public void UpdateCameraView() {
+        if(photoDialog != null)
+        {
+            photoDialog.Update();
+        }
+
+    }
+
+    @Override
+    public void ControlMotor(String ip, int motor_numb, int dirc) //0是降，1是升
+    {
+        autoBinPeer.startDetectState(AutoBinOprationType.Motor, ip, "?user_id=" + userid + "&motor=" + motor_numb +"&dirc=" + dirc);
+    }
+
 
 }

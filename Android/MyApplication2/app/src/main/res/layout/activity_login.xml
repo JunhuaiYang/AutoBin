@@ -18,7 +18,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="108dp"
         android:gravity="end|center"
-        android:text="用户名:"
+        android:text="用户号:"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

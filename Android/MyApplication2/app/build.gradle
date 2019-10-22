@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+//apply plugin: 'com.google.protobuf'
+
+
 
 android {
     compileSdkVersion 29
@@ -21,8 +24,46 @@ android {
         checkReleaseBuilds false
         abortOnError false
     }
-}
 
+    //gRPC 框架
+//    packagingOptions {
+//        pickFirst 'META-INF/INDEX.LIST'
+//        pickFirst 'META-INF/LICENSE'
+//        pickFirst 'META-INF/io.netty.versions.properties'
+//    }
+//    sourceSets {
+//        main {
+//            proto {
+//                srcDir 'src/main/proto'
+//                include '**/*.proto'
+//            }
+//        }
+//    }
+
+
+}
+//grpc
+//protobuf {
+//    protoc { artifact = 'com.google.protobuf:protoc:3.5.1-1' }
+//    plugins {
+//        javalite { artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0" }
+//        grpc {
+//            artifact = 'io.grpc:protoc-gen-grpc-java:1.12.0'
+//        }
+//    }
+//    generateProtoTasks {
+//        all().each { task ->
+//            task.plugins {
+//                javalite {}
+//                grpc { // Options added to --grpc_out
+//                    option 'lite'
+//                }
+//            }
+//        }
+//    }
+//    generatedFilesBaseDir = "$projectDir/src/generated"
+//
+//}
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -40,4 +81,12 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     //折线图
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+
+    //grpc need
+    //proto buffer
+//    implementation 'io.grpc:grpc-okhttp:1.12.0'
+//    implementation 'io.grpc:grpc-protobuf-lite:1.18.0'
+//    implementation 'io.grpc:grpc-stub:1.18.0'
+//
+//    implementation 'javax.annotation:javax.annotation-api:1.2'
 }

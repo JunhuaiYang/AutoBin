@@ -6,10 +6,11 @@ import android.os.Message;
 import android.util.Log;
 
 import com.example.myapplication.MainActivity;
+import com.example.myapplication.common.BinInfoResponse;
 import com.example.myapplication.common.BinState;
 import com.example.myapplication.common.BinStateResponse;
 import com.example.myapplication.common.CommonParameter;
-import com.example.myapplication.common.MessageType;
+import com.example.myapplication.common.ServerOprationType;
 import com.example.myapplication.common.QueryResponse;
 import com.example.myapplication.common.RankingResponse;
 import com.example.myapplication.common.UserId;
@@ -26,7 +27,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -52,12 +52,12 @@ public class ServerPeer {
 
 //        Log.d("json", json);
 
-        sendMessage(MessageType.Update, CommonParameter.route_waste, "?" + "user_id=" + MainActivity.Instance.userid);
+        sendMessage(ServerOprationType.Update, CommonParameter.route_waste, "?" + "user_id=" + MainActivity.Instance.userid);
 
         ;
     }
 
-    public void sendMessage(MessageType type, String route, String data) {
+    public void sendMessage(ServerOprationType type, String route, String data) {
         switch (type) {
             case Login:
 
@@ -390,6 +390,7 @@ public class ServerPeer {
                 updateWeekWaste();
                 updateRanking();
                 updateBinStates();
+                updateBinInfoItem();
 
                 //更新界面
 
@@ -432,10 +433,11 @@ public class ServerPeer {
                     //将得到的更新回应转为数据
                     wasteResponse = gson.fromJson(readData, WasteResponse.class);
                     //更新数据和界面
-                    MainActivity.Instance.dryTTH[2] = wasteResponse.type[0];
-                    MainActivity.Instance.wetTTH[2] = wasteResponse.type[1];
-                    MainActivity.Instance.recycleTTH[2] = wasteResponse.type[2];
-                    MainActivity.Instance.badTTH[2] = wasteResponse.type[3];
+                    MainActivity.Instance.dryTTH[2] = wasteResponse.type[CommonParameter.pos_dry];
+                    MainActivity.Instance.wetTTH[2] = wasteResponse.type[CommonParameter.pos_wet];
+                    MainActivity.Instance.recycleTTH[2] = wasteResponse.type[CommonParameter.pos_recycle];
+                    MainActivity.Instance.badTTH[2] = wasteResponse.type[CommonParameter.pos_bad];
+                    MainActivity.Instance.unidenTTH[2] = wasteResponse.type[CommonParameter.pos_unId];
                     MainActivity.Instance.totalTTH[2] = wasteResponse.sum;
                 }
                 Log.d("WasteResponse code", String.valueOf(code));
@@ -474,10 +476,11 @@ public class ServerPeer {
                     Gson gson = new Gson();
                     WeekWasteResponse weekWasteResponse = gson.fromJson(readData, WeekWasteResponse.class);
 
-                    MainActivity.Instance.dryTTH[1] = weekWasteResponse.type[0];
-                    MainActivity.Instance.wetTTH[1] = weekWasteResponse.type[1];
-                    MainActivity.Instance.recycleTTH[1] = weekWasteResponse.type[2];
-                    MainActivity.Instance.badTTH[1] = weekWasteResponse.type[3];
+                    MainActivity.Instance.dryTTH[1] = weekWasteResponse.type[CommonParameter.pos_dry];
+                    MainActivity.Instance.wetTTH[1] = weekWasteResponse.type[CommonParameter.pos_wet];
+                    MainActivity.Instance.recycleTTH[1] = weekWasteResponse.type[CommonParameter.pos_recycle];
+                    MainActivity.Instance.badTTH[1] = weekWasteResponse.type[CommonParameter.pos_bad];
+                    MainActivity.Instance.unidenTTH[1] = weekWasteResponse.type[CommonParameter.pos_unId];
                     MainActivity.Instance.totalTTH[1] = weekWasteResponse.sum;
 //
 //
@@ -664,7 +667,69 @@ public class ServerPeer {
                 e.printStackTrace();
             }
         }
+
+        private void updateBinInfoItem()
+        {
+            try {
+
+                URL url = new URL(IP + CommonParameter.route_stateInfo + data);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoOutput(false);         //是否输入参数
+                connection.setDoInput(true);        //是否读取参数
+                connection.setUseCaches(false);
+                connection.setRequestMethod(CommonParameter.method_stateInfo);
+                connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");               //设置请求属性
+                connection.setConnectTimeout(5000);
+                connection.setReadTimeout(5000);
+                connection.connect();
+
+                int code = connection.getResponseCode();
+                if (code == HttpURLConnection.HTTP_OK) {
+                    //得到结果
+                    InputStream inputStream = connection.getInputStream();
+                    InputStreamReader reader = new InputStreamReader(inputStream);
+                    char[] buffer = new char[1024];
+                    int len = 0, lineLen;
+                    StringBuilder stringBuilder = new StringBuilder();
+                    stringBuilder.append("");
+                    lineLen = reader.read(buffer);
+                    len = lineLen;
+                    String temp  = new String(buffer, 0 ,lineLen);
+                    stringBuilder.append(temp);
+                    while(lineLen == 1024)
+                    {
+                        lineLen = reader.read(buffer);
+                        len += lineLen;
+                        stringBuilder.append(new String(buffer, 0 ,lineLen));
+
+                    }
+
+
+                    reader.close();
+                    String readData = stringBuilder.substring(0);
+                    Log.d("BinStatusInfoResponse", "content:" + readData);
+                    Gson gson = new Gson();
+                    BinInfoResponse binInfoResponse;
+
+
+                    //将得到的更新回应转为数据
+                    binInfoResponse = gson.fromJson(readData, BinInfoResponse.class);
+
+                    int setLen = 0;
+                    //更新数据和界面
+                    MainActivity.Instance.binInfoResponse = binInfoResponse;
+
+                }
+                Log.d("BinStatusInfo code", String.valueOf(code));
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
+
+
 }
 
 
